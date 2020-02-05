@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import styled from "styled-components"
 import { Menu, Button } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
-import { IShopItem, initialItem } from "../shopItem"
+import { IShopItem } from "../shopItem"
 
 const ButtonWrapper = styled.div`
   width: 100%;
@@ -20,7 +20,7 @@ export default () => {
     <Menu>
       <ButtonWrapper>
         <Button onClick={() => {
-          setGlobalState({ type: "initField", value: initialItem })
+          setGlobalState({ type: "initField" })
         }} color={"primary"}>新規登録</Button>
       </ButtonWrapper>
       <Menu.List title="Items">

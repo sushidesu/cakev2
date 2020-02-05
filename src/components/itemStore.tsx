@@ -21,8 +21,7 @@ type Action =
     value: string
   }
   | {
-    type: "initField",
-    value: IShopItem
+    type: "initField"
   }
 
 const reducer = (state: State, action: Action): State => {
@@ -65,7 +64,8 @@ const reducer = (state: State, action: Action): State => {
     case "initField":
       return {
         ...state,
-        formValues: action.value
+        nowItemIndex: null,
+        formValues: initialItem
       }
   }
 }
