@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import Header from "./components/header"
+import ItemList from "./components/itemList"
 import ItemEditor from "./components/itemEditor"
 
 const Wrapper = styled.div`
@@ -14,6 +15,7 @@ const Wrapper = styled.div`
 const Options = () => (
   <Wrapper>
     <Header />
+    <ItemList />
     <ItemEditor />
   </Wrapper>
 )
