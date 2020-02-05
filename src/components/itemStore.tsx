@@ -29,12 +29,15 @@ const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "update":
       if (action.item.id === null) {
+        // new item
         const newItem: IShopItem = {...action.item, id: state.shopItems.length}
         return {
-          ...state,
-          shopItems: [...state.shopItems, newItem]
+          shopItems: [...state.shopItems, newItem],
+          nowItemIndex: newItem.id,
+          formValues: newItem,
         }
       } else {
+        // item already exists
         const newItems = [...state.shopItems]
         newItems[action.item.id] = action.item
         return {
