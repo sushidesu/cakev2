@@ -25,10 +25,14 @@ export default () => {
       </ButtonWrapper>
       <Menu.List title="Items">
         {globalState.shopItems.map((item: IShopItem) => (
-          <Menu.List.Item key={ item.id } onClick={() => setGlobalState({
-            type: "select",
-            index: item.id
-          })}>{ item.name }</Menu.List.Item>
+          <Menu.List.Item
+            key={item.id}
+            active={item.id === globalState.nowItemIndex}
+            onClick={() => setGlobalState({
+              type: "select",
+              index: item.id
+            })
+          }>{ item.name }</Menu.List.Item>
         ))}
       </Menu.List>
     </Menu>
