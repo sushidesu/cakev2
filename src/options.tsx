@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import Header from "./components/header"
+import ItemEditor from "./components/itemEditor"
 
 const Wrapper = styled.div`
   margin: 10px;
@@ -13,7 +14,7 @@ const Wrapper = styled.div`
 const Options = () => (
   <Wrapper>
     <Header />
-    <h1>Cake Option</h1>
+    <ItemEditor />
   </Wrapper>
 )
 
