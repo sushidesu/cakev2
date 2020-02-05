@@ -1,6 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
+import { Container, Columns } from "react-bulma-components"
+import 'react-bulma-components/dist/react-bulma-components.min.css'
+
 import { ItemStoreProvider } from "./components/itemStore"
 import Header from "./components/header"
 import ItemList from "./components/itemList"
@@ -16,8 +19,16 @@ const Wrapper = styled.div`
 const Options = () => (
   <Wrapper>
     <Header />
-    <ItemList />
-    <ItemEditor />
+    <Container>
+      <Columns className={"is-mobile"}>
+        <Columns.Column size={3} className={"sidemenu"}>
+          <ItemList />
+        </Columns.Column>
+        <Columns.Column>
+          <ItemEditor />
+        </Columns.Column>
+      </Columns>
+    </Container>
   </Wrapper>
 )
 
