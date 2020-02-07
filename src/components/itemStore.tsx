@@ -6,6 +6,15 @@ type State = {
   nowItemIndex: number,
   formValues: IShopItem
 }
+
+type SetFieldAciton<T extends keyof IShopItem> = {
+  type: "setField",
+  field: T,
+  value: IShopItem[T]
+}
+
+type SetFieldActions = SetFieldAciton<keyof IShopItem>
+
 type Action = 
   | {
     type: "update",
@@ -16,13 +25,9 @@ type Action =
     index: number
   }
   | {
-    type: "setField",
-    field: keyof IShopItem,
-    value: string
-  }
-  | {
     type: "initField"
   }
+  | SetFieldActions
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
