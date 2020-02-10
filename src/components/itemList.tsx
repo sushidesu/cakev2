@@ -18,12 +18,7 @@ export default () => {
 
   return (
     <Menu>
-      <ButtonWrapper>
-        <Button onClick={() => {
-          setGlobalState({ type: "initField" })
-        }} color={"primary"}>新規登録</Button>
-      </ButtonWrapper>
-      <Menu.List title="Items">
+      <Menu.List title="Item List">
         {globalState.shopItems.map((item: IShopItem) => (
           <Menu.List.Item
             key={item.id}
@@ -34,6 +29,16 @@ export default () => {
             })
           }>{ item.name }</Menu.List.Item>
         ))}
+        <ButtonWrapper>
+          <Button
+            onClick={() => {
+              setGlobalState({ type: "initField" })
+            }}
+            color={"primary"}
+            outlined={true}
+            disabled={globalState.nowItemIndex === null}
+          >新しい商品を追加</Button>
+        </ButtonWrapper>
       </Menu.List>
     </Menu>
   )

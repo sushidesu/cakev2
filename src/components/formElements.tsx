@@ -104,35 +104,62 @@ export const FormDescriptions: React.FC<{
   )
 }
 
+const Details = styled.div`
+  .details-item {
+    display: flex;
+    width: 100%;
+  }
+
+  .details-item-title,
+  .details-item-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .details-item-title {
+    width: 30%;
+    margin-right: 10px;
+  }
+  .details-item-body {
+    width: 70%;
+  }
+`
+
 export const FormDetails: React.FC<{
   value: IShopItem['details'],
   dispatch: React.Dispatch<Action>
 }> = ({ value, dispatch }) => (
-  <>
+  <Details>
     {value.map((detail, index) => (
-      <Form.Field key={index}>
-        {index === 0 && <Form.Label>タイトル</Form.Label>}
-        <Form.Input value={detail.title} onChange={e =>
-          dispatch({
-            type: 'setMultipleField',
-            field: 'details',
-            index: index,
-            textType: 'title',
-            value: e.target.value,
-          })
-        } />
-        {index === 0 && <Form.Label>内容</Form.Label>}
-        <Form.Input value={detail.body} onChange={e =>
-          dispatch({
-            type: 'setMultipleField',
-            field: 'details',
-            index: index,
-            textType: 'body',
-            value: e.target.value,
-          })
-        } />
+      <Form.Field className="details-item" key={index}>
+        <div className="details-item-title">
+          {index === 0 && <Form.Label>タイトル</Form.Label>}
+          <Form.Input value={detail.title} onChange={e =>
+            dispatch({
+              type: 'setMultipleField',
+              field: 'details',
+              index: index,
+              textType: 'title',
+              value: e.target.value,
+            })
+          } />
+        </div>
+        <div className="details-item-body">
+          {index === 0 && <Form.Label>内容</Form.Label>}
+          <Form.Input value={detail.body} onChange={e =>
+            dispatch({
+              type: 'setMultipleField',
+              field: 'details',
+              index: index,
+              textType: 'body',
+              value: e.target.value,
+            })
+          } />
+        </div>
       </Form.Field>
     ))}
     <AddOrRemove field={"details"} dispatch={dispatch} />
-  </>
+  </Details>
 )
