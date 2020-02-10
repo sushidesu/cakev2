@@ -5,7 +5,7 @@ import {
   Columns
 } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
-import { FormInput } from "./formElements"
+import { FormInput, FormDescriptions, FormDetails } from "./formElements"
 
 export default () => {
   const { globalState, setGlobalState } = useContext(ItemStore)
@@ -49,6 +49,18 @@ export default () => {
             <FormInput label={"JANコード"} field={"jancode"} value={formValues.jancode} dispatch={setGlobalState} />
           </Columns.Column>
           <Columns.Column size={"half"} />
+        </Columns>
+
+        <Columns>
+          <Columns.Column>
+            <FormDescriptions value={formValues.descriptions} dispatch={setGlobalState} />
+          </Columns.Column>
+        </Columns>
+
+        <Columns>
+          <Columns.Column>
+            <FormDetails value={formValues.details} dispatch={setGlobalState} />
+          </Columns.Column>
         </Columns>
 
         <Button onClick={() => {

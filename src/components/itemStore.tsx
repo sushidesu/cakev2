@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react"
-import { IShopItem, initialItem } from "../shopItem"
+import { IShopItem, ItemText, initialItem } from "../shopItem"
 
 type State = {
   shopItems: IShopItem[],
@@ -13,7 +13,10 @@ type SetFieldAciton<T extends keyof IShopItem> = {
   value: IShopItem[T]
 }
 
-type SetFieldActions = SetFieldAciton<keyof IShopItem>
+type SetFieldActions = SetFieldAciton<keyof SingleItemFields>
+
+export type MultipleItemFields = Pick<IShopItem, 'descriptions' | 'details'>
+export type SingleItemFields = Omit<IShopItem, keyof MultipleItemFields>
 
 type Action = 
   | {
@@ -28,6 +31,13 @@ type Action =
     type: "initField"
   }
   | SetFieldActions
+  | {
+    type: "setMultipleField",
+    field: keyof MultipleItemFields,
+    textType: keyof Pick<ItemText, 'title' | 'body'>,
+    index: number,
+    value: string
+  }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -71,6 +81,19 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         nowItemIndex: null,
         formValues: initialItem
+      }
+    case "setMultipleField":
+      const newValues = [...state.formValues[action.field]]
+      newValues[action.index] = {
+        ...state.formValues[action.field][action.index],
+        [action.textType]: action.value
+      }
+      return {
+        ...state,
+        formValues: {
+          ...state.formValues,
+          [action.field]: newValues
+        }
       }
   }
 }

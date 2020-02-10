@@ -6,8 +6,14 @@ export interface IShopItem {
   stockRakuten: string
   stockMakeshop: string
   jancode: string
-  descriptions: { title: string; body: string }[]
-  details: { title: string; body: string }[]
+  descriptions: ItemText[]
+  details: ItemText[]
+}
+
+export type ItemText = {
+  index: number
+  title: string
+  body: string
 }
 
 export const initialItem: IShopItem = {
@@ -18,6 +24,6 @@ export const initialItem: IShopItem = {
   stockRakuten: "",
   stockMakeshop: "",
   jancode: "",
-  descriptions: [],
-  details: [],
+  descriptions: [{ title: "", body: "", index: 0}],
+  details: [{ title: "", body: "", index: 0 }],
 }
