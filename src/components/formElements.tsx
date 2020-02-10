@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { IShopItem } from "../shopItem"
 import { Action, SingleItemFields, MultipleItemFields } from "./itemStore"
-import { Form, Button, Icon } from "react-bulma-components"
+import { Form, Button, Icon, Box } from "react-bulma-components"
 
 type FormElement = React.FC<{
   label?: string,
@@ -63,12 +63,19 @@ const AddOrRemove: React.FC<{
   </ButtonWrapper>
 )
 
+const NoItem = () => (
+  <Box style={{ userSelect: "none"}}>
+    <span>なし</span>
+  </Box>
+)
+
 export const FormDescriptions: React.FC<{
   value: IShopItem["descriptions"],
   dispatch: React.Dispatch<Action>
 }> = ({ value, dispatch }) => {
   return (
     <div>
+      {value.length === 0 && <NoItem />}
       {value.map((desc, index) => (
         <Form.Field key={index}>
           <Form.Label>タイトル</Form.Label>
@@ -132,6 +139,7 @@ export const FormDetails: React.FC<{
   dispatch: React.Dispatch<Action>
 }> = ({ value, dispatch }) => (
   <Details>
+    {value.length === 0 && <NoItem />}
     {value.map((detail, index) => (
       <Form.Field className="details-item" key={index}>
         <div className="details-item-title">

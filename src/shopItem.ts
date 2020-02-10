@@ -24,6 +24,6 @@ export const initialItem: IShopItem = {
   stockRakuten: "",
   stockMakeshop: "",
   jancode: "",
-  descriptions: [{ title: "", body: "", index: 0}],
-  details: [{ title: "", body: "", index: 0 }],
+  descriptions: [],
+  details: [],
 }
