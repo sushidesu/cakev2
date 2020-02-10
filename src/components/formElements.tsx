@@ -1,7 +1,8 @@
 import React from "react"
+import styled from "styled-components"
 import { IShopItem } from "../shopItem"
-import { Action, SingleItemFields } from "./itemStore"
-import { Form } from "react-bulma-components"
+import { Action, SingleItemFields, MultipleItemFields } from "./itemStore"
+import { Form, Button, Icon } from "react-bulma-components"
 
 type FormElement = React.FC<{
   label?: string,
@@ -27,6 +28,40 @@ export const FormInput: FormElement =
       />
     </Form.Field>
   )
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin-left: 10px;
+    font-size: large;
+    font-weight: bold;
+  }
+`
+
+const AddOrRemove: React.FC<{
+  dispatch: React.Dispatch<Action>
+  field: keyof MultipleItemFields
+}> = ({ dispatch, field }) => (
+  <ButtonWrapper>
+    <Button color={"light"} onClick={() =>
+      dispatch({
+        type: "addMultipleFields",
+        field: field
+      })
+    }>
+      <Icon><span>+</span></Icon> 
+    </Button>
+    <Button color={"light"} onClick={() =>
+      dispatch({
+        type: "removeMultipleFields",
+        field: field
+      })
+    }>
+      <Icon><span>-</span></Icon>
+    </Button>
+  </ButtonWrapper>
+)
 
 export const FormDescriptions: React.FC<{
   value: IShopItem["descriptions"],
@@ -64,6 +99,7 @@ export const FormDescriptions: React.FC<{
           />
         </Form.Field>
       ))}
+      <AddOrRemove field={"descriptions"} dispatch={dispatch} />
     </div>
   )
 }
@@ -97,5 +133,6 @@ export const FormDetails: React.FC<{
         } />
       </Form.Field>
     ))}
+    <AddOrRemove field={"details"} dispatch={dispatch} />
   </>
 )

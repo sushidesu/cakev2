@@ -38,6 +38,14 @@ type Action =
     index: number,
     value: string
   }
+  | {
+    type: "addMultipleFields",
+    field: keyof MultipleItemFields
+  }
+  | {
+    type: "removeMultipleFields",
+    field: keyof MultipleItemFields
+  }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -93,6 +101,26 @@ const reducer = (state: State, action: Action): State => {
         formValues: {
           ...state.formValues,
           [action.field]: newValues
+        }
+      }
+    case "addMultipleFields":
+      const addedMultipleValues = [...state.formValues[action.field]]
+      addedMultipleValues.push({ title: '', body: '', index: addedMultipleValues.length})
+      return {
+        ...state,
+        formValues: {
+          ...state.formValues,
+          [action.field]: addedMultipleValues
+        }
+      }
+    case "removeMultipleFields":
+      const removedMultipleValues = [...state.formValues[action.field]]
+      removedMultipleValues.pop()
+      return {
+        ...state,
+        formValues: {
+          ...state.formValues,
+          [action.field]: removedMultipleValues
         }
       }
   }
