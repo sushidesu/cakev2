@@ -28,6 +28,10 @@ type Action =
     index: number
   }
   | {
+    type: "delete",
+    index: number
+  }
+  | {
     type: "select",
     index: number
   }
@@ -82,6 +86,39 @@ const reducer = (state: State, action: Action): State => {
           ...state.shopItems,
           duplicated
         ]
+      }
+    case "delete":
+      const deletedItemList = state.shopItems
+        .filter((_, index) => action.index !== index)
+        .map((item, index) => {
+          item.id = index
+          return item
+        })
+      if (deletedItemList.length === 0) {
+        return {
+          ...state,
+          formValues: initialItem,
+          nowItemIndex: null,
+          shopItems: deletedItemList
+        }
+      }
+      else if (action.index !== 0) {
+        // select above
+        return {
+          ...state,
+          formValues: deletedItemList[action.index - 1],
+          nowItemIndex: action.index - 1,
+          shopItems: deletedItemList
+        }
+      }
+      else {
+        // select below
+        return {
+          ...state,
+          formValues: deletedItemList[0],
+          nowItemIndex: 0,
+          shopItems: deletedItemList
+        }
       }
     case "select":
       return {

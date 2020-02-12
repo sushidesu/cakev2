@@ -5,7 +5,7 @@ import {
   Button,
   Columns,
   Heading,
-  
+  Level,
 } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
 import { FormInput, FormDescriptions, FormDetails } from "./formElements"
@@ -27,6 +27,9 @@ const StickyButtonsWrapper = styled.div`
   .buttons {
     background-color: #fff;
     padding: 20px 0;
+  }
+  .level {
+    width: 100%;
   }
   button {
     margin: 0 15px;
@@ -111,19 +114,31 @@ export default () => {
       </FormWrapper>
 
       <StickyButtons>
-        <Button color={formValues.id === null ? "primary" : "info"} onClick={() => {
-          setGlobalState({ type: "update", item: formValues })
-        }}>{
-          formValues.id === null
-            ? "追加"
-            : "変更を保存"
-        }</Button>
-        {formValues.id !== null
-          && <Button
-            color={"primary"}
-            outlined={true}
-            onClick={() => setGlobalState({ type: "duplicate", index: formValues.id })}
-          >コピーして追加</Button>}
+        <Level>
+          <Level.Side align="left">
+            <Button color={formValues.id === null ? "primary" : "info"} onClick={() => {
+              setGlobalState({ type: "update", item: formValues })
+            }}>{
+              formValues.id === null
+                ? "追加"
+                : "変更を保存"
+            }</Button>
+            {formValues.id !== null && <Button
+              color={"primary"}
+              outlined={true}
+              onClick={() => setGlobalState({ type: "duplicate", index: formValues.id })}
+            >コピーして追加</Button>}
+          </Level.Side>
+
+          <Level.Side align="right">
+            {formValues.id !== null && <Button
+              color={"danger"}
+              outlined={true}
+              className="is-right"
+              onClick={() => setGlobalState({ type: "delete", index: formValues.id})}
+            >削除</Button>}
+          </Level.Side>
+        </Level>
       </StickyButtons>
 
     </Container>
