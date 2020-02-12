@@ -2,17 +2,17 @@ import React from "react"
 import styled from "styled-components"
 import { IShopItem } from "../shopItem"
 import { Action, SingleItemFields, MultipleItemFields } from "./itemStore"
-import { Form, Button, Icon, Box } from "react-bulma-components"
+import { Form, Button, Icon, Box, InputProps } from "react-bulma-components"
 
 type FormElement = React.FC<{
   label?: string,
   field: keyof SingleItemFields,
   value: string,
   dispatch: React.Dispatch<Action>
-}>
+} & InputProps>
 
 export const FormInput: FormElement =
-  ({ label, field, value, dispatch }) => (
+  ({ label, field, value, dispatch, type }) => (
     <Form.Field>
       <Form.Label>{label}</Form.Label>
       <Form.Input
@@ -25,6 +25,8 @@ export const FormInput: FormElement =
             value: e.target.value
           })
         }
+        type={type}
+        min={type === "number" ? 0 : null}
       />
     </Form.Field>
   )
