@@ -167,7 +167,11 @@ export default () => {
               color={"danger"}
               outlined={true}
               className="is-right"
-              onClick={() => setGlobalState({ type: "delete", index: formValues.id})}
+              onClick={() => {
+                if (window.confirm(`「${formValues.name}」を削除します。よろしいですか？`)) {
+                  setGlobalState({ type: "delete", index: formValues.id})
+                }
+              }}
             >削除</Button>}
           </Level.Side>
         </Level>
