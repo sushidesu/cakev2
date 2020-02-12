@@ -4,6 +4,11 @@ import { Menu, Button } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
 import { IShopItem } from "../shopItem"
 
+const Wrapper = styled.div`
+  position: sticky;
+  top: 20px;
+`
+
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -17,29 +22,31 @@ export default () => {
   const { globalState, setGlobalState } = useContext(ItemStore)
 
   return (
-    <Menu>
-      <Menu.List title="Item List">
-        {globalState.shopItems.map((item: IShopItem) => (
-          <Menu.List.Item
-            key={item.id}
-            active={item.id === globalState.nowItemIndex}
-            onClick={() => setGlobalState({
-              type: "select",
-              index: item.id
-            })
-          }>{ item.name }</Menu.List.Item>
-        ))}
-        <ButtonWrapper>
-          <Button
-            onClick={() => {
-              setGlobalState({ type: "initField" })
-            }}
-            color={"primary"}
-            outlined={true}
-            disabled={globalState.nowItemIndex === null}
-          >新しい商品を追加</Button>
-        </ButtonWrapper>
-      </Menu.List>
-    </Menu>
+    <Wrapper>
+      <Menu>
+        <Menu.List title="Item List">
+          {globalState.shopItems.map((item: IShopItem) => (
+            <Menu.List.Item
+              key={item.id}
+              active={item.id === globalState.nowItemIndex}
+              onClick={() => setGlobalState({
+                type: "select",
+                index: item.id
+              })
+            }>{ item.name }</Menu.List.Item>
+          ))}
+          <ButtonWrapper>
+            <Button
+              onClick={() => {
+                setGlobalState({ type: "initField" })
+              }}
+              color={"primary"}
+              outlined={true}
+              disabled={globalState.nowItemIndex === null}
+            >新しい商品を追加</Button>
+          </ButtonWrapper>
+        </Menu.List>
+      </Menu>
+    </Wrapper>
   )
 }
