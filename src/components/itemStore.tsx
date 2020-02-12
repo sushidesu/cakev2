@@ -24,6 +24,10 @@ type Action =
     item: IShopItem,
   }
   | {
+    type: "duplicate",
+    index: number
+  }
+  | {
     type: "select",
     index: number
   }
@@ -67,7 +71,18 @@ const reducer = (state: State, action: Action): State => {
           shopItems: newItems
         }
       }
-
+    case "duplicate":
+      const duplicated = {...state.shopItems[action.index]}
+      const suffix = 1 + state.shopItems.filter(shopitem => shopitem.name.slice(0, duplicated.name.length) === duplicated.name).length
+      duplicated.name += `_${suffix}`
+      duplicated.id = state.shopItems.length
+      return {
+        ...state,
+        shopItems: [
+          ...state.shopItems,
+          duplicated
+        ]
+      }
     case "select":
       return {
         ...state,

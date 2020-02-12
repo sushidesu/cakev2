@@ -118,6 +118,12 @@ export default () => {
             ? "追加"
             : "変更を保存"
         }</Button>
+        {formValues.id !== null
+          && <Button
+            color={"primary"}
+            outlined={true}
+            onClick={() => setGlobalState({ type: "duplicate", index: formValues.id })}
+          >コピーして追加</Button>}
       </StickyButtons>
 
     </Container>
