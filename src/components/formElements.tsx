@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { IShopItem } from "../shopItem"
 import { Action, SingleItemFields, MultipleItemFields } from "./itemStore"
-import { Form, Button, Icon, Box, Media, Image, InputProps } from "react-bulma-components"
+import { Form, Button, Icon, Box, Media, InputProps } from "react-bulma-components"
 
 type FormElement = React.FC<{
   label?: string,
@@ -112,6 +112,10 @@ const NoItem = () => (
   </Box>
 )
 
+const Desc = styled.div`
+  margin-bottom: 24px;
+`
+
 export const FormDescriptions: React.FC<{
   value: IShopItem["descriptions"],
   dispatch: React.Dispatch<Action>
@@ -120,34 +124,38 @@ export const FormDescriptions: React.FC<{
     <div>
       {value.length === 0 && <NoItem />}
       {value.map((desc, index) => (
-        <Form.Field key={index}>
-          <Form.Label>タイトル</Form.Label>
-          <Form.Input
-            value={desc.title}
-            onChange={e => {
-              dispatch({
-                type: "setMultipleField",
-                field: "descriptions",
-                index: index,
-                textType: "title",
-                value: e.target.value
-              })
-            }}
-          />
-          <Form.Label>本文</Form.Label>
-          <Form.Textarea
-            value={desc.body}
-            onChange={e =>
-              dispatch({
-                type: "setMultipleField",
-                field: "descriptions",
-                index: index,
-                textType: "body",
-                value: e.target.value
-              })
-            }
-          />
-        </Form.Field>
+        <Desc key={index}>
+          <Form.Field>
+            <Form.Label>タイトル</Form.Label>
+            <Form.Input
+              value={desc.title}
+              onChange={e => {
+                dispatch({
+                  type: "setMultipleField",
+                  field: "descriptions",
+                  index: index,
+                  textType: "title",
+                  value: e.target.value
+                })
+              }}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Form.Label>本文</Form.Label>
+            <Form.Textarea
+              value={desc.body}
+              onChange={e =>
+                dispatch({
+                  type: "setMultipleField",
+                  field: "descriptions",
+                  index: index,
+                  textType: "body",
+                  value: e.target.value
+                })
+              }
+            />
+          </Form.Field>
+        </Desc>
       ))}
       <AddOrRemove field={"descriptions"} dispatch={dispatch} />
     </div>
