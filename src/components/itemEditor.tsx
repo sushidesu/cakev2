@@ -152,7 +152,7 @@ export default () => {
               disabled={isInvalid}
             >{
               formValues.id === null
-                ? "追加"
+                ? "新規登録"
                 : "変更を保存"
             }</Button>
             {formValues.id !== null && <Button

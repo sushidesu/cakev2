@@ -40,8 +40,7 @@ export default () => {
               onClick={() => {
                 setGlobalState({ type: "initField" })
               }}
-              color={"primary"}
-              outlined={true}
+
               disabled={globalState.nowItemIndex === null}
             >新しい商品を追加</Button>
           </ButtonWrapper>
