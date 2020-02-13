@@ -6,6 +6,7 @@ export interface IShopItem {
   stockRakuten: string
   stockMakeshop: string
   jancode: string
+  imageURL: string 
   descriptions: ItemText[]
   details: ItemText[]
 }
@@ -24,6 +25,7 @@ export const initialItem: IShopItem = {
   stockRakuten: "",
   stockMakeshop: "",
   jancode: "",
+  imageURL: "",
   descriptions: [],
   details: [],
 }
