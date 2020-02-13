@@ -8,7 +8,7 @@ import {
   Level,
 } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
-import { FormInput, FormDescriptions, FormDetails } from "./formElements"
+import { FormInput, FormImageInput, FormDescriptions, FormDetails } from "./formElements"
 import { formIsInvalid } from "./formValidation"
 
 const FormWrapper = styled.div`
@@ -118,6 +118,14 @@ export default () => {
             <FormInput label={"JANコード"} field={"jancode"} value={formValues.jancode} dispatch={setGlobalState} />
           </Columns.Column>
           <Columns.Column size={"half"} />
+        </Columns>
+
+        <hr />
+
+        <Columns>
+          <Columns.Column>
+            <FormImageInput label={"商品画像URL"} field={"imageURL"} value={formValues.imageURL} dispatch={setGlobalState} />
+          </Columns.Column>
         </Columns>
 
         <hr />
