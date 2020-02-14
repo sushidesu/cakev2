@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import { Container, Columns } from "react-bulma-components"
-import 'react-bulma-components/dist/react-bulma-components.min.css'
+import "react-bulma-components/dist/react-bulma-components.min.css"
 
 import { ItemStoreProvider } from "./components/itemStore"
 import Header from "./components/header"
@@ -32,9 +32,9 @@ const Options = () => (
   </Wrapper>
 )
 
-ReactDOM.render((
+ReactDOM.render(
   <ItemStoreProvider>
     <Options />
-  </ItemStoreProvider>),
-  document.getElementById('root')
+  </ItemStoreProvider>,
+  document.getElementById("root")
 )

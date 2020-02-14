@@ -8,7 +8,12 @@ import {
   Level,
 } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
-import { FormInput, FormImageInput, FormDescriptions, FormDetails } from "./formElements"
+import {
+  FormInput,
+  FormImageInput,
+  FormDescriptions,
+  FormDetails,
+} from "./formElements"
 import { formIsInvalid } from "./formValidation"
 
 const FormWrapper = styled.div`
@@ -40,16 +45,14 @@ const StickyButtonsWrapper = styled.div`
 const StickyButtons: React.FC = ({ children }) => (
   <StickyButtonsWrapper>
     <div className={"innerShadow"}></div>
-    <div className={"buttons"}>
-      { children }
-    </div>
+    <div className={"buttons"}>{children}</div>
   </StickyButtonsWrapper>
 )
 
 export default () => {
   const { globalState, setGlobalState } = useContext(ItemStore)
-  const [ isInvalid, setValid ] = useState(false)
-  
+  const [isInvalid, setValid] = useState(false)
+
   const formValues = globalState.formValues
   useEffect(() => {
     setValid(formIsInvalid(formValues))
@@ -64,10 +67,11 @@ export default () => {
               label={"商品名"}
               field={"name"}
               value={formValues.name}
-              dispatch={setGlobalState} />
+              dispatch={setGlobalState}
+            />
           </Columns.Column>
         </Columns>
-        
+
         <Columns>
           <Columns.Column size={"half"}>
             <Columns className={"is-mobile"}>
@@ -77,7 +81,8 @@ export default () => {
                   field={"price"}
                   value={formValues.price}
                   dispatch={setGlobalState}
-                  type={"number"} />
+                  type={"number"}
+                />
               </Columns.Column>
               <Columns.Column size={"half"}>
                 <FormInput
@@ -85,7 +90,8 @@ export default () => {
                   field={"weight"}
                   value={formValues.weight}
                   dispatch={setGlobalState}
-                  type={"number"} />
+                  type={"number"}
+                />
               </Columns.Column>
             </Columns>
           </Columns.Column>
@@ -98,7 +104,8 @@ export default () => {
                   field={"stockRakuten"}
                   value={formValues.stockRakuten}
                   dispatch={setGlobalState}
-                  type={"number"} />
+                  type={"number"}
+                />
               </Columns.Column>
               <Columns.Column size={"half"}>
                 <FormInput
@@ -106,16 +113,21 @@ export default () => {
                   field={"stockMakeshop"}
                   value={formValues.stockMakeshop}
                   dispatch={setGlobalState}
-                  type={"number"} />
+                  type={"number"}
+                />
               </Columns.Column>
             </Columns>
           </Columns.Column>
-
         </Columns>
 
         <Columns>
           <Columns.Column size={"half"}>
-            <FormInput label={"JANコード"} field={"jancode"} value={formValues.jancode} dispatch={setGlobalState} />
+            <FormInput
+              label={"JANコード"}
+              field={"jancode"}
+              value={formValues.jancode}
+              dispatch={setGlobalState}
+            />
           </Columns.Column>
           <Columns.Column size={"half"} />
         </Columns>
@@ -124,7 +136,12 @@ export default () => {
 
         <Columns>
           <Columns.Column>
-            <FormImageInput label={"商品画像URL"} field={"imageURL"} value={formValues.imageURL} dispatch={setGlobalState} />
+            <FormImageInput
+              label={"商品画像URL"}
+              field={"imageURL"}
+              value={formValues.imageURL}
+              dispatch={setGlobalState}
+            />
           </Columns.Column>
         </Columns>
 
@@ -135,7 +152,10 @@ export default () => {
             <Heading textAlignment={"centered"} subtitle>
               商品説明
             </Heading>
-            <FormDescriptions value={formValues.descriptions} dispatch={setGlobalState} />
+            <FormDescriptions
+              value={formValues.descriptions}
+              dispatch={setGlobalState}
+            />
           </Columns.Column>
         </Columns>
 
@@ -156,35 +176,48 @@ export default () => {
           <Level.Side align="left">
             <Button
               color={formValues.id === null ? "primary" : "info"}
-              onClick={() => setGlobalState({ type: "update", item: formValues })}
+              onClick={() =>
+                setGlobalState({ type: "update", item: formValues })
+              }
               disabled={isInvalid}
-            >{
-              formValues.id === null
-                ? "新規登録"
-                : "変更を保存"
-            }</Button>
-            {formValues.id !== null && <Button
-              color={"primary"}
-              outlined={true}
-              onClick={() => setGlobalState({ type: "duplicate", index: formValues.id })}
-            >コピーして追加</Button>}
+            >
+              {formValues.id === null ? "新規登録" : "変更を保存"}
+            </Button>
+            {formValues.id !== null && (
+              <Button
+                color={"primary"}
+                outlined={true}
+                onClick={() =>
+                  setGlobalState({ type: "duplicate", index: formValues.id })
+                }
+              >
+                コピーして追加
+              </Button>
+            )}
           </Level.Side>
 
           <Level.Side align="right">
-            {formValues.id !== null && <Button
-              color={"danger"}
-              outlined={true}
-              className="is-right"
-              onClick={() => {
-                if (window.confirm(`「${formValues.name}」を削除します。よろしいですか？`)) {
-                  setGlobalState({ type: "delete", index: formValues.id})
-                }
-              }}
-            >削除</Button>}
+            {formValues.id !== null && (
+              <Button
+                color={"danger"}
+                outlined={true}
+                className="is-right"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `「${formValues.name}」を削除します。よろしいですか？`
+                    )
+                  ) {
+                    setGlobalState({ type: "delete", index: formValues.id })
+                  }
+                }}
+              >
+                削除
+              </Button>
+            )}
           </Level.Side>
         </Level>
       </StickyButtons>
-
     </Container>
   )
 }

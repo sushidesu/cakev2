@@ -2,65 +2,68 @@ import React, { createContext, useReducer } from "react"
 import { IShopItem, ItemText, initialItem } from "../shopItem"
 
 type State = {
-  shopItems: IShopItem[],
-  nowItemIndex: number,
+  shopItems: IShopItem[]
+  nowItemIndex: number
   formValues: IShopItem
 }
 
 type SetFieldAciton<T extends keyof IShopItem> = {
-  type: "setField",
-  field: T,
+  type: "setField"
+  field: T
   value: IShopItem[T]
 }
 
 type SetFieldActions = SetFieldAciton<keyof SingleItemFields>
 
-export type MultipleItemFields = Pick<IShopItem, 'descriptions' | 'details'>
+export type MultipleItemFields = Pick<IShopItem, "descriptions" | "details">
 export type SingleItemFields = Omit<IShopItem, keyof MultipleItemFields>
 
-type Action = 
+type Action =
   | {
-    type: "update",
-    item: IShopItem,
-  }
+      type: "update"
+      item: IShopItem
+    }
   | {
-    type: "duplicate",
-    index: number
-  }
+      type: "duplicate"
+      index: number
+    }
   | {
-    type: "delete",
-    index: number
-  }
+      type: "delete"
+      index: number
+    }
   | {
-    type: "select",
-    index: number
-  }
+      type: "select"
+      index: number
+    }
   | {
-    type: "initField"
-  }
+      type: "initField"
+    }
   | SetFieldActions
   | {
-    type: "setMultipleField",
-    field: keyof MultipleItemFields,
-    textType: keyof Pick<ItemText, 'title' | 'body'>,
-    index: number,
-    value: string
-  }
+      type: "setMultipleField"
+      field: keyof MultipleItemFields
+      textType: keyof Pick<ItemText, "title" | "body">
+      index: number
+      value: string
+    }
   | {
-    type: "addMultipleFields",
-    field: keyof MultipleItemFields
-  }
+      type: "addMultipleFields"
+      field: keyof MultipleItemFields
+    }
   | {
-    type: "removeMultipleFields",
-    field: keyof MultipleItemFields
-  }
+      type: "removeMultipleFields"
+      field: keyof MultipleItemFields
+    }
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "update":
       if (action.item.id === null) {
         // new item
-        const newItem: IShopItem = {...action.item, id: state.shopItems.length}
+        const newItem: IShopItem = {
+          ...action.item,
+          id: state.shopItems.length,
+        }
         return {
           shopItems: [...state.shopItems, newItem],
           nowItemIndex: newItem.id,
@@ -72,20 +75,22 @@ const reducer = (state: State, action: Action): State => {
         newItems[action.item.id] = action.item
         return {
           ...state,
-          shopItems: newItems
+          shopItems: newItems,
         }
       }
     case "duplicate":
-      const duplicated = {...state.shopItems[action.index]}
-      const suffix = 1 + state.shopItems.filter(shopitem => shopitem.name.slice(0, duplicated.name.length) === duplicated.name).length
+      const duplicated = { ...state.shopItems[action.index] }
+      const suffix =
+        1 +
+        state.shopItems.filter(
+          shopitem =>
+            shopitem.name.slice(0, duplicated.name.length) === duplicated.name
+        ).length
       duplicated.name += `_${suffix}`
       duplicated.id = state.shopItems.length
       return {
         ...state,
-        shopItems: [
-          ...state.shopItems,
-          duplicated
-        ]
+        shopItems: [...state.shopItems, duplicated],
       }
     case "delete":
       const deletedItemList = state.shopItems
@@ -99,25 +104,23 @@ const reducer = (state: State, action: Action): State => {
           ...state,
           formValues: initialItem,
           nowItemIndex: null,
-          shopItems: deletedItemList
+          shopItems: deletedItemList,
         }
-      }
-      else if (action.index !== 0) {
+      } else if (action.index !== 0) {
         // select above
         return {
           ...state,
           formValues: deletedItemList[action.index - 1],
           nowItemIndex: action.index - 1,
-          shopItems: deletedItemList
+          shopItems: deletedItemList,
         }
-      }
-      else {
+      } else {
         // select below
         return {
           ...state,
           formValues: deletedItemList[0],
           nowItemIndex: 0,
-          shopItems: deletedItemList
+          shopItems: deletedItemList,
         }
       }
     case "select":
@@ -125,45 +128,49 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         nowItemIndex: action.index,
         formValues: {
-          ...state.shopItems[action.index]
-        }
+          ...state.shopItems[action.index],
+        },
       }
     case "setField":
       return {
         ...state,
         formValues: {
           ...state.formValues,
-          [action.field]: action.value
-        }
+          [action.field]: action.value,
+        },
       }
     case "initField":
       return {
         ...state,
         nowItemIndex: null,
-        formValues: initialItem
+        formValues: initialItem,
       }
     case "setMultipleField":
       const newValues = [...state.formValues[action.field]]
       newValues[action.index] = {
         ...state.formValues[action.field][action.index],
-        [action.textType]: action.value
+        [action.textType]: action.value,
       }
       return {
         ...state,
         formValues: {
           ...state.formValues,
-          [action.field]: newValues
-        }
+          [action.field]: newValues,
+        },
       }
     case "addMultipleFields":
       const addedMultipleValues = [...state.formValues[action.field]]
-      addedMultipleValues.push({ title: '', body: '', index: addedMultipleValues.length})
+      addedMultipleValues.push({
+        title: "",
+        body: "",
+        index: addedMultipleValues.length,
+      })
       return {
         ...state,
         formValues: {
           ...state.formValues,
-          [action.field]: addedMultipleValues
-        }
+          [action.field]: addedMultipleValues,
+        },
       }
     case "removeMultipleFields":
       const removedMultipleValues = [...state.formValues[action.field]]
@@ -172,14 +179,14 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         formValues: {
           ...state.formValues,
-          [action.field]: removedMultipleValues
-        }
+          [action.field]: removedMultipleValues,
+        },
       }
   }
 }
 type ContextValue = {
-  globalState: State,
-  setGlobalState: React.Dispatch<Action>  
+  globalState: State
+  setGlobalState: React.Dispatch<Action>
 }
 
 const ItemStore = createContext({} as ContextValue)
@@ -192,8 +199,10 @@ const initialState: State = {
 const ItemStoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <ItemStore.Provider value={{ globalState: state, setGlobalState: dispatch }}>
-      { children }
+    <ItemStore.Provider
+      value={{ globalState: state, setGlobalState: dispatch }}
+    >
+      {children}
     </ItemStore.Provider>
   )
 }

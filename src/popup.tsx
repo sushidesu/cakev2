@@ -8,4 +8,4 @@ const Popup = () => (
   </>
 )
 
-ReactDOM.render(<Popup />, document.getElementById('root'))
+ReactDOM.render(<Popup />, document.getElementById("root"))

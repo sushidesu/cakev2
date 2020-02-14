@@ -29,20 +29,25 @@ export default () => {
             <Menu.List.Item
               key={item.id}
               active={item.id === globalState.nowItemIndex}
-              onClick={() => setGlobalState({
-                type: "select",
-                index: item.id
-              })
-            }>{ item.name }</Menu.List.Item>
+              onClick={() =>
+                setGlobalState({
+                  type: "select",
+                  index: item.id,
+                })
+              }
+            >
+              {item.name}
+            </Menu.List.Item>
           ))}
           <ButtonWrapper>
             <Button
               onClick={() => {
                 setGlobalState({ type: "initField" })
               }}
-
               disabled={globalState.nowItemIndex === null}
-            >新しい商品を追加</Button>
+            >
+              新しい商品を追加
+            </Button>
           </ButtonWrapper>
         </Menu.List>
       </Menu>

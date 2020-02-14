@@ -6,7 +6,7 @@ export interface IShopItem {
   stockRakuten: string
   stockMakeshop: string
   jancode: string
-  imageURL: string 
+  imageURL: string
   descriptions: ItemText[]
   details: ItemText[]
 }
