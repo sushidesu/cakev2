@@ -1,5 +1,11 @@
 import React, { createContext, useReducer } from "react"
-import { IShopItem, ItemText, initialItem } from "../shopItem"
+import {
+  IShopItem,
+  ItemText,
+  SingleItemFields,
+  MultipleItemFields,
+  initialItem,
+} from "../shopItem"
 
 type State = {
   shopItems: IShopItem[]
@@ -12,11 +18,6 @@ type SetFieldAciton<T extends keyof IShopItem> = {
   field: T
   value: IShopItem[T]
 }
-
-type SetFieldActions = SetFieldAciton<keyof SingleItemFields>
-
-export type MultipleItemFields = Pick<IShopItem, "descriptions" | "details">
-export type SingleItemFields = Omit<IShopItem, keyof MultipleItemFields>
 
 type Action =
   | {
@@ -38,7 +39,7 @@ type Action =
   | {
       type: "initField"
     }
-  | SetFieldActions
+  | SetFieldAciton<keyof SingleItemFields>
   | {
       type: "setMultipleField"
       field: keyof MultipleItemFields

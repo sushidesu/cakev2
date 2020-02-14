@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { IShopItem } from "../shopItem"
-import { Action, SingleItemFields, MultipleItemFields } from "./itemStore"
+import { IShopItem, SingleItemFields, MultipleItemFields } from "../shopItem"
+import { Action } from "./itemStore"
 import {
   Form,
   Button,
