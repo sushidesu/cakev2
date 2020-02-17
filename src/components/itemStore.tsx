@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react"
+import React, { createContext, useReducer, useEffect } from "react"
 import {
   IShopItem,
   ItemText,
@@ -6,6 +6,11 @@ import {
   MultipleItemFields,
   initialItem,
 } from "../shopItem"
+import {
+  getChromeStorage,
+  setChromeStorage,
+  StateToManageInChromeStorage,
+} from "../plugins/chromeAPI"
 
 type State = {
   shopItems: IShopItem[]
@@ -35,6 +40,10 @@ type Action =
   | {
       type: "select"
       index: number
+    }
+  | {
+      type: "sync"
+      value: StateToManageInChromeStorage
     }
   | {
       type: "initField"
@@ -132,6 +141,14 @@ const reducer = (state: State, action: Action): State => {
           ...state.shopItems[action.index],
         },
       }
+    case "sync":
+      const { nowItemIndex, shopItems } = action.value
+      return {
+        nowItemIndex: nowItemIndex,
+        shopItems: shopItems,
+        formValues:
+          nowItemIndex === null ? initialItem : shopItems[nowItemIndex],
+      }
     case "setField":
       return {
         ...state,
@@ -199,6 +216,21 @@ const initialState: State = {
 
 const ItemStoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const syncData = async () => {
+    const items = await getChromeStorage()
+    dispatch({ type: "sync", value: items.cakev2 })
+  }
+
+  useEffect(() => {
+    // on mounted
+    syncData()
+  }, [dispatch])
+
+  useEffect(() => {
+    // on state changed
+    setChromeStorage(state)
+  }, [state.shopItems, state.nowItemIndex])
+
   return (
     <ItemStore.Provider
       value={{ globalState: state, setGlobalState: dispatch }}
@@ -208,4 +240,4 @@ const ItemStoreProvider: React.FC = ({ children }) => {
   )
 }
 
-export { ItemStoreProvider, ItemStore, Action }
+export { ItemStoreProvider, ItemStore, State, Action }
