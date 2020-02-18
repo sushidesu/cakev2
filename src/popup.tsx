@@ -56,7 +56,7 @@ const Wrapper = styled.div`
   }
 `
 
-type CheckboxState = {
+export type CheckboxState = {
   all: boolean
   info: boolean
   stock: boolean
@@ -118,6 +118,10 @@ const Popup = () => {
     }
   }
 
+  chrome.runtime.onMessage.addListener((message, sender, response) => {
+    response(checkbox)
+  })
+
   return (
     <Wrapper>
       <div className="main">
@@ -151,9 +155,15 @@ const Popup = () => {
             size={"small"}
             color={"primary"}
             onClick={() => {
-              chrome.tabs.executeScript({
-                file: "./content.bundle.js",
-              })
+              // chrome.tabs.executeScript({
+              //   file: "./content.bundle.js",
+              // })
+              chrome.tabs.query(
+                { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
+                result => {
+                  chrome.tabs.sendMessage(result[0].id, checkbox)
+                }
+              )
             }}
           >
             自動入力

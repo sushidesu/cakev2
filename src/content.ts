@@ -1,7 +1,9 @@
 import { getChromeStorage } from "./plugins/chromeAPI"
 import { write_to_rakuten } from "./plugins/rakuten"
 import { write_to_makeshop } from "./plugins/makeshop"
-;(async () => {
+import { CheckboxState } from "./popup"
+
+const autoWrite = async (checked: CheckboxState) => {
   const items = await getChromeStorage()
   const { nowItemIndex, shopItems } = items.cakev2
   if (nowItemIndex === null) return
@@ -9,12 +11,17 @@ import { write_to_makeshop } from "./plugins/makeshop"
   const selected = shopItems[nowItemIndex]
   switch (window.location.host) {
     case "item.rms.rakuten.co.jp":
-      write_to_rakuten(selected)
+      write_to_rakuten(selected, checked)
       break
     case "shop16.makeshop.jp":
-      write_to_makeshop(selected)
+      write_to_makeshop(selected, checked)
       break
     default:
       break
   }
-})()
+}
+
+console.log("cakev2 loaded")
+chrome.runtime.onMessage.addListener((message: CheckboxState) => {
+  autoWrite(message)
+})

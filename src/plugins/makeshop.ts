@@ -1,6 +1,7 @@
 import { IShopItem } from "../shopItem"
+import { CheckboxState } from "../popup"
 
-export const write_to_makeshop = (item: IShopItem) => {
+export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
   const frame = document.querySelector("[name='mainframe']") as HTMLFrameElement
   const form = frame.contentWindow.document
 
@@ -15,46 +16,62 @@ export const write_to_makeshop = (item: IShopItem) => {
   )[2] as HTMLInputElement
   count.click()
 
-  const item_name = form.getElementById("brandname") as HTMLInputElement
-  item_name.value = item.name
+  if (checked.info) {
+    const item_name = form.getElementById("brandname") as HTMLInputElement
+    item_name.value = item.name
 
-  const item_price = form.getElementById("sellprice") as HTMLInputElement
-  item_price.value = item.price
+    const item_price = form.getElementById("sellprice") as HTMLInputElement
+    item_price.value = item.price
 
-  const item_jancode = form.getElementById("jancode_input") as HTMLInputElement
-  item_jancode.value = item.jancode
+    const item_jancode = form.getElementById(
+      "jancode_input"
+    ) as HTMLInputElement
+    item_jancode.value = item.jancode
 
-  const item_stock = form.querySelector('[name="quantity"]') as HTMLInputElement
-  item_stock.value = item.stockMakeshop
+    const item_weight = form.querySelector(
+      '[name="weight"]'
+    ) as HTMLInputElement
+    item_weight.value = item.weight
+  }
 
-  const item_weight = form.querySelector('[name="weight"]') as HTMLInputElement
-  item_weight.value = item.weight
+  if (checked.stock) {
+    const item_stock = form.querySelector(
+      '[name="quantity"]'
+    ) as HTMLInputElement
+    item_stock.value = item.stockMakeshop
+  }
 
-  const description_sp = form.getElementById(
-    "smartphone_content2"
-  ) as HTMLTextAreaElement
-  description_sp.value =
-    Description(item.descriptions, item.imageURL) + Details(item.details)
+  if (checked.descriptions) {
+    const description_sp = form.getElementById(
+      "smartphone_content2"
+    ) as HTMLTextAreaElement
+    description_sp.value =
+      Description(item.descriptions, item.imageURL) + Details(item.details)
 
-  const description_pc =
-    (form.querySelector("#cke_1_contents > textarea") as HTMLTextAreaElement) ||
-    (() => {
-      form.getElementById("cke_23").click()
-      return form.querySelector(
+    const description_pc =
+      (form.querySelector(
         "#cke_1_contents > textarea"
-      ) as HTMLTextAreaElement
-    })()
-  description_pc.value = Description(item.descriptions, item.imageURL)
+      ) as HTMLTextAreaElement) ||
+      (() => {
+        form.getElementById("cke_23").click()
+        return form.querySelector(
+          "#cke_1_contents > textarea"
+        ) as HTMLTextAreaElement
+      })()
+    description_pc.value = Description(item.descriptions, item.imageURL)
 
-  const details_pc =
-    (form.querySelector("#cke_2_contents > textarea") as HTMLTextAreaElement) ||
-    (() => {
-      form.getElementById("cke_87").click()
-      return form.querySelector(
+    const details_pc =
+      (form.querySelector(
         "#cke_2_contents > textarea"
-      ) as HTMLTextAreaElement
-    })()
-  details_pc.value = Details(item.details)
+      ) as HTMLTextAreaElement) ||
+      (() => {
+        form.getElementById("cke_87").click()
+        return form.querySelector(
+          "#cke_2_contents > textarea"
+        ) as HTMLTextAreaElement
+      })()
+    details_pc.value = Details(item.details)
+  }
 }
 
 const Description = (
