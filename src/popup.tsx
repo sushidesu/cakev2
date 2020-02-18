@@ -56,6 +56,42 @@ const Wrapper = styled.div`
   }
 `
 
+type CheckboxState = {
+  all: boolean
+  info: boolean
+  stock: boolean
+  descriptions: boolean
+}
+
+const checkedAll: CheckboxState = {
+  all: true,
+  info: true,
+  stock: true,
+  descriptions: true,
+}
+
+const unCheckedAll: CheckboxState = {
+  all: false,
+  info: false,
+  stock: false,
+  descriptions: false,
+}
+
+const Checkbox: React.FC<{
+  name: keyof CheckboxState
+  value: boolean
+  onCheck: (name: keyof CheckboxState) => void
+}> = ({ name, value, onCheck, children }) => (
+  <Form.Checkbox
+    checked={value}
+    onChange={() => {
+      onCheck(name)
+    }}
+  >
+    {children}
+  </Form.Checkbox>
+)
+
 const Popup = () => {
   const [item, setItem] = useState(initialItem)
   const fetchItem = async () => {
@@ -64,9 +100,23 @@ const Popup = () => {
     setItem(nowItemIndex === null ? initialItem : shopItems[nowItemIndex])
   }
   useEffect(() => {
-    console.log("effect")
+    // on mounted
     fetchItem()
   }, [setItem])
+
+  const [checkbox, setCheckbox] = useState(checkedAll)
+  const check = (name: keyof CheckboxState) => {
+    if (name === "all") {
+      setCheckbox(checkbox.all ? unCheckedAll : checkedAll)
+    } else {
+      const result = {
+        ...checkbox,
+        [name]: !checkbox[name],
+      }
+      result.all = result.info && result.stock && result.descriptions
+      setCheckbox(result)
+    }
+  }
 
   return (
     <Wrapper>
@@ -77,11 +127,23 @@ const Popup = () => {
         </div>
 
         <div className="part control">
-          <span className="part-label">更新する項目</span>
-          <Form.Checkbox>すべて</Form.Checkbox>
-          <Form.Checkbox>基本情報</Form.Checkbox>
-          <Form.Checkbox>在庫数</Form.Checkbox>
-          <Form.Checkbox>商品詳細</Form.Checkbox>
+          <span className="part-label">入力する項目</span>
+          <Checkbox name="all" value={checkbox.all} onCheck={check}>
+            すべて
+          </Checkbox>
+          <Checkbox name="info" value={checkbox.info} onCheck={check}>
+            商品名・価格・JAN
+          </Checkbox>
+          <Checkbox name="stock" value={checkbox.stock} onCheck={check}>
+            在庫数
+          </Checkbox>
+          <Checkbox
+            name="descriptions"
+            value={checkbox.descriptions}
+            onCheck={check}
+          >
+            商品説明
+          </Checkbox>
         </div>
 
         <div className="buttons">
