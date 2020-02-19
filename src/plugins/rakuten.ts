@@ -95,7 +95,9 @@ const Details = (details: IShopItem["details"]) => {
   return `
   <h2 ="" style="${TITLE_STYLE}">商品詳細</h2 ="">
   <table ="" style="${TABLE_STYLE}">
-  ${body}
+    <tbody>
+      ${body}
+    </tbody>
   </table ="">
 `
 }

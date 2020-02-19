@@ -74,6 +74,14 @@ export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
   }
 }
 
+const TITLE_STYLE =
+  "font-size: 1.3em; font-weight: normal; border-bottom: 1px dashed #ccc; margin: 2.5em 0 1em 0;"
+const PARAGRAPH_STYLE =
+  "font-size: 1em; line-height: 1.8em; letter-spacing: 0.01em; margin-bottom: 2.5em;"
+const TABLE_STYLE = "width: 100%; border-spacing: 0; border-collapse: collapse;"
+const TABLE_HEADER = "font-weight: bold; background-color: #efefef; width: 22%;"
+const TABLE_CELL = "padding: 10px; border: 1px solid #ccc;"
+
 const Description = (
   descriptions: IShopItem["descriptions"],
   image: IShopItem["imageURL"]
@@ -83,8 +91,8 @@ const Description = (
   ${descriptions
     .map(
       desc => `
-  <h2>${desc.title}</h2>
-  <p>${desc.body}</p>
+  <h3 style="${TITLE_STYLE}">${desc.title}</h3>
+  <p style="${PARAGRAPH_STYLE}">${desc.body}</p>
   `
     )
     .join("")}
@@ -94,15 +102,15 @@ const Details = (details: IShopItem["details"]) => {
   if (details.length === 0) return ""
 
   return `
-<h2>商品詳細</h2>
-<table>
+<h3 style="${TITLE_STYLE}">商品詳細</h3>
+<table style="${TABLE_STYLE}">
   <tbody>
     ${details
       .map(
         detail => `
     <tr>
-      <th>${detail.title}</th>
-      <td>${detail.body}</td>
+      <th style="${TABLE_CELL} ${TABLE_HEADER}">${detail.title}</th>
+      <td style="${TABLE_CELL}">${detail.body}</td>
     </tr>
     `
       )
