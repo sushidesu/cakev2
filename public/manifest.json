@@ -11,10 +11,13 @@
     "persistent": false
   },
   "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["https://item.rms.rakuten.co.jp/rms/mall/rsf/item/*", "https://shop16.makeshop.jp/*"],
+    "js": ["content.bundle.js"]
+  }],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "storage",
-    "tabs",
-    "<all_urls>"
+    "tabs"
   ]
 }

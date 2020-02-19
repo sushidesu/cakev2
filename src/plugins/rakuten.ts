@@ -1,50 +1,62 @@
 import { IShopItem } from "../shopItem"
+import { CheckboxState } from "../popup"
 
-export const write_to_rakuten = (item: IShopItem): void => {
+export const write_to_rakuten = (
+  item: IShopItem,
+  checked: CheckboxState
+): void => {
   // 税別設定
   const tax_not_included = document.getElementById("r03") as HTMLInputElement
   tax_not_included.checked = true
 
-  // 商品番号にJANコードを入力
-  const item_number = document.querySelector(
-    '[name="item_number"]'
-  ) as HTMLInputElement
-  item_number.value = item.jancode
+  if (checked.info) {
+    // 商品番号にJANコードを入力
+    const item_number = document.querySelector(
+      '[name="item_number"]'
+    ) as HTMLInputElement
+    item_number.value = item.jancode
 
-  const item_name = document.querySelector(
-    '[name="item_name"]'
-  ) as HTMLInputElement
-  item_name.value = item.name
+    const item_name = document.querySelector(
+      '[name="item_name"]'
+    ) as HTMLInputElement
+    item_name.value = item.name
 
-  const item_price = document.querySelector(
-    '[name="price"]'
-  ) as HTMLInputElement
-  item_price.value = item.price
+    const item_price = document.querySelector(
+      '[name="price"]'
+    ) as HTMLInputElement
+    item_price.value = item.price
 
-  const item_stock = document.getElementById("invnew_in01") as HTMLInputElement
-  item_stock.value = item.stockRakuten
+    const item_jancode = document.querySelector(
+      '[name="rcatalog_id"]'
+    ) as HTMLInputElement
+    item_jancode.value = item.jancode
+  }
 
-  const item_jancode = document.querySelector(
-    '[name="rcatalog_id"]'
-  ) as HTMLInputElement
-  item_jancode.value = item.jancode
+  if (checked.stock) {
+    const item_stock = document.getElementById(
+      "invnew_in01"
+    ) as HTMLInputElement
+    item_stock.value = item.stockRakuten
+  }
 
-  const description_sp = document.getElementById(
-    "smart_caption"
-  ) as HTMLInputElement
-  const description_pc = document.querySelector(
-    '[name="display_caption"]'
-  ) as HTMLInputElement
+  if (checked.descriptions) {
+    const description_sp = document.getElementById(
+      "smart_caption"
+    ) as HTMLInputElement
+    const description_pc = document.querySelector(
+      '[name="display_caption"]'
+    ) as HTMLInputElement
 
-  const description = `<div ="">
+    const description = `<div ="">
   ${item.imageURL && `<img width="100%" src="${item.imageURL}">`}
   ${Description(item.descriptions)}
   ${Details(item.details)}
 </div ="">
 `
 
-  description_sp.value = description
-  description_pc.value = description
+    description_sp.value = description
+    description_pc.value = description
+  }
 }
 
 const TITLE_STYLE =
@@ -83,7 +95,9 @@ const Details = (details: IShopItem["details"]) => {
   return `
   <h2 ="" style="${TITLE_STYLE}">商品詳細</h2 ="">
   <table ="" style="${TABLE_STYLE}">
-  ${body}
+    <tbody>
+      ${body}
+    </tbody>
   </table ="">
 `
 }
