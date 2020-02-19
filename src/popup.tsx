@@ -155,9 +155,6 @@ const Popup = () => {
             size={"small"}
             color={"primary"}
             onClick={() => {
-              // chrome.tabs.executeScript({
-              //   file: "./content.bundle.js",
-              // })
               chrome.tabs.query(
                 { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
                 result => {
@@ -168,7 +165,13 @@ const Popup = () => {
           >
             自動入力
           </Button>
-          <Button size={"small"} text={true}>
+          <Button
+            size={"small"}
+            text={true}
+            onClick={() => {
+              chrome.runtime.openOptionsPage()
+            }}
+          >
             商品登録ページへ
           </Button>
         </div>
