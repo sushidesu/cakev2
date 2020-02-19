@@ -81,12 +81,14 @@ const Checkbox: React.FC<{
   name: keyof CheckboxState
   value: boolean
   onCheck: (name: keyof CheckboxState) => void
-}> = ({ name, value, onCheck, children }) => (
+  disabled: boolean
+}> = ({ name, value, onCheck, disabled, children }) => (
   <Form.Checkbox
     checked={value}
     onChange={() => {
       onCheck(name)
     }}
+    disabled={disabled}
   >
     {children}
   </Form.Checkbox>
@@ -132,19 +134,35 @@ const Popup = () => {
 
         <div className="part control">
           <span className="part-label">入力する項目</span>
-          <Checkbox name="all" value={checkbox.all} onCheck={check}>
+          <Checkbox
+            name="all"
+            value={checkbox.all}
+            onCheck={check}
+            disabled={item.id === null}
+          >
             すべて
           </Checkbox>
-          <Checkbox name="info" value={checkbox.info} onCheck={check}>
+          <Checkbox
+            name="info"
+            value={checkbox.info}
+            onCheck={check}
+            disabled={item.id === null}
+          >
             商品名・価格・JAN
           </Checkbox>
-          <Checkbox name="stock" value={checkbox.stock} onCheck={check}>
+          <Checkbox
+            name="stock"
+            value={checkbox.stock}
+            onCheck={check}
+            disabled={item.id === null}
+          >
             在庫数
           </Checkbox>
           <Checkbox
             name="descriptions"
             value={checkbox.descriptions}
             onCheck={check}
+            disabled={item.id === null}
           >
             商品説明
           </Checkbox>
@@ -162,6 +180,7 @@ const Popup = () => {
                 }
               )
             }}
+            disabled={item.id === null}
           >
             自動入力
           </Button>
