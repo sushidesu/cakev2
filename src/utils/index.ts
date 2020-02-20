@@ -1,7 +1,22 @@
 import React from "react"
+const Format = require("date-format")
 import { IShopItem, ItemText } from "../shopItem"
-import { ChromeStorageItem } from "../plugins/chromeAPI"
+import { ChromeStorageItem, getChromeStorage } from "../plugins/chromeAPI"
 import { Action } from "../components/itemStore"
+
+export const exportFile = async () => {
+  const storage = await getChromeStorage()
+  const url =
+    "data:text/json;charset=utf-8," +
+    encodeURIComponent(JSON.stringify(storage))
+  const date = Format("yyyy_MMdd_hhmmss", new Date()) as string
+  const name = `itemList_${date}.json`
+
+  chrome.downloads.download({
+    url: url,
+    filename: name,
+  })
+}
 
 export const importFile = async (
   file: File,

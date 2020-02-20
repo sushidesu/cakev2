@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Navbar, Container } from "react-bulma-components"
 import Logo from "../images/sweets_cheesecake.png"
 import ImportModal from "./importModal"
+import { exportFile } from "../utils"
 
 export default () => {
   const [show, setShow] = useState(false)
@@ -31,11 +32,7 @@ export default () => {
                   <Navbar.Item onClick={() => setShow(true)}>
                     インポート
                   </Navbar.Item>
-                  <Navbar.Item
-                    onClick={() => {
-                      window.alert("export")
-                    }}
-                  >
+                  <Navbar.Item onClick={() => exportFile()}>
                     エクスポート
                   </Navbar.Item>
                 </Navbar.Dropdown>
