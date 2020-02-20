@@ -1,10 +1,13 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useContext } from "react"
 import { Modal, Form, Button, Icon } from "react-bulma-components"
+import { ItemStore } from "./itemStore"
+import { importFile } from "../utils"
 
 const ImportModal: React.FC<{
   show: boolean
   setShow: (show: boolean) => void
 }> = ({ show, setShow }) => {
+  const { setGlobalState } = useContext(ItemStore)
   const [filename, setFilename] = useState(undefined)
   const [overwrite, setOverwrite] = useState(false)
   const fileinput = useRef<HTMLInputElement>()
@@ -12,13 +15,20 @@ const ImportModal: React.FC<{
   const fileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilename(e.target.files.length > 0 ? e.target.files[0].name : undefined)
   }
-  const importFile = () => {
+
+  const close = () => {
+    setFilename("")
+    setShow(false)
+  }
+
+  const _import = async () => {
     const files = fileinput.current.files
     if (files.length === 0) {
       window.alert("ファイルが選択されていません")
       return
     }
-    console.log(files[0])
+    importFile(files[0], overwrite, setGlobalState)
+    close()
   }
 
   return (
@@ -36,6 +46,7 @@ const ImportModal: React.FC<{
                   ref={fileinput}
                   className="file-input"
                   type="file"
+                  accept=".json"
                   name="resume"
                 />
                 <span className="file-cta">
@@ -68,10 +79,10 @@ const ImportModal: React.FC<{
           </Form.Field>
         </Modal.Card.Body>
         <Modal.Card.Foot>
-          <Button onClick={() => importFile()} color="info">
+          <Button onClick={() => _import()} color="info">
             インポート
           </Button>
-          <Button onClick={() => setShow(false)}>キャンセル</Button>
+          <Button onClick={close}>キャンセル</Button>
         </Modal.Card.Foot>
       </Modal.Card>
     </Modal>
