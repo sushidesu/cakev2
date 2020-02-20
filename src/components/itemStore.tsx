@@ -9,7 +9,7 @@ import {
 import {
   getChromeStorage,
   setChromeStorage,
-  StateToManageInChromeStorage,
+  ChromeStorageItem,
 } from "../plugins/chromeAPI"
 
 type State = {
@@ -43,7 +43,12 @@ type Action =
     }
   | {
       type: "sync"
-      value: StateToManageInChromeStorage
+      value: ChromeStorageItem["cakev2"]
+    }
+  | {
+      type: "import"
+      overwrite: boolean
+      value: IShopItem[]
     }
   | {
       type: "initField"
@@ -148,6 +153,24 @@ const reducer = (state: State, action: Action): State => {
         shopItems: shopItems,
         formValues:
           nowItemIndex === null ? initialItem : shopItems[nowItemIndex],
+      }
+    case "import":
+      if (action.overwrite) {
+        return {
+          ...state,
+          shopItems: [...action.value],
+          nowItemIndex: null,
+          formValues: initialItem,
+        }
+      } else {
+        const concat = [...state.shopItems, ...action.value]
+        return {
+          ...state,
+          shopItems: concat.map((item, index) => {
+            item.id = index
+            return item
+          }),
+        }
       }
     case "setField":
       return {

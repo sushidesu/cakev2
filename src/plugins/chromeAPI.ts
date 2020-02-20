@@ -1,11 +1,8 @@
 import { State } from "../components/itemStore"
 
-export type StateToManageInChromeStorage = Pick<
-  State,
-  "nowItemIndex" | "shopItems"
->
+type StateToManageInChromeStorage = Pick<State, "nowItemIndex" | "shopItems">
 
-type ChromeStorageItem = {
+export type ChromeStorageItem = {
   cakev2: StateToManageInChromeStorage
 }
 

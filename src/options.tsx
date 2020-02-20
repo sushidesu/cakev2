@@ -10,7 +10,10 @@ import ItemList from "./components/itemList"
 import ItemEditor from "./components/itemEditor"
 
 const Wrapper = styled.div`
-  margin: 10px;
+  margin: 0 10px;
+  & > .container {
+    margin-top: 20px;
+  }
   .sidemenu {
     min-width: 230px;
   }

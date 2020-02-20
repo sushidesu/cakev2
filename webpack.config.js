@@ -33,6 +33,14 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
+      {
+        test: /\.(jpg|png)$/,
+        loader: "file-loader",
+        options: {
+          outputPath: "images",
+          name: "[name].[ext]",
+        },
+      },
     ],
   },
   resolve: {
