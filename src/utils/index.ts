@@ -27,9 +27,9 @@ export const importFile = async (
   const json = JSON.parse(str)
   const message = overwrite ? "上書きしました。" : "追加しました。"
 
-  if (json.hasOwnProperty("items")) {
+  if (json.hasOwnProperty("items") || json.hasOwnProperty("idlist")) {
     // cake v1
-    const itemlist = convert(json.items)
+    const itemlist = convert(json.items, json.idlist)
     dispatch({ type: "import", overwrite: overwrite, value: itemlist })
     window.alert(message)
   } else if (json.hasOwnProperty("cakev2")) {
@@ -72,28 +72,31 @@ interface IOldItem {
   details: { title: string; body: string }[]
 }
 
-interface OldItems {
+interface IOldItems {
   [id: string]: IOldItem
 }
 
-const convert = (items: {}): IShopItem[] =>
-  Object.values(items as OldItems).map<IShopItem>((item, index) => ({
-    id: index,
-    name: item.name,
-    price: item.price,
-    imageURL: "",
-    weight: item.weight,
-    stockRakuten: item.rakuten_stock,
-    stockMakeshop: item.makeshop_stock,
-    jancode: item.jancode,
-    descriptions: item.descriptions.map<ItemText>((v, i) => ({
-      title: v.title,
-      body: v.body,
-      index: i,
-    })),
-    details: item.details.map<ItemText>((v, i) => ({
-      title: v.title,
-      body: v.body,
-      index: i,
-    })),
-  }))
+const convert = (items: {}, idlist: {}): IShopItem[] =>
+  Object.values(idlist as string[]).map<IShopItem>((id, index) => {
+    const item = (items as IOldItems)[id] as IOldItem
+    return {
+      id: index,
+      name: item.name,
+      price: item.price,
+      imageURL: "",
+      weight: item.weight,
+      stockRakuten: item.rakuten_stock,
+      stockMakeshop: item.makeshop_stock,
+      jancode: item.jancode,
+      descriptions: item.descriptions.map<ItemText>((v, i) => ({
+        title: v.title,
+        body: v.body,
+        index: i,
+      })),
+      details: item.details.map<ItemText>((v, i) => ({
+        title: v.title,
+        body: v.body,
+        index: i,
+      })),
+    }
+  })
