@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { Container, Columns, Heading } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
+import { useFormReducer } from "./formState"
 import { FormInput, FormImageInput } from "./formSingleInputs"
 import { FormDescriptions, FormDetails } from "./formMultipleInputs"
 import FormButtons from "./formButtons"
@@ -14,11 +15,22 @@ const FormWrapper = styled.div`
 export default () => {
   const { globalState, setGlobalState } = useContext(ItemStore)
   const [isInvalid, setValid] = useState(false)
+  const [formState, dispatchForm] = useFormReducer()
 
-  const formValues = globalState.formValues
+  const formValues = formState.value
+
   useEffect(() => {
     setValid(formIsInvalid(formValues))
   }, [formValues])
+
+  useEffect(() => {
+    if (globalState.nowItemIndex === null) {
+      dispatchForm({ type: "initField" })
+    } else {
+      const selected = globalState.shopItems[globalState.nowItemIndex]
+      dispatchForm({ type: "select", value: selected })
+    }
+  }, [globalState.nowItemIndex])
 
   return (
     <Container>
@@ -29,7 +41,7 @@ export default () => {
               label={"商品名"}
               field={"name"}
               value={formValues.name}
-              dispatch={setGlobalState}
+              dispatch={dispatchForm}
             />
           </Columns.Column>
         </Columns>
@@ -42,7 +54,7 @@ export default () => {
                   label={"値段(税抜き)"}
                   field={"price"}
                   value={formValues.price}
-                  dispatch={setGlobalState}
+                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -51,7 +63,7 @@ export default () => {
                   label={"重さ(g)"}
                   field={"weight"}
                   value={formValues.weight}
-                  dispatch={setGlobalState}
+                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -65,7 +77,7 @@ export default () => {
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
                   value={formValues.stockRakuten}
-                  dispatch={setGlobalState}
+                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -74,7 +86,7 @@ export default () => {
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
                   value={formValues.stockMakeshop}
-                  dispatch={setGlobalState}
+                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -88,7 +100,7 @@ export default () => {
               label={"JANコード"}
               field={"jancode"}
               value={formValues.jancode}
-              dispatch={setGlobalState}
+              dispatch={dispatchForm}
             />
           </Columns.Column>
           <Columns.Column size={"half"} />
@@ -102,7 +114,7 @@ export default () => {
               label={"商品画像URL"}
               field={"imageURL"}
               value={formValues.imageURL}
-              dispatch={setGlobalState}
+              dispatch={dispatchForm}
             />
           </Columns.Column>
         </Columns>
@@ -116,7 +128,7 @@ export default () => {
             </Heading>
             <FormDescriptions
               value={formValues.descriptions}
-              dispatch={setGlobalState}
+              dispatch={dispatchForm}
             />
           </Columns.Column>
         </Columns>
@@ -128,7 +140,7 @@ export default () => {
             <Heading textAlignment={"centered"} subtitle>
               商品詳細
             </Heading>
-            <FormDetails value={formValues.details} dispatch={setGlobalState} />
+            <FormDetails value={formValues.details} dispatch={dispatchForm} />
           </Columns.Column>
         </Columns>
       </FormWrapper>

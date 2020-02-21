@@ -1,14 +1,29 @@
-import { IShopItem } from "../shopItem"
+import { IShopItem, SingleItemFields } from "../shopItem"
+
+export const validation = (
+  key: keyof SingleItemFields,
+  value: IShopItem[keyof SingleItemFields]
+): string => {
+  return ""
+}
 
 export const formIsInvalid = (formValue: IShopItem) => {
-  const { name, price, weight, stockRakuten, stockMakeshop, jancode } = formValue
+  const {
+    name,
+    price,
+    weight,
+    stockRakuten,
+    stockMakeshop,
+    jancode,
+  } = formValue
 
   // required fields
-  const required = [name, price, weight, stockRakuten, stockMakeshop]
-    .every(field => field !== "")
+  const required = [name, price, weight, stockRakuten, stockMakeshop].every(
+    field => field !== ""
+  )
 
   // jancode
-  const jan = jancode === '' || isJancode(jancode)
+  const jan = jancode === "" || isJancode(jancode)
 
   return ![required, jan].every(f => f)
 }
@@ -18,7 +33,7 @@ const isJancode = (jan: string): boolean => {
     return false
   }
 
-  const digits = jan.split('').map(n => parseInt(n))
+  const digits = jan.split("").map(n => parseInt(n))
   if (digits.some(n => isNaN(n))) {
     return false
   }

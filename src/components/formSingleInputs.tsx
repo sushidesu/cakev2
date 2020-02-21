@@ -2,14 +2,14 @@ import React from "react"
 import styled from "styled-components"
 import { Form, Media, InputProps } from "react-bulma-components"
 import { SingleItemFields } from "../shopItem"
-import { Action } from "./itemStore"
+import { FormDispatch } from "./formState"
 
 type FormElement = React.FC<
   {
     label?: string
     field: keyof SingleItemFields
     value: string
-    dispatch: React.Dispatch<Action>
+    dispatch: FormDispatch
   } & InputProps
 >
 

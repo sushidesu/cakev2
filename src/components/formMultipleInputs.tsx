@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import { Form, Button, Icon, Box } from "react-bulma-components"
 import { IShopItem, MultipleItemFields } from "../shopItem"
-import { Action } from "./itemStore"
+import { FormDispatch } from "./formState"
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const ButtonWrapper = styled.div`
 `
 
 const AddOrRemove: React.FC<{
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
   field: keyof MultipleItemFields
 }> = ({ dispatch, field }) => (
   <ButtonWrapper>
@@ -60,7 +60,7 @@ const Desc = styled.div`
 
 export const FormDescriptions: React.FC<{
   value: IShopItem["descriptions"]
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
 }> = ({ value, dispatch }) => {
   return (
     <div>
@@ -129,7 +129,7 @@ const Details = styled.div`
 
 export const FormDetails: React.FC<{
   value: IShopItem["details"]
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
 }> = ({ value, dispatch }) => (
   <Details>
     {value.length === 0 && <NoItem />}

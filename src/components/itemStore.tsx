@@ -1,30 +1,17 @@
 import React, { createContext, useReducer, useEffect } from "react"
-import {
-  IShopItem,
-  ItemText,
-  SingleItemFields,
-  MultipleItemFields,
-  initialItem,
-} from "../shopItem"
+import { IShopItem, initialItem } from "../shopItem"
 import {
   getChromeStorage,
   setChromeStorage,
   ChromeStorageItem,
 } from "../plugins/chromeAPI"
 
-type State = {
+type GlobalState = {
   shopItems: IShopItem[]
   nowItemIndex: number
-  formValues: IShopItem
 }
 
-type SetFieldAciton<T extends keyof IShopItem> = {
-  type: "setField"
-  field: T
-  value: IShopItem[T]
-}
-
-type Action =
+type GlobalAction =
   | {
       type: "update"
       item: IShopItem
@@ -50,27 +37,8 @@ type Action =
       overwrite: boolean
       value: IShopItem[]
     }
-  | {
-      type: "initField"
-    }
-  | SetFieldAciton<keyof SingleItemFields>
-  | {
-      type: "setMultipleField"
-      field: keyof MultipleItemFields
-      textType: keyof Pick<ItemText, "title" | "body">
-      index: number
-      value: string
-    }
-  | {
-      type: "addMultipleFields"
-      field: keyof MultipleItemFields
-    }
-  | {
-      type: "removeMultipleFields"
-      field: keyof MultipleItemFields
-    }
 
-const reducer = (state: State, action: Action): State => {
+const reducer = (state: GlobalState, action: GlobalAction): GlobalState => {
   switch (action.type) {
     case "update":
       if (action.item.id === null) {
@@ -82,7 +50,6 @@ const reducer = (state: State, action: Action): State => {
         return {
           shopItems: [...state.shopItems, newItem],
           nowItemIndex: newItem.id,
-          formValues: newItem,
         }
       } else {
         // item already exists
@@ -117,7 +84,6 @@ const reducer = (state: State, action: Action): State => {
       if (deletedItemList.length === 0) {
         return {
           ...state,
-          formValues: initialItem,
           nowItemIndex: null,
           shopItems: deletedItemList,
         }
@@ -125,7 +91,6 @@ const reducer = (state: State, action: Action): State => {
         // select above
         return {
           ...state,
-          formValues: deletedItemList[action.index - 1],
           nowItemIndex: action.index - 1,
           shopItems: deletedItemList,
         }
@@ -133,7 +98,6 @@ const reducer = (state: State, action: Action): State => {
         // select below
         return {
           ...state,
-          formValues: deletedItemList[0],
           nowItemIndex: 0,
           shopItems: deletedItemList,
         }
@@ -142,17 +106,12 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         nowItemIndex: action.index,
-        formValues: {
-          ...state.shopItems[action.index],
-        },
       }
     case "sync":
       const { nowItemIndex, shopItems } = action.value
       return {
         nowItemIndex: nowItemIndex,
         shopItems: shopItems,
-        formValues:
-          nowItemIndex === null ? initialItem : shopItems[nowItemIndex],
       }
     case "import":
       if (action.overwrite) {
@@ -160,7 +119,6 @@ const reducer = (state: State, action: Action): State => {
           ...state,
           shopItems: [...action.value],
           nowItemIndex: null,
-          formValues: initialItem,
         }
       } else {
         const concat = [...state.shopItems, ...action.value]
@@ -172,69 +130,17 @@ const reducer = (state: State, action: Action): State => {
           }),
         }
       }
-    case "setField":
-      return {
-        ...state,
-        formValues: {
-          ...state.formValues,
-          [action.field]: action.value,
-        },
-      }
-    case "initField":
-      return {
-        ...state,
-        nowItemIndex: null,
-        formValues: initialItem,
-      }
-    case "setMultipleField":
-      const newValues = [...state.formValues[action.field]]
-      newValues[action.index] = {
-        ...state.formValues[action.field][action.index],
-        [action.textType]: action.value,
-      }
-      return {
-        ...state,
-        formValues: {
-          ...state.formValues,
-          [action.field]: newValues,
-        },
-      }
-    case "addMultipleFields":
-      const addedMultipleValues = [...state.formValues[action.field]]
-      addedMultipleValues.push({
-        title: "",
-        body: "",
-        index: addedMultipleValues.length,
-      })
-      return {
-        ...state,
-        formValues: {
-          ...state.formValues,
-          [action.field]: addedMultipleValues,
-        },
-      }
-    case "removeMultipleFields":
-      const removedMultipleValues = [...state.formValues[action.field]]
-      removedMultipleValues.pop()
-      return {
-        ...state,
-        formValues: {
-          ...state.formValues,
-          [action.field]: removedMultipleValues,
-        },
-      }
   }
 }
 type ContextValue = {
-  globalState: State
-  setGlobalState: React.Dispatch<Action>
+  globalState: GlobalState
+  setGlobalState: React.Dispatch<GlobalAction>
 }
 
 const ItemStore = createContext({} as ContextValue)
-const initialState: State = {
+const initialState: GlobalState = {
   shopItems: [],
   nowItemIndex: null,
-  formValues: initialItem,
 }
 
 const ItemStoreProvider: React.FC = ({ children }) => {
@@ -263,4 +169,4 @@ const ItemStoreProvider: React.FC = ({ children }) => {
   )
 }
 
-export { ItemStoreProvider, ItemStore, State, Action }
+export { ItemStoreProvider, ItemStore, GlobalState, GlobalAction }
