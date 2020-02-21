@@ -39,7 +39,7 @@ const priceValidation = (price: string): string => {
 }
 
 const weightValidation = (weight: string): string => {
-  if (weight === "") return "価格を入力してください"
+  if (weight === "") return "重さを入力してください"
   return ""
 }
 

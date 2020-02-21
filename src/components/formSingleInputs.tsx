@@ -24,19 +24,23 @@ export const FormInput: FormElement = ({
 }) => (
   <Form.Field>
     <Form.Label>{label}</Form.Label>
-    <Form.Input
-      name={field}
-      value={value}
-      onChange={e =>
-        dispatch({
-          type: "setField",
-          field: field,
-          value: e.target.value,
-        })
-      }
-      type={type}
-      min={type === "number" ? 0 : null}
-    />
+    <Form.Control>
+      <Form.Input
+        name={field}
+        value={value}
+        onChange={e =>
+          dispatch({
+            type: "setField",
+            field: field,
+            value: e.target.value,
+          })
+        }
+        color={message ? "danger" : null}
+        type={type}
+        min={type === "number" ? 0 : null}
+      />
+    </Form.Control>
+    <Form.Help color={"danger"}>{message}</Form.Help>
   </Form.Field>
 )
 
