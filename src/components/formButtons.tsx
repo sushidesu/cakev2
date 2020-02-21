@@ -7,15 +7,15 @@ import { GlobalDispatch } from "./itemStore"
 const FormButtons: React.FC<{
   formValues: IShopItem
   setGlobalState: GlobalDispatch
-  isInvalid: boolean
-}> = ({ formValues, setGlobalState, isInvalid }) => (
+  disabled: boolean
+}> = ({ formValues, setGlobalState, disabled }) => (
   <StickyButtons>
     <Level>
       <Level.Side align="left">
         <Button
           color={formValues.id === null ? "primary" : "info"}
           onClick={() => setGlobalState({ type: "update", item: formValues })}
-          disabled={isInvalid}
+          disabled={disabled}
         >
           {formValues.id === null ? "新規登録" : "変更を保存"}
         </Button>

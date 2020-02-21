@@ -8,12 +8,12 @@ import {
 } from "../shopItem"
 import { validation } from "./formValidation"
 
-type FormState = {
+export type FormState = {
   value: {
     [T in keyof IShopItem]: IShopItem[T]
   }
   message: {
-    [T in keyof IShopItem]: ""
+    [T in keyof IShopItem]: string
   }
 }
 
@@ -57,6 +57,7 @@ const reducer = (state: FormState, action: FormAction): FormState => {
       return {
         ...initialState,
         value: action.value,
+        message: initialMsg,
       }
 
     case "setField":
@@ -115,15 +116,28 @@ const reducer = (state: FormState, action: FormAction): FormState => {
   }
 }
 
+const initialMsg: FormState["message"] = {
+  id: "",
+  name: "",
+  price: "",
+  weight: "",
+  stockRakuten: "",
+  stockMakeshop: "",
+  jancode: "",
+  imageURL: "",
+  descriptions: "",
+  details: "",
+}
+
 const initialState: FormState = {
   value: initialItem,
   message: {
     id: "",
-    name: "",
-    price: "",
-    weight: "",
-    stockRakuten: "",
-    stockMakeshop: "",
+    name: null,
+    price: null,
+    weight: null,
+    stockRakuten: null,
+    stockMakeshop: null,
     jancode: "",
     imageURL: "",
     descriptions: "",

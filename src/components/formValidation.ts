@@ -4,28 +4,58 @@ export const validation = (
   key: keyof SingleItemFields,
   value: IShopItem[keyof SingleItemFields]
 ): string => {
+  switch (key) {
+    case "name":
+      return nameValidation(value)
+
+    case "price":
+      return priceValidation(value)
+
+    case "weight":
+      return weightValidation(value)
+
+    case "stockRakuten":
+      return stockValidation(value)
+
+    case "stockMakeshop":
+      return stockValidation(value)
+
+    case "jancode":
+      return jancodeValidation(value)
+
+    case "imageURL":
+      return ""
+  }
+}
+
+const nameValidation = (name: string): string => {
+  if (name === "") return "商品名を入力してください"
   return ""
 }
 
-export const formIsInvalid = (formValue: IShopItem) => {
-  const {
-    name,
-    price,
-    weight,
-    stockRakuten,
-    stockMakeshop,
-    jancode,
-  } = formValue
+const priceValidation = (price: string): string => {
+  if (price === "") return "価格を入力してください"
+  return ""
+}
 
-  // required fields
-  const required = [name, price, weight, stockRakuten, stockMakeshop].every(
-    field => field !== ""
-  )
+const weightValidation = (weight: string): string => {
+  if (weight === "") return "価格を入力してください"
+  return ""
+}
 
-  // jancode
-  const jan = jancode === "" || isJancode(jancode)
+const stockValidation = (stock: string): string => {
+  if (stock === "") return "在庫数を入力してください"
+  return ""
+}
 
-  return ![required, jan].every(f => f)
+const jancodeValidation = (jan: string): string => {
+  if (jan === "") {
+    return ""
+  } else if (isJancode(jan)) {
+    return ""
+  } else {
+    return "正しくないJANコードです"
+  }
 }
 
 const isJancode = (jan: string): boolean => {

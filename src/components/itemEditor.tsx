@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import styled from "styled-components"
 import { Container, Columns, Heading } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
@@ -6,7 +6,6 @@ import { useFormReducer } from "./formState"
 import { FormInput, FormImageInput } from "./formSingleInputs"
 import { FormDescriptions, FormDetails } from "./formMultipleInputs"
 import FormButtons from "./formButtons"
-import { formIsInvalid } from "./formValidation"
 
 const FormWrapper = styled.div`
   margin: 0 5px;
@@ -14,14 +13,9 @@ const FormWrapper = styled.div`
 
 export default () => {
   const { globalState, setGlobalState } = useContext(ItemStore)
-  const [isInvalid, setValid] = useState(false)
   const [formState, dispatchForm] = useFormReducer()
 
-  const formValues = formState.value
-
-  useEffect(() => {
-    setValid(formIsInvalid(formValues))
-  }, [formValues])
+  const { value, message } = formState
 
   useEffect(() => {
     if (globalState.nowItemIndex === null) {
@@ -40,7 +34,8 @@ export default () => {
             <FormInput
               label={"商品名"}
               field={"name"}
-              value={formValues.name}
+              value={value.name}
+              message={message.name}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -53,7 +48,8 @@ export default () => {
                 <FormInput
                   label={"値段(税抜き)"}
                   field={"price"}
-                  value={formValues.price}
+                  value={value.price}
+                  message={message.price}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -62,7 +58,8 @@ export default () => {
                 <FormInput
                   label={"重さ(g)"}
                   field={"weight"}
-                  value={formValues.weight}
+                  value={value.weight}
+                  message={message.weight}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -76,7 +73,8 @@ export default () => {
                 <FormInput
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
-                  value={formValues.stockRakuten}
+                  value={value.stockRakuten}
+                  message={message.stockRakuten}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -85,7 +83,8 @@ export default () => {
                 <FormInput
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
-                  value={formValues.stockMakeshop}
+                  value={value.stockMakeshop}
+                  message={message.stockMakeshop}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -99,7 +98,8 @@ export default () => {
             <FormInput
               label={"JANコード"}
               field={"jancode"}
-              value={formValues.jancode}
+              value={value.jancode}
+              message={message.jancode}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -113,7 +113,8 @@ export default () => {
             <FormImageInput
               label={"商品画像URL"}
               field={"imageURL"}
-              value={formValues.imageURL}
+              value={value.imageURL}
+              message={message.imageURL}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -127,7 +128,7 @@ export default () => {
               商品説明
             </Heading>
             <FormDescriptions
-              value={formValues.descriptions}
+              value={value.descriptions}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -140,15 +141,15 @@ export default () => {
             <Heading textAlignment={"centered"} subtitle>
               商品詳細
             </Heading>
-            <FormDetails value={formValues.details} dispatch={dispatchForm} />
+            <FormDetails value={value.details} dispatch={dispatchForm} />
           </Columns.Column>
         </Columns>
       </FormWrapper>
 
       <FormButtons
-        formValues={formValues}
+        formValues={value}
         setGlobalState={setGlobalState}
-        isInvalid={isInvalid}
+        disabled={Object.values(message).some(msg => msg !== "")}
       />
     </Container>
   )

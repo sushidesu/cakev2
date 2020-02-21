@@ -9,6 +9,7 @@ type FormElement = React.FC<
     label?: string
     field: keyof SingleItemFields
     value: string
+    message: string
     dispatch: FormDispatch
   } & InputProps
 >
@@ -17,6 +18,7 @@ export const FormInput: FormElement = ({
   label,
   field,
   value,
+  message,
   dispatch,
   type,
 }) => (
