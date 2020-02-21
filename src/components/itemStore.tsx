@@ -1,12 +1,8 @@
 import React, { createContext, useReducer, useEffect } from "react"
-import { IShopItem, initialItem } from "../shopItem"
-import {
-  getChromeStorage,
-  setChromeStorage,
-  ChromeStorageItem,
-} from "../plugins/chromeAPI"
+import { IShopItem } from "../shopItem"
+import { getChromeStorage, setChromeStorage } from "../plugins/chromeAPI"
 
-type GlobalState = {
+export type GlobalState = {
   shopItems: IShopItem[]
   nowItemIndex: number
 }
@@ -30,7 +26,7 @@ type GlobalAction =
     }
   | {
       type: "sync"
-      value: ChromeStorageItem["cakev2"]
+      value: GlobalState
     }
   | {
       type: "import"
@@ -60,6 +56,7 @@ const reducer = (state: GlobalState, action: GlobalAction): GlobalState => {
           shopItems: newItems,
         }
       }
+
     case "duplicate":
       const duplicated = { ...state.shopItems[action.index] }
       const suffix =
@@ -74,6 +71,7 @@ const reducer = (state: GlobalState, action: GlobalAction): GlobalState => {
         ...state,
         shopItems: [...state.shopItems, duplicated],
       }
+
     case "delete":
       const deletedItemList = state.shopItems
         .filter((_, index) => action.index !== index)
@@ -102,17 +100,16 @@ const reducer = (state: GlobalState, action: GlobalAction): GlobalState => {
           shopItems: deletedItemList,
         }
       }
+
     case "select":
       return {
         ...state,
         nowItemIndex: action.index,
       }
+
     case "sync":
-      const { nowItemIndex, shopItems } = action.value
-      return {
-        nowItemIndex: nowItemIndex,
-        shopItems: shopItems,
-      }
+      return action.value
+
     case "import":
       if (action.overwrite) {
         return {
@@ -137,13 +134,15 @@ type ContextValue = {
   setGlobalState: React.Dispatch<GlobalAction>
 }
 
-const ItemStore = createContext({} as ContextValue)
+export type GlobalDispatch = React.Dispatch<GlobalAction>
+
+export const ItemStore = createContext({} as ContextValue)
 const initialState: GlobalState = {
   shopItems: [],
   nowItemIndex: null,
 }
 
-const ItemStoreProvider: React.FC = ({ children }) => {
+export const ItemStoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const syncData = async () => {
     const items = await getChromeStorage()
@@ -168,5 +167,3 @@ const ItemStoreProvider: React.FC = ({ children }) => {
     </ItemStore.Provider>
   )
 }
-
-export { ItemStoreProvider, ItemStore, GlobalState, GlobalAction }

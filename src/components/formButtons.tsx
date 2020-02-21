@@ -2,11 +2,11 @@ import React from "react"
 import styled from "styled-components"
 import { Button, Level } from "react-bulma-components"
 import { IShopItem } from "../shopItem"
-import { GlobalAction } from "./itemStore"
+import { GlobalDispatch } from "./itemStore"
 
 const FormButtons: React.FC<{
   formValues: IShopItem
-  setGlobalState: React.Dispatch<GlobalAction>
+  setGlobalState: GlobalDispatch
   isInvalid: boolean
 }> = ({ formValues, setGlobalState, isInvalid }) => (
   <StickyButtons>

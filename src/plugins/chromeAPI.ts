@@ -1,9 +1,6 @@
 import { GlobalState } from "../components/itemStore"
 
-type StateToManageInChromeStorage = Pick<
-  GlobalState,
-  "nowItemIndex" | "shopItems"
->
+type StateToManageInChromeStorage = GlobalState
 
 export type ChromeStorageItem = {
   cakev2: StateToManageInChromeStorage
