@@ -17,11 +17,19 @@ const autoWrite = async (checked: CheckboxState) => {
       write_to_makeshop(selected, checked)
       break
     default:
-      break
+      throw "対応していないサイトです"
   }
 }
 
 console.log("cakev2 loaded")
-chrome.runtime.onMessage.addListener((message: CheckboxState) => {
+chrome.runtime.onMessage.addListener((message: CheckboxState, _, callback) => {
   autoWrite(message)
+    .then(() => {
+      callback("ok")
+    })
+    .catch(err => {
+      console.log(err)
+      callback(err.toString())
+    })
+  return true
 })
