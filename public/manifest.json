@@ -20,5 +20,11 @@
     "storage",
     "tabs",
     "downloads"
-  ]
+  ],
+  "icons": {
+    "128": "images/128.png",
+    "48": "images/48.png",
+    "32": "images/32.png",
+    "16": "images/16.png"
+  }
 }
