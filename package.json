@@ -36,6 +36,9 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.8",
     "bulma": "^0.8.0",
     "date-format": "^3.0.0",
     "prop-types": "^15.7.2",

@@ -5,6 +5,7 @@ import "react-bulma-components/dist/react-bulma-components.min.css"
 import { Form, Button } from "react-bulma-components"
 import { initialItem } from "./shopItem"
 import { getChromeStorage } from "./plugins/chromeAPI"
+import LoadingButton from "./components/loadingButton"
 
 const Wrapper = styled.div`
   width: 300px;
@@ -120,9 +121,17 @@ const Popup = () => {
     }
   }
 
-  chrome.runtime.onMessage.addListener((message, sender, response) => {
-    response(checkbox)
-  })
+  const autoFill = () =>
+    new Promise<any>(resolve => {
+      chrome.tabs.query(
+        { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
+        result => {
+          chrome.tabs.sendMessage(result[0].id, checkbox, response => {
+            resolve(response)
+          })
+        }
+      )
+    })
 
   return (
     <Wrapper>
@@ -169,21 +178,12 @@ const Popup = () => {
         </div>
 
         <div className="buttons">
-          <Button
-            size={"small"}
+          <LoadingButton
+            label="自動入力"
             color={"primary"}
-            onClick={() => {
-              chrome.tabs.query(
-                { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
-                result => {
-                  chrome.tabs.sendMessage(result[0].id, checkbox)
-                }
-              )
-            }}
-            disabled={item.id === null}
-          >
-            自動入力
-          </Button>
+            size={"small"}
+            asyncfunc={autoFill}
+          />
           <Button
             size={"small"}
             text={true}
