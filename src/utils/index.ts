@@ -1,8 +1,7 @@
-import React from "react"
 const Format = require("date-format")
 import { IShopItem, ItemText } from "../shopItem"
 import { ChromeStorageItem, getChromeStorage } from "../plugins/chromeAPI"
-import { Action } from "../components/itemStore"
+import { GlobalDispatch } from "../components/itemStore"
 
 export const exportFile = async () => {
   const storage = await getChromeStorage()
@@ -21,7 +20,7 @@ export const exportFile = async () => {
 export const importFile = async (
   file: File,
   overwrite: boolean,
-  dispatch: React.Dispatch<Action>
+  dispatch: GlobalDispatch
 ) => {
   const str = await read(file)
   const json = JSON.parse(str)

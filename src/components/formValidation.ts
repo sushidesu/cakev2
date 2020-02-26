@@ -1,16 +1,61 @@
-import { IShopItem } from "../shopItem"
+import { IShopItem, SingleItemFields } from "../shopItem"
 
-export const formIsInvalid = (formValue: IShopItem) => {
-  const { name, price, weight, stockRakuten, stockMakeshop, jancode } = formValue
+export const validation = (
+  key: keyof SingleItemFields,
+  value: IShopItem[keyof SingleItemFields]
+): string => {
+  switch (key) {
+    case "name":
+      return nameValidation(value)
 
-  // required fields
-  const required = [name, price, weight, stockRakuten, stockMakeshop]
-    .every(field => field !== "")
+    case "price":
+      return priceValidation(value)
 
-  // jancode
-  const jan = jancode === '' || isJancode(jancode)
+    case "weight":
+      return weightValidation(value)
 
-  return ![required, jan].every(f => f)
+    case "stockRakuten":
+      return stockValidation(value)
+
+    case "stockMakeshop":
+      return stockValidation(value)
+
+    case "jancode":
+      return jancodeValidation(value)
+
+    case "imageURL":
+      return ""
+  }
+}
+
+const nameValidation = (name: string): string => {
+  if (name === "") return "商品名を入力してください"
+  return ""
+}
+
+const priceValidation = (price: string): string => {
+  if (price === "") return "価格を入力してください"
+  return ""
+}
+
+const weightValidation = (weight: string): string => {
+  if (weight === "") return "重さを入力してください"
+  return ""
+}
+
+const stockValidation = (stock: string): string => {
+  if (stock === "") return "在庫数を入力してください"
+  return ""
+}
+
+const jancodeValidation = (jan: string): string => {
+  if (jan === "") {
+    return ""
+  } else if (isJancode(jan)) {
+    return ""
+  } else {
+    return "正しくないJANコードです"
+  }
 }
 
 const isJancode = (jan: string): boolean => {
@@ -18,7 +63,7 @@ const isJancode = (jan: string): boolean => {
     return false
   }
 
-  const digits = jan.split('').map(n => parseInt(n))
+  const digits = jan.split("").map(n => parseInt(n))
   if (digits.some(n => isNaN(n))) {
     return false
   }

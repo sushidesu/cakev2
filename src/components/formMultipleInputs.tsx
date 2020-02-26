@@ -1,92 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { IShopItem, SingleItemFields, MultipleItemFields } from "../shopItem"
-import { Action } from "./itemStore"
-import {
-  Form,
-  Button,
-  Icon,
-  Box,
-  Media,
-  InputProps,
-} from "react-bulma-components"
-
-type FormElement = React.FC<
-  {
-    label?: string
-    field: keyof SingleItemFields
-    value: string
-    dispatch: React.Dispatch<Action>
-  } & InputProps
->
-
-export const FormInput: FormElement = ({
-  label,
-  field,
-  value,
-  dispatch,
-  type,
-}) => (
-  <Form.Field>
-    <Form.Label>{label}</Form.Label>
-    <Form.Input
-      name={field}
-      value={value}
-      onChange={e =>
-        dispatch({
-          type: "setField",
-          field: field,
-          value: e.target.value,
-        })
-      }
-      type={type}
-      min={type === "number" ? 0 : null}
-    />
-  </Form.Field>
-)
-
-const Figure = styled.figure`
-  img {
-    position: relative;
-    object-fit: contain;
-    width: 128px;
-    height: 128px;
-    background-color: #fff;
-  }
-`
-
-const Thumbnail: React.FC<{ src: string }> = ({ src }) => (
-  <Figure className={"image is-128x128"}>{src && <img src={src} />}</Figure>
-)
-
-export const FormImageInput: FormElement = ({
-  label,
-  field,
-  value,
-  dispatch,
-}) => (
-  <Media>
-    <div className="media-left" style={{ backgroundColor: "#efefef" }}>
-      <Thumbnail src={value} />
-    </div>
-    <Media.Item>
-      <Form.Field>
-        <Form.Label>{label}</Form.Label>
-        <Form.Input
-          name={field}
-          value={value}
-          onChange={e =>
-            dispatch({
-              type: "setField",
-              field: field,
-              value: e.target.value,
-            })
-          }
-        />
-      </Form.Field>
-    </Media.Item>
-  </Media>
-)
+import { Form, Button, Icon, Box } from "react-bulma-components"
+import { IShopItem, MultipleItemFields } from "../shopItem"
+import { FormDispatch } from "./formState"
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -99,7 +15,7 @@ const ButtonWrapper = styled.div`
 `
 
 const AddOrRemove: React.FC<{
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
   field: keyof MultipleItemFields
 }> = ({ dispatch, field }) => (
   <ButtonWrapper>
@@ -144,7 +60,7 @@ const Desc = styled.div`
 
 export const FormDescriptions: React.FC<{
   value: IShopItem["descriptions"]
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
 }> = ({ value, dispatch }) => {
   return (
     <div>
@@ -213,7 +129,7 @@ const Details = styled.div`
 
 export const FormDetails: React.FC<{
   value: IShopItem["details"]
-  dispatch: React.Dispatch<Action>
+  dispatch: FormDispatch
 }> = ({ value, dispatch }) => (
   <Details>
     {value.length === 0 && <NoItem />}

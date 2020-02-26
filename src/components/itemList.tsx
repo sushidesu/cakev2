@@ -42,7 +42,7 @@ export default () => {
           <ButtonWrapper>
             <Button
               onClick={() => {
-                setGlobalState({ type: "initField" })
+                setGlobalState({ type: "select", index: null })
               }}
               disabled={globalState.nowItemIndex === null}
             >
