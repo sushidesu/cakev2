@@ -7,10 +7,6 @@
     "default_title": "Run Cake",
     "default_popup": "popup.html"
   },
-  "background": {
-    "scripts": ["background.bundle.js"],
-    "persistent": false
-  },
   "options_page": "options.html",
   "content_scripts": [{
     "matches": ["https://item.rms.rakuten.co.jp/rms/mall/rsf/item/*", "https://shop16.makeshop.jp/*"],
