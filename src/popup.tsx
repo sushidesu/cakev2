@@ -183,6 +183,7 @@ const Popup = () => {
             color={"primary"}
             size={"small"}
             asyncfunc={autoFill}
+            disabled={item.id === null}
           />
           <Button
             size={"small"}
