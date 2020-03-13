@@ -84,10 +84,10 @@ const Details = (details: IShopItem["details"]) => {
   const body = details
     .map(
       detail => `
-  <tr>
-    <th ="" style="${TABLE_CELL} ${TABLE_HEADER}">${detail.title}</th ="">
-    <td ="" style="${TABLE_CELL}">${detail.body}</td ="">
-  </tr>
+      <tr>
+        <th ="" style="${TABLE_CELL} ${TABLE_HEADER}">${detail.title}</th ="">
+        <td ="" style="${TABLE_CELL}">${detail.body}</td ="">
+      </tr>
 `
     )
     .join("")
@@ -95,9 +95,9 @@ const Details = (details: IShopItem["details"]) => {
   return `
   <h2 ="" style="${TITLE_STYLE}">商品詳細</h2 ="">
   <table ="" style="${TABLE_STYLE}">
-    <tbody>
+    <tbody ="">
       ${body}
-    </tbody>
+    </tbody ="">
   </table ="">
 `
 }
