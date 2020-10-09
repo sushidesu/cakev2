@@ -11,15 +11,19 @@ type Props = {
 const ExportModal: React.FC<Props> = ({ show, closeModal }) => {
   const { globalState } = useContext(ItemStore)
   const { shopItems } = globalState
+  const [checkAll, setCheckAll] = useState<boolean>(true)
   const [selectList, setSelectList] = useState<boolean[]>([])
+
+  const generateList = (checked: boolean) => shopItems.map(_ => checked)
   const exportState: GlobalState = {
     ...globalState,
     shopItems: shopItems.filter((_, index) => selectList[index]),
   }
 
   useEffect(() => {
-    setSelectList(shopItems.map(_ => true))
-  }, [shopItems])
+    setSelectList(generateList(true))
+    setCheckAll(true)
+  }, [shopItems, setSelectList, setCheckAll])
 
   return (
     <Modal onClose={closeModal} show={show} closeOnBlur={true}>
@@ -29,13 +33,30 @@ const ExportModal: React.FC<Props> = ({ show, closeModal }) => {
         </Modal.Card.Head>
         <Modal.Card.Body>
           <Form.Field>
+            <Form.Control>
+              <Form.Checkbox
+                onChange={() => {
+                  setCheckAll(prev => {
+                    setSelectList(generateList(!prev))
+                    return !prev
+                  })
+                }}
+                checked={checkAll}
+              >
+                すべて
+              </Form.Checkbox>
+            </Form.Control>
             {shopItems.map((item, index) => (
               <Form.Control key={index}>
                 <Form.Checkbox
                   onChange={() => {
-                    setSelectList(prev =>
-                      prev.map((flag, i) => (i === index ? !flag : flag))
-                    )
+                    setSelectList(prev => {
+                      const newList = prev.map((flag, i) =>
+                        i === index ? !flag : flag
+                      )
+                      setCheckAll(newList.every(checked => checked))
+                      return newList
+                    })
                   }}
                   checked={selectList[index]}
                 >
