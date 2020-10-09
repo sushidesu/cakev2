@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { Modal, Form, Button } from "react-bulma-components"
-import { ItemStore } from "./itemStore"
+import { GlobalState, ItemStore } from "./itemStore"
 import { exportFile } from "../utils"
 
 type Props = {
@@ -9,11 +9,13 @@ type Props = {
 }
 
 const ExportModal: React.FC<Props> = ({ show, closeModal }) => {
-  const {
-    globalState: { shopItems },
-  } = useContext(ItemStore)
+  const { globalState } = useContext(ItemStore)
+  const { shopItems } = globalState
   const [selectList, setSelectList] = useState<boolean[]>([])
-  console.log(selectList)
+  const exportState: GlobalState = {
+    ...globalState,
+    shopItems: shopItems.filter((_, index) => selectList[index]),
+  }
 
   useEffect(() => {
     setSelectList(shopItems.map(_ => true))
@@ -44,7 +46,7 @@ const ExportModal: React.FC<Props> = ({ show, closeModal }) => {
           </Form.Field>
         </Modal.Card.Body>
         <Modal.Card.Foot>
-          <Button onClick={() => exportFile()} color="info">
+          <Button onClick={() => exportFile(exportState)} color="info">
             エクスポート
           </Button>
           <Button onClick={closeModal}>キャンセル</Button>

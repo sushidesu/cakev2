@@ -1,10 +1,12 @@
 const Format = require("date-format")
 import { IShopItem, ItemText } from "../shopItem"
-import { ChromeStorageItem, getChromeStorage } from "../plugins/chromeAPI"
-import { GlobalDispatch } from "../components/itemStore"
+import { ChromeStorageItem } from "../plugins/chromeAPI"
+import { GlobalDispatch, GlobalState } from "../components/itemStore"
 
-export const exportFile = async () => {
-  const storage = await getChromeStorage()
+export const exportFile = async (data: GlobalState) => {
+  const storage: ChromeStorageItem = {
+    cakev2: data,
+  }
   const url =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(storage))
