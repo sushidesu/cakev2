@@ -1,10 +1,12 @@
 const Format = require("date-format")
 import { IShopItem, ItemText } from "../shopItem"
-import { ChromeStorageItem, getChromeStorage } from "../plugins/chromeAPI"
-import { GlobalDispatch } from "../components/itemStore"
+import { ChromeStorageItem } from "../plugins/chromeAPI"
+import { GlobalDispatch, GlobalState } from "../components/itemStore"
 
-export const exportFile = async () => {
-  const storage = await getChromeStorage()
+export const exportFile = async (data: GlobalState) => {
+  const storage: ChromeStorageItem = {
+    cakev2: data,
+  }
   const url =
     "data:text/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(storage))
@@ -25,6 +27,16 @@ export const importFile = async (
   const str = await read(file)
   const json = JSON.parse(str)
   const message = overwrite ? "上書きしました。" : "追加しました。"
+
+  // CONFIRM OVERWRITE
+  if (
+    overwrite &&
+    !window.confirm(
+      "現在登録されている商品は全て消去されます。よろしいですか？"
+    )
+  ) {
+    return
+  }
 
   if (json.hasOwnProperty("items") || json.hasOwnProperty("idlist")) {
     // cake v1

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react"
 import { Navbar, Container } from "react-bulma-components"
 import Logo from "../images/sweets_cheesecake.png"
 import ImportModal from "./importModal"
-import { exportFile } from "../utils"
+import ExportModal from "./exportModal"
 
 export default () => {
   const [show, setShow] = useState(false)
+  const [showExport, setShowExport] = useState(false)
   useEffect(() => {
-    if (show) {
+    if (show || showExport) {
       document.documentElement.classList.add("is-clipped")
     } else {
       document.documentElement.classList.remove("is-clipped")
@@ -32,7 +33,7 @@ export default () => {
                   <Navbar.Item onClick={() => setShow(true)}>
                     インポート
                   </Navbar.Item>
-                  <Navbar.Item onClick={() => exportFile()}>
+                  <Navbar.Item onClick={() => setShowExport(true)}>
                     エクスポート
                   </Navbar.Item>
                 </Navbar.Dropdown>
@@ -43,6 +44,7 @@ export default () => {
       </Navbar>
 
       <ImportModal show={show} setShow={setShow} />
+      <ExportModal show={showExport} closeModal={() => setShowExport(false)} />
     </>
   )
 }
