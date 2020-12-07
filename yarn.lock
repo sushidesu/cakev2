@@ -158,12 +158,13 @@
   dependencies:
     prop-types "^15.5.10"
 
-"@types/chrome@0.0.95":
-  version "0.0.95"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.95.tgz#fdb234a7693d60d78bbb5951e97f96d15d3247a3"
-  integrity sha512-P6BOI1R8P7OOV0neudBBFwQI52rRnRJ4cfKbDhHentiwxJ8bU76SkkV0FvMRmZjM5Sag/RbwawnHJfiMSQ4Vng==
+"@types/chrome@0.0.126":
+  version "0.0.126"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.126.tgz#f9f3436712f0c7c12ea9798abc9b95575ad7b23a"
+  integrity sha512-191z7uoyfbGU+z7/m45j9XbWugWqVHVPMM4hJV5cZ+3YzGCT9wFjMUHO3Wr3Xvo8aVodvRNu28u7lvEaAnfbzg==
   dependencies:
     "@types/filesystem" "*"
+    "@types/har-format" "*"
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -181,6 +182,11 @@
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
   integrity sha1-wFTor02d11205jq8dviFFocU1LM=
+
+"@types/har-format@*":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@types/har-format/-/har-format-1.2.5.tgz#4f6648814d0fdcb6a510e3364a9db439a753c4b1"
+  integrity sha512-IG8AE1m2pWtPqQ7wXhFhy6Q59bwwnLwO36v5Rit2FrbXCIp8Sk8E2PfUCreyrdo17STwFSKDAkitVuVYbpEHvQ==
 
 "@types/hoist-non-react-statics@*":
   version "3.3.1"
