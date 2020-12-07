@@ -1,1 +1,3 @@
-console.log('background')
+// for development
+const hotreload = require("crx-hotreload")
+// ------------

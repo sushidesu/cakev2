@@ -8,6 +8,9 @@
     "default_popup": "popup.html"
   },
   "options_page": "options.html",
+  "background": {
+    "scripts": ["background.bundle.js"]
+  },
   "content_scripts": [{
     "matches": ["https://item.rms.rakuten.co.jp/rms/mall/rsf/item/*", "https://shop16.makeshop.jp/*"],
     "js": ["content.bundle.js"]
