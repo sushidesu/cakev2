@@ -1,5 +1,6 @@
 import { IShopItem } from "../shopItem"
 import { CheckboxState } from "../popup"
+import { rakutenSPDescription } from "./rakutenSPDescription"
 
 export const write_to_rakuten = (
   item: IShopItem,
@@ -54,7 +55,7 @@ export const write_to_rakuten = (
 </div ="">
 `
 
-    description_sp.value = description
+    description_sp.value = rakutenSPDescription(item)
     description_pc.value = description
   }
 }

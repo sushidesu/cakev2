@@ -7,6 +7,11 @@ import { IShopItem } from "../shopItem"
 const Wrapper = styled.div`
   position: sticky;
   top: 20px;
+
+  .menu-list {
+    overflow-y: auto;
+    max-height: 80vh;
+  }
 `
 
 const ButtonWrapper = styled.div`
@@ -23,6 +28,16 @@ export default () => {
 
   return (
     <Wrapper>
+      <ButtonWrapper>
+        <Button
+          onClick={() => {
+            setGlobalState({ type: "select", index: null })
+          }}
+          disabled={globalState.nowItemIndex === null}
+        >
+          新しい商品を追加
+        </Button>
+      </ButtonWrapper>
       <Menu>
         <Menu.List title="Item List">
           {globalState.shopItems.map((item: IShopItem) => (
@@ -39,16 +54,6 @@ export default () => {
               {item.name}
             </Menu.List.Item>
           ))}
-          <ButtonWrapper>
-            <Button
-              onClick={() => {
-                setGlobalState({ type: "select", index: null })
-              }}
-              disabled={globalState.nowItemIndex === null}
-            >
-              新しい商品を追加
-            </Button>
-          </ButtonWrapper>
         </Menu.List>
       </Menu>
     </Wrapper>
