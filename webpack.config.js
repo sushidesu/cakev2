@@ -61,15 +61,17 @@ module.exports = {
       filename: "[name].css",
       chunkFilename: "[id].css",
     }),
-    new CopyPlugin([
-      {
-        from: "public/manifest.json",
-        to: "manifest.json",
-      },
-      {
-        from: "public/icons/*",
-        to: "images/[name].[ext]",
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "public/manifest.json",
+          to: "manifest.json",
+        },
+        {
+          from: "public/icons/*",
+          to: "images/[name].[ext]",
+        },
+      ],
+    }),
   ],
 }
