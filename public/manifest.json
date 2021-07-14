@@ -12,7 +12,7 @@
     "scripts": ["background.bundle.js"]
   },
   "content_scripts": [{
-    "matches": ["https://item.rms.rakuten.co.jp/rms/mall/rsf/item/*", "https://shop16.makeshop.jp/*"],
+    "matches": ["https://item.rms.rakuten.co.jp/rms-item/*", "https://shop16.makeshop.jp/*"],
     "js": ["content.bundle.js"]
   }],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
