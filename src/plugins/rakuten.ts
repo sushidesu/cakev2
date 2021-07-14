@@ -2,52 +2,88 @@ import { IShopItem } from "../shopItem"
 import { CheckboxState } from "../popup"
 import { rakutenSPDescription } from "./rakutenSPDescription"
 
+const setValue = (element: HTMLInputElement, value: string) => {
+  try {
+    element.value = value
+    element.defaultValue = value
+    element.innerHTML = value
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    ).set
+    nativeInputValueSetter.call(element, value)
+    const event = new Event("input", { bubbles: true })
+    //@ts-ignore
+    event.simulated = true
+    //@ts-ignore
+    if (element._valueTracker) {
+      const lastValue = element.value
+      //@ts-ignore
+      element._valueTracker.setValue(lastValue)
+    }
+    element.dispatchEvent(event)
+  } catch (err) {
+    console.log(element)
+    //@ts-ignore
+    console.log(element._valueTracker)
+    console.log(err)
+  }
+}
+
 export const write_to_rakuten = (
   item: IShopItem,
   checked: CheckboxState
 ): void => {
   // 税別設定
-  const tax_not_included = document.getElementById("r03") as HTMLInputElement
-  tax_not_included.checked = true
+  const tax_included_inputs = document.querySelectorAll<HTMLInputElement>(
+    '[name="consumptionTax"]'
+  )
+  tax_included_inputs[1].click()
 
   if (checked.info) {
     // 商品番号にJANコードを入力
-    const item_number = document.querySelector(
-      '[name="item_number"]'
-    ) as HTMLInputElement
-    item_number.value = item.jancode
+    const item_number = document.querySelector<HTMLInputElement>(
+      '[name="itemNumber"]'
+    )
+    // item_number.value = item.jancode
+    setValue(item_number, item.jancode)
 
-    const item_name = document.querySelector(
+    const item_name = document.querySelector<HTMLInputElement>(
       '[name="item_name"]'
-    ) as HTMLInputElement
-    item_name.value = item.name
+    )
+    // item_name.value = item.name
+    setValue(item_name, item.name)
 
-    const item_price = document.querySelector(
-      '[name="price"]'
-    ) as HTMLInputElement
-    item_price.value = item.price
+    const item_price = <HTMLInputElement>document.getElementById("salesPrice")
+    // item_price.value = item.price
+    setValue(item_price, item.price)
 
-    const item_jancode = document.querySelector(
+    const item_jancode = document.querySelector<HTMLInputElement>(
       '[name="rcatalog_id"]'
-    ) as HTMLInputElement
-    item_jancode.value = item.jancode
+    )
+    // item_jancode.value = item.jancode
+    setValue(item_jancode, item.jancode)
   }
 
   if (checked.stock) {
-    const item_stock = document.getElementById(
-      "invnew_in01"
-    ) as HTMLInputElement
-    item_stock.value = item.stockRakuten
+    const item_stock = document.querySelector<HTMLInputElement>(
+      '[name="inventoryAmount"]'
+    )
+    const item_stock_hidden = document.querySelector<HTMLInputElement>(
+      "#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(3) > div.rms-form.form-border.form-full > div:nth-child(1) > div.rms-form-col.rms-col > div > div > div > div.rms-col-auto > input[type=hidden]:nth-child(2)"
+    )
+    // item_stock.value = item.stockRakuten
+    setValue(item_stock, item.stockRakuten)
+    setValue(item_stock_hidden, item.stockRakuten)
   }
 
   if (checked.descriptions) {
-    const description_sp = document.getElementById(
-      "smart_caption"
-    ) as HTMLInputElement
-    const description_pc = document.querySelector(
-      '[name="display_caption"]'
-    ) as HTMLInputElement
-
+    const description_sp = document.querySelector<HTMLInputElement>(
+      "#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2) > div.rms-form-col.rms-col-20 > div > div > div > textarea"
+    )
+    const description_pc = document.querySelector<HTMLInputElement>(
+      "#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(3) > div.rms-form-col.rms-col-20 > div > div > div > textarea"
+    )
     const description = `<div ="">
   ${item.imageURL && `<img width="100%" src="${item.imageURL}">`}
   ${Description(item.descriptions)}
@@ -55,8 +91,10 @@ export const write_to_rakuten = (
 </div ="">
 `
 
-    description_sp.value = rakutenSPDescription(item)
-    description_pc.value = description
+    // description_sp.value = rakutenSPDescription(item)
+    setValue(description_sp, rakutenSPDescription(item))
+    // description_pc.value = description
+    setValue(description_pc, description)
   }
 }
 
