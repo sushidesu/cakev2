@@ -5,27 +5,9 @@ import { rakutenSPDescription } from "./rakutenSPDescription"
 const setValue = (element: HTMLInputElement, value: string) => {
   try {
     element.value = value
-    element.defaultValue = value
-    element.innerHTML = value
-    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-      window.HTMLInputElement.prototype,
-      "value"
-    ).set
-    nativeInputValueSetter.call(element, value)
     const event = new Event("input", { bubbles: true })
-    //@ts-ignore
-    event.simulated = true
-    //@ts-ignore
-    if (element._valueTracker) {
-      const lastValue = element.value
-      //@ts-ignore
-      element._valueTracker.setValue(lastValue)
-    }
     element.dispatchEvent(event)
   } catch (err) {
-    console.log(element)
-    //@ts-ignore
-    console.log(element._valueTracker)
     console.log(err)
   }
 }
@@ -57,6 +39,7 @@ export const write_to_rakuten = (
     const item_price = <HTMLInputElement>document.getElementById("salesPrice")
     // item_price.value = item.price
     setValue(item_price, item.price)
+    item_price.focus()
 
     const item_jancode = document.querySelector<HTMLInputElement>(
       '[name="rcatalog_id"]'
