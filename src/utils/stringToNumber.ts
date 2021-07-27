@@ -3,6 +3,6 @@ export const stringToNumber = (str: string): number => {
   if (isNaN(result)) {
     return 0
   } else {
-    result
+    return result
   }
 }
