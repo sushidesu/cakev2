@@ -5,7 +5,7 @@ export class Jancode {
     this.validate(value)
     return new Jancode(value)
   }
-  public reconstruct(value: string): Jancode {
+  public static reconstruct(value: string): Jancode {
     // not validated as it reconstructs from repository or tests
     return new Jancode(value)
   }
