@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid"
+import { ValueObject } from "../shared/valueObject"
 
-export class ItemId {
+export class ItemId implements ValueObject<string, "itemId"> {
+  _brand: "itemId"
   private constructor(public readonly value: string) {}
 
   public static create(): ItemId {
