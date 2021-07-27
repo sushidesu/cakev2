@@ -1,8 +1,17 @@
 import { v4 as uuidv4 } from "uuid"
 import { CustomBlock } from "../domain/block/block"
 import { IShopItem } from "../shopItem"
-import { ItemValue, BlockValue } from "./scheme"
-import { Storage_v2, KEY_VERSION_2, Storage_v3, KEY_VERSION_3 } from "./scheme"
+import { ItemId } from "../domain/item/itemId"
+import { Jancode } from "../domain/jancode"
+import { Item } from "../domain/item/item"
+import {
+  ItemValue,
+  BlockValue,
+  Storage_v2,
+  KEY_VERSION_2,
+  Storage_v3,
+  KEY_VERSION_3,
+} from "./scheme"
 import { stringToNumber } from "../utils/stringToNumber"
 
 export class ChromeStorageClient {
@@ -35,6 +44,23 @@ export class ChromeStorageClient {
           }
         )
       }
+    })
+  }
+
+  public async getAllItems(): Promise<Item[]> {
+    return new Promise<Item[]>(resolve => {
+      chrome.storage.local.get(KEY_VERSION_3, storage => {
+        if (Reflect.has(storage, KEY_VERSION_3)) {
+          const v3 = storage[KEY_VERSION_3] as Storage_v3
+          resolve(
+            Object.values(v3.items).map(item =>
+              ChromeStorageClient.resourceToEntity(item)
+            )
+          )
+        } else {
+          resolve([])
+        }
+      })
     })
   }
 
@@ -96,6 +122,19 @@ export class ChromeStorageClient {
       stockMakeshop: stringToNumber(item.stockMakeshop),
       jancodeString: item.jancode,
       blocks,
+    }
+  }
+
+  private static resourceToEntity(value: ItemValue): Item {
+    return {
+      id: ItemId.reconstruct(value.id),
+      name: value.name,
+      price: value.price,
+      weight: value.weight,
+      stockRakuten: value.stockRakuten,
+      stockMakeshop: value.stockMakeshop,
+      jancode: Jancode.reconstruct(value.jancodeString),
+      blocks: value.blocks,
     }
   }
 }
