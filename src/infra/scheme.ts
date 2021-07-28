@@ -24,6 +24,7 @@ export interface ItemValue {
 }
 
 export interface Storage_v3 {
+  selectedItemId: string | null
   items: {
     [id: string]: ItemValue
   }

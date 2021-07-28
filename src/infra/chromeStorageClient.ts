@@ -25,6 +25,7 @@ export class ChromeStorageClient {
       }
 
       if (Reflect.has(entireStorage, KEY_VERSION_2)) {
+        console.log("migrate")
         const values = entireStorage[KEY_VERSION_2] as Storage_v2
         const items = Object.fromEntries(
           values.shopItems.map(item => {
@@ -32,7 +33,9 @@ export class ChromeStorageClient {
             return [id, ChromeStorageClient.convertV2toV3(id, item)]
           })
         )
+        const id = items.length ? items[0].id : null
         const newValues: Storage_v3 = {
+          selectedItemId: id,
           items,
         }
         chrome.storage.local.set(
