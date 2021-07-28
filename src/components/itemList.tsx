@@ -23,7 +23,7 @@ const ButtonWrapper = styled.div`
   margin-bottom: 1rem;
 `
 
-export default () => {
+function ItemList(): JSX.Element {
   const { globalState, setGlobalState } = useContext(ItemStore)
 
   return (
@@ -59,3 +59,5 @@ export default () => {
     </Wrapper>
   )
 }
+
+export default ItemList
