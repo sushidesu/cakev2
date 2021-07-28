@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import { Container, Columns } from "react-bulma-components"
@@ -10,6 +10,7 @@ import ItemList from "./components/itemList"
 import ItemEditor from "./components/itemEditor"
 
 import { useItemCollection } from "./domain/item/useItem"
+import { useItemInfo } from "./domain/itemInfo/itemInfo"
 
 const Wrapper = styled.div`
   margin: 0 10px;
@@ -26,7 +27,21 @@ const Options = (): JSX.Element => {
   const target = itemList.find(
     item => selectedItemId && item.id.equals(selectedItemId)
   )
-  console.log(itemList)
+
+  const { itemInfoFormValue, initFormValue } = useItemInfo()
+  useEffect(() => {
+    if (target) {
+      initFormValue({
+        name: target.name,
+        price: target.price.toString(),
+        weight: target.weight.toString(),
+        stockRakuten: target.stockRakuten.toString(),
+        stockMakeshop: target.stockMakeshop.toString(),
+        jancode: target.jancode.toString(),
+      })
+    }
+  }, [target])
+
   return (
     <Wrapper>
       <Header />
@@ -47,21 +62,7 @@ const Options = (): JSX.Element => {
             />
           </Columns.Column>
           <Columns.Column>
-            <ItemEditor
-              editTargetItem={
-                target
-                  ? {
-                      id: target.id.value,
-                      name: target.name,
-                      price: target.price,
-                      weight: target.weight,
-                      stockRakuten: target.stockRakuten,
-                      stockMakeshop: target.stockMakeshop,
-                      jancode: target.jancode.toString(),
-                    }
-                  : undefined
-              }
-            />
+            <ItemEditor editTargetInfo={itemInfoFormValue} />
           </Columns.Column>
         </Columns>
       </Container>

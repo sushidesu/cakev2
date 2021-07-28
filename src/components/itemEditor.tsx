@@ -12,46 +12,40 @@ const FormWrapper = styled.div`
 `
 
 export type Props = {
-  editTargetItem:
+  editTargetInfo:
     | {
-        id: string
         name: string
-        price: number
-        weight: number
-        stockRakuten: number
-        stockMakeshop: number
+        price: string
+        weight: string
+        stockRakuten: string
+        stockMakeshop: string
         jancode: string
       }
     | undefined
 }
 
-function ItemEditor({ editTargetItem }: Props): JSX.Element {
+function ItemEditor({ editTargetInfo }: Props): JSX.Element {
   const { setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
 
   const { value, message } = formState
 
   useEffect(() => {
-    if (editTargetItem === undefined) {
+    if (editTargetInfo === undefined) {
       dispatchForm({ type: "initField" })
     } else {
       dispatchForm({
         type: "select",
         value: {
+          ...editTargetInfo,
           id: 0,
-          name: editTargetItem.name,
-          price: editTargetItem.price.toString(),
-          weight: editTargetItem.weight.toString(),
-          stockRakuten: editTargetItem.stockRakuten.toString(),
-          stockMakeshop: editTargetItem.stockMakeshop.toString(),
-          jancode: editTargetItem.jancode,
           imageURL: "",
           descriptions: [],
           details: [],
         },
       })
     }
-  }, [editTargetItem])
+  }, [editTargetInfo])
 
   return (
     <Container>
