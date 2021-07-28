@@ -126,9 +126,12 @@ const Popup = () => {
       chrome.tabs.query(
         { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
         result => {
-          chrome.tabs.sendMessage(result[0].id, checkbox, response => {
-            resolve(response)
-          })
+          const tab = result[0]
+          if (tab && tab.id) {
+            chrome.tabs.sendMessage(tab.id, checkbox, response => {
+              resolve(response)
+            })
+          }
         }
       )
     })

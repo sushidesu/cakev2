@@ -35,9 +35,9 @@ export const FormInput: FormElement = ({
             value: e.target.value,
           })
         }
-        color={message ? "danger" : null}
+        color={message ? "danger" : undefined}
         type={type}
-        min={type === "number" ? 0 : null}
+        min={type === "number" ? 0 : undefined}
       />
     </Form.Control>
     <Form.Help color={"danger"}>{message}</Form.Help>

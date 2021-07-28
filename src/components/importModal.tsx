@@ -8,12 +8,16 @@ const ImportModal: React.FC<{
   setShow: (show: boolean) => void
 }> = ({ show, setShow }) => {
   const { setGlobalState } = useContext(ItemStore)
-  const [filename, setFilename] = useState(undefined)
+  const [filename, setFilename] = useState<string | undefined>(undefined)
   const [overwrite, setOverwrite] = useState(false)
-  const fileinput = useRef<HTMLInputElement>()
+  const fileinput = useRef<HTMLInputElement | null>(null)
 
   const fileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilename(e.target.files.length > 0 ? e.target.files[0].name : undefined)
+    setFilename(
+      e.target.files?.length && e.target.files.length > 0
+        ? e.target.files[0].name
+        : undefined
+    )
   }
 
   const close = () => {
@@ -22,8 +26,8 @@ const ImportModal: React.FC<{
   }
 
   const _import = async () => {
-    const files = fileinput.current.files
-    if (files.length === 0) {
+    const files = fileinput?.current?.files
+    if (!files || files.length === 0) {
       window.alert("ファイルが選択されていません")
       return
     }

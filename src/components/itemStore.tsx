@@ -4,7 +4,7 @@ import { getChromeStorage, setChromeStorage } from "../plugins/chromeAPI"
 
 export type GlobalState = {
   shopItems: IShopItem[]
-  nowItemIndex: number
+  nowItemIndex: number | null
 }
 
 type GlobalAction =

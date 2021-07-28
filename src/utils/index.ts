@@ -25,7 +25,7 @@ export const importFile = async (
   dispatch: GlobalDispatch
 ) => {
   const str = await read(file)
-  const json = JSON.parse(str)
+  const json = JSON.parse(str ?? "")
   const message = overwrite ? "上書きしました。" : "追加しました。"
 
   // CONFIRM OVERWRITE
@@ -62,9 +62,9 @@ const read = (file: File) => {
   const reader = new FileReader()
   reader.readAsText(file)
 
-  return new Promise<string>(resolve => {
+  return new Promise<string | undefined>(resolve => {
     reader.onload = (ev: ProgressEvent<FileReader>) => {
-      typeof ev.target.result === "string"
+      ev.target?.result && typeof ev.target.result === "string"
         ? resolve(ev.target.result)
         : resolve(undefined)
     }

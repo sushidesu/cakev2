@@ -54,7 +54,9 @@ const Options = (): JSX.Element => {
               items={itemList.map(item => ({
                 id: item.id.value,
                 name: item.name,
-                selected: selectedItemId && item.id.equals(selectedItemId),
+                selected: selectedItemId
+                  ? item.id.equals(selectedItemId)
+                  : false,
                 onClick: () => {
                   select(item.id)
                 },

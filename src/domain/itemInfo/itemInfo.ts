@@ -33,10 +33,16 @@ export const useItemInfo = (): UseItemInfo => {
       key: T
       value: ItemInfoFormValue[T]
     }) => {
-      setItemInfoFormValue(prev => ({
-        ...prev,
-        [key]: value,
-      }))
+      setItemInfoFormValue(prev => {
+        if (prev) {
+          return {
+            ...prev,
+            [key]: value,
+          }
+        } else {
+          return prev
+        }
+      })
     },
     []
   )
