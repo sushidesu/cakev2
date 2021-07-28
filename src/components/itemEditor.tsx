@@ -11,7 +11,7 @@ const FormWrapper = styled.div`
   margin: 0 5px;
 `
 
-export default () => {
+function ItemEditor(): JSX.Element {
   const { globalState, setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
 
@@ -154,3 +154,5 @@ export default () => {
     </Container>
   )
 }
+
+export default ItemEditor
