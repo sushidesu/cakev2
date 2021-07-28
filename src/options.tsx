@@ -23,6 +23,9 @@ const Wrapper = styled.div`
 
 const Options = (): JSX.Element => {
   const { selectedItemId, itemList, select, create } = useItemCollection()
+  const target = itemList.find(
+    item => selectedItemId && item.id.equals(selectedItemId)
+  )
   console.log(itemList)
   return (
     <Wrapper>
@@ -32,7 +35,7 @@ const Options = (): JSX.Element => {
           <Columns.Column size={3} className={"sidemenu"}>
             <ItemList
               onClickCreateButton={create}
-              createButtonDisabled={selectedItemId === undefined}
+              createButtonDisabled={selectedItemId === null}
               items={itemList.map(item => ({
                 id: item.id.value,
                 name: item.name,
@@ -44,7 +47,21 @@ const Options = (): JSX.Element => {
             />
           </Columns.Column>
           <Columns.Column>
-            <ItemEditor />
+            <ItemEditor
+              editTargetItem={
+                target
+                  ? {
+                      id: target.id.value,
+                      name: target.name,
+                      price: target.price,
+                      weight: target.weight,
+                      stockRakuten: target.stockRakuten,
+                      stockMakeshop: target.stockMakeshop,
+                      jancode: target.jancode.toString(),
+                    }
+                  : undefined
+              }
+            />
           </Columns.Column>
         </Columns>
       </Container>
@@ -52,9 +69,20 @@ const Options = (): JSX.Element => {
   )
 }
 
-ReactDOM.render(
-  <ItemStoreProvider>
-    <Options />
-  </ItemStoreProvider>,
-  document.getElementById("root")
-)
+try {
+  ReactDOM.render(
+    <ItemStoreProvider>
+      <Options />
+    </ItemStoreProvider>,
+    document.getElementById("root")
+  )
+} catch (err) {
+  console.log(err)
+  ReactDOM.render(
+    <div>
+      <p>{`エラーが発生しました ↓詳細↓`}</p>
+      <p>{JSON.stringify(err.message, undefined, 2)}</p>
+    </div>,
+    document.getElementById("root")
+  )
+}
