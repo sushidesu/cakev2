@@ -8,7 +8,8 @@
     "build": "webpack --mode production --config webpack.config.js",
     "dev": "webpack --config webpack.dev.js --watch",
     "format": "prettier --write src/**/*.{js,jsx,tx,tsx,json,md}",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "husky": {
     "hooks": {
