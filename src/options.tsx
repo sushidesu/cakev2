@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import { Container, Columns } from "react-bulma-components"
@@ -24,11 +24,18 @@ const Wrapper = styled.div`
 
 const Options = (): JSX.Element => {
   const { selectedItemId, itemList, select, create } = useItemCollection()
-  const target = itemList.find(
-    item => selectedItemId && item.id.equals(selectedItemId)
+  const target = useMemo(
+    () =>
+      itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),
+    [itemList, selectedItemId]
   )
 
-  const { itemInfoFormValue, initFormValue } = useItemInfo()
+  const {
+    itemInfoFormValue,
+    initFormValue,
+    setItemInfoFormValue,
+  } = useItemInfo()
+  console.log(itemInfoFormValue)
   useEffect(() => {
     if (target) {
       initFormValue({
@@ -64,7 +71,10 @@ const Options = (): JSX.Element => {
             />
           </Columns.Column>
           <Columns.Column>
-            <ItemEditor editTargetInfo={itemInfoFormValue} />
+            <ItemEditor
+              editTargetInfo={itemInfoFormValue}
+              updateInfo={setItemInfoFormValue}
+            />
           </Columns.Column>
         </Columns>
       </Container>

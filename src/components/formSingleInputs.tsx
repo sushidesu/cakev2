@@ -10,6 +10,7 @@ type FormElement = React.FC<
     field: keyof SingleItemFields
     value: string
     message: string
+    onChange?: JSX.IntrinsicElements["input"]["onChange"]
     dispatch: FormDispatch
   } & InputProps
 >
@@ -19,7 +20,7 @@ export const FormInput: FormElement = ({
   field,
   value,
   message,
-  dispatch,
+  onChange,
   type,
 }) => (
   <Form.Field>
@@ -28,13 +29,7 @@ export const FormInput: FormElement = ({
       <Form.Input
         name={field}
         value={value}
-        onChange={e =>
-          dispatch({
-            type: "setField",
-            field: field,
-            value: e.target.value,
-          })
-        }
+        onChange={onChange}
         color={message ? "danger" : undefined}
         type={type}
         min={type === "number" ? 0 : undefined}

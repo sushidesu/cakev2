@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useCallback, useContext, useEffect } from "react"
 import styled from "styled-components"
 import { Container, Columns, Heading } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
@@ -10,21 +10,24 @@ import FormButtons from "./formButtons"
 const FormWrapper = styled.div`
   margin: 0 5px;
 `
-
-export type Props = {
-  editTargetInfo:
-    | {
-        name: string
-        price: string
-        weight: string
-        stockRakuten: string
-        stockMakeshop: string
-        jancode: string
-      }
-    | undefined
+type FormValue = {
+  name: string
+  price: string
+  weight: string
+  stockRakuten: string
+  stockMakeshop: string
+  jancode: string
 }
 
-function ItemEditor({ editTargetInfo }: Props): JSX.Element {
+export type Props = {
+  editTargetInfo: FormValue | undefined
+  updateInfo: <T extends keyof FormValue>(props: {
+    key: T
+    value: FormValue[T]
+  }) => void
+}
+
+function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
   const { setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
 
@@ -57,6 +60,12 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
               field={"name"}
               value={value.name}
               message={message.name}
+              onChange={e => {
+                updateInfo({
+                  key: "name",
+                  value: e.target.value,
+                })
+              }}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -71,6 +80,12 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
                   field={"price"}
                   value={value.price}
                   message={message.price}
+                  onChange={e => {
+                    updateInfo({
+                      key: "price",
+                      value: e.target.value,
+                    })
+                  }}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -81,6 +96,7 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
                   field={"weight"}
                   value={value.weight}
                   message={message.weight}
+                  // onChange={handleChange("weight")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -96,6 +112,7 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
                   field={"stockRakuten"}
                   value={value.stockRakuten}
                   message={message.stockRakuten}
+                  // onChange={handleChange("stockRakuten")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -106,6 +123,7 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
                   field={"stockMakeshop"}
                   value={value.stockMakeshop}
                   message={message.stockMakeshop}
+                  // onChange={handleChange("stockMakeshop")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -121,6 +139,7 @@ function ItemEditor({ editTargetInfo }: Props): JSX.Element {
               field={"jancode"}
               value={value.jancode}
               message={message.jancode}
+              // onChange={handleChange("jancode")}
               dispatch={dispatchForm}
             />
           </Columns.Column>
