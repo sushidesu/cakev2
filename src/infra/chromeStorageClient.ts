@@ -33,7 +33,8 @@ export class ChromeStorageClient {
             return [id, ChromeStorageClient.convertV2toV3(id, item)]
           })
         )
-        const id = items.length ? items[0].id : null
+        const keys = Object.keys(items)
+        const id = keys.length ? keys[0] : null
         const newValues: Storage_v3 = {
           selectedItemId: id,
           items,
@@ -62,6 +63,22 @@ export class ChromeStorageClient {
           )
         } else {
           resolve([])
+        }
+      })
+    })
+  }
+  public async getSelectedItemId(): Promise<ItemId | null> {
+    return new Promise<ItemId | null>(resolve => {
+      chrome.storage.local.get(KEY_VERSION_3, storage => {
+        if (Reflect.has(storage, KEY_VERSION_3)) {
+          const v3 = storage[KEY_VERSION_3] as Storage_v3
+          if (v3.selectedItemId) {
+            resolve(ItemId.reconstruct(v3.selectedItemId))
+          } else {
+            resolve(null)
+          }
+        } else {
+          resolve(null)
         }
       })
     })

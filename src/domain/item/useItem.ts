@@ -5,7 +5,7 @@ import { CustomBlock } from "../block/block"
 import { ChromeStorageClient } from "../../infra/chromeStorageClient"
 
 export interface ItemCollection {
-  selectedItemId: ItemId | undefined
+  selectedItemId: ItemId | null
   itemList: Item[]
   create: () => void
   update: (props: ItemUpdateProps) => void
@@ -35,7 +35,7 @@ export type BlockUpdateProps = {
 
 export const useItemCollection = (): ItemCollection => {
   const storage = new ChromeStorageClient()
-  const [selectedItemId, setSelectedItemId] = useState<ItemId>(undefined)
+  const [selectedItemId, setSelectedItemId] = useState<ItemId | null>(null)
   const [items, setItems] = useState<Item[]>([])
 
   useEffect(() => {
@@ -43,9 +43,11 @@ export const useItemCollection = (): ItemCollection => {
 
     const fetcher = async () => {
       const result = await storage.getAllItems()
-      console.log({ result })
+      const id = await storage.getSelectedItemId()
+      console.log({ result, id })
       if (!unmounted) {
         setItems(result)
+        setSelectedItemId(id)
       }
     }
     fetcher()
