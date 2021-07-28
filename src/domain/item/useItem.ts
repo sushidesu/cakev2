@@ -75,8 +75,8 @@ export const useItemCollection = (): ItemCollection => {
     // TODO
   }, [])
   const select = useCallback((id: ItemId) => {
-    console.log(id)
-    // TODO
+    setSelectedItemId(id)
+    console.log("select", id)
   }, [])
 
   return {
