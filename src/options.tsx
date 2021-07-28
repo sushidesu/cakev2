@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
-import { Container, Columns, Button, Menu } from "react-bulma-components"
+import { Container, Columns } from "react-bulma-components"
 import "react-bulma-components/dist/react-bulma-components.min.css"
 
 import { ItemStoreProvider } from "./components/itemStore"
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `
 
 const Options = (): JSX.Element => {
-  const { itemList } = useItemCollection()
+  const { selectedItemId, itemList, select, create } = useItemCollection()
   console.log(itemList)
   return (
     <Wrapper>
@@ -30,7 +30,18 @@ const Options = (): JSX.Element => {
       <Container>
         <Columns className={"is-mobile"}>
           <Columns.Column size={3} className={"sidemenu"}>
-            <ItemList />
+            <ItemList
+              onClickCreateButton={create}
+              createButtonDisabled={selectedItemId === undefined}
+              items={itemList.map(item => ({
+                id: item.id.value,
+                name: item.name,
+                selected: selectedItemId && item.id.equals(selectedItemId),
+                onClick: () => {
+                  select(item.id)
+                },
+              }))}
+            />
           </Columns.Column>
           <Columns.Column>
             <ItemEditor />

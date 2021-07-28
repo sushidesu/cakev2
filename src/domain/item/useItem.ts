@@ -5,6 +5,7 @@ import { CustomBlock } from "../block/block"
 import { ChromeStorageClient } from "../../infra/chromeStorageClient"
 
 export interface ItemCollection {
+  selectedItemId: ItemId | undefined
   itemList: Item[]
   create: () => void
   update: (props: ItemUpdateProps) => void
@@ -34,6 +35,7 @@ export type BlockUpdateProps = {
 
 export const useItemCollection = (): ItemCollection => {
   const storage = new ChromeStorageClient()
+  const [selectedItemId, setSelectedItemId] = useState<ItemId>(undefined)
   const [items, setItems] = useState<Item[]>([])
 
   useEffect(() => {
@@ -76,6 +78,7 @@ export const useItemCollection = (): ItemCollection => {
   }, [])
 
   return {
+    selectedItemId,
     itemList: items,
     create,
     update,
