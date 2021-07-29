@@ -3387,6 +3387,11 @@ opencollective-postinstall@^2.0.2:
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
   integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
 
+option-t@^28.1.1:
+  version "28.1.1"
+  resolved "https://registry.yarnpkg.com/option-t/-/option-t-28.1.1.tgz#8f248f21e4f37525052d5121a09def1166b3e246"
+  integrity sha512-Tr0mesYhgZPz6f7gEN9KAxWf5bRefsWcgXvJ8NHwl/Od0JnUGW3avadEXRtmaQdFb0Fq9KDX6br3NRqW69CCXg==
+
 optionator@^0.8.1:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.8.3.tgz#84fa1d036fe9d3c7e21d99884b601167ec8fb495"
