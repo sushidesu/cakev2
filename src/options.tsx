@@ -32,6 +32,7 @@ const Options = (): JSX.Element => {
 
   const {
     itemInfoFormValue,
+    itemInfoFormError,
     initFormValue,
     setItemInfoFormValue,
   } = useItemInfo()
@@ -84,6 +85,7 @@ const Options = (): JSX.Element => {
           <Columns.Column>
             <ItemEditor
               editTargetInfo={itemInfoFormValue}
+              formError={itemInfoFormError}
               handleChange={handleInfoChange}
             />
           </Columns.Column>

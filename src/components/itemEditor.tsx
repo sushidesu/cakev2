@@ -6,6 +6,7 @@ import { useFormReducer } from "./formState"
 import { FormInput, FormImageInput } from "./formSingleInputs"
 import { FormDescriptions, FormDetails } from "./formMultipleInputs"
 import FormButtons from "./formButtons"
+import { InputError } from "../utils/inputError"
 
 const FormWrapper = styled.div`
   margin: 0 5px;
@@ -21,12 +22,19 @@ export type FormValue = {
 
 export type Props = {
   editTargetInfo: FormValue
+  formError: {
+    [key in keyof FormValue]: InputError
+  }
   handleChange: (
     key: keyof FormValue
   ) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
+function ItemEditor({
+  editTargetInfo,
+  formError,
+  handleChange,
+}: Props): JSX.Element {
   const { setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
 
@@ -41,7 +49,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
               label={"商品名"}
               field={"name"}
               value={editTargetInfo.name}
-              message={message.name}
+              message={formError.name.message}
               onChange={handleChange("name")}
             />
           </Columns.Column>
@@ -55,7 +63,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   label={"値段(税抜き)"}
                   field={"price"}
                   value={editTargetInfo.price}
-                  message={message.price}
+                  message={formError.price.message}
                   onChange={handleChange("price")}
                   type={"number"}
                 />
@@ -65,7 +73,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   label={"重さ(g)"}
                   field={"weight"}
                   value={editTargetInfo.weight}
-                  message={message.weight}
+                  message={formError.weight.message}
                   onChange={handleChange("weight")}
                   type={"number"}
                 />
@@ -80,7 +88,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
                   value={editTargetInfo.stockRakuten}
-                  message={message.stockRakuten}
+                  message={formError.stockRakuten.message}
                   onChange={handleChange("stockRakuten")}
                   type={"number"}
                 />
@@ -90,7 +98,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
                   value={editTargetInfo.stockMakeshop}
-                  message={message.stockMakeshop}
+                  message={formError.stockMakeshop.message}
                   onChange={handleChange("stockMakeshop")}
                   type={"number"}
                 />
@@ -105,7 +113,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
               label={"JANコード"}
               field={"jancode"}
               value={editTargetInfo.jancode}
-              message={message.jancode}
+              message={formError.jancode.message}
               onChange={handleChange("jancode")}
             />
           </Columns.Column>

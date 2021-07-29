@@ -1,11 +1,16 @@
 import { useCallback, useState } from "react"
 import { Item } from "../item/item"
+import { InputError } from "../../utils/inputError"
+import { validator } from "./validator"
 
 type ItemInfo = Pick<
   Item,
   "name" | "price" | "weight" | "jancode" | "stockRakuten" | "stockMakeshop"
 >
-type ItemInfoFormValue = Record<keyof ItemInfo, string>
+export type ItemInfoFormValue = Record<keyof ItemInfo, string>
+export type ItemInfoFormError = {
+  [key in keyof ItemInfoFormValue]: InputError
+}
 
 export interface UseItemInfo {
   setItemInfoFormValue: <T extends keyof ItemInfoFormValue>(props: {
@@ -14,6 +19,7 @@ export interface UseItemInfo {
   }) => void
   initFormValue: (value: ItemInfoFormValue) => void
   itemInfoFormValue: ItemInfoFormValue
+  itemInfoFormError: ItemInfoFormError
 }
 
 export const useItemInfo = (): UseItemInfo => {
@@ -25,6 +31,20 @@ export const useItemInfo = (): UseItemInfo => {
       stockMakeshop: "0",
       stockRakuten: "0",
       jancode: "",
+    }
+  )
+  const initialError: InputError = {
+    error: false,
+    message: "",
+  }
+  const [itemInfoFormError, setItemInfoFormError] = useState<ItemInfoFormError>(
+    {
+      name: initialError,
+      price: initialError,
+      weight: initialError,
+      stockMakeshop: initialError,
+      stockRakuten: initialError,
+      jancode: initialError,
     }
   )
   console.log("form", itemInfoFormValue)
@@ -42,13 +62,15 @@ export const useItemInfo = (): UseItemInfo => {
       value: ItemInfoFormValue[T]
     }) => {
       setItemInfoFormValue(prev => {
-        if (prev) {
-          return {
-            ...prev,
-            [key]: value,
-          }
-        } else {
-          return prev
+        return {
+          ...prev,
+          [key]: value,
+        }
+      })
+      setItemInfoFormError(prev => {
+        return {
+          ...prev,
+          [key]: validator[key](value),
         }
       })
     },
@@ -59,5 +81,6 @@ export const useItemInfo = (): UseItemInfo => {
     setItemInfoFormValue: update,
     initFormValue: init,
     itemInfoFormValue,
+    itemInfoFormError,
   }
 }
