@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
 import { Container, Columns, Heading } from "react-bulma-components"
 import { ItemStore } from "./itemStore"
@@ -10,7 +10,7 @@ import FormButtons from "./formButtons"
 const FormWrapper = styled.div`
   margin: 0 5px;
 `
-type FormValue = {
+export type FormValue = {
   name: string
   price: string
   weight: string
@@ -20,35 +20,17 @@ type FormValue = {
 }
 
 export type Props = {
-  editTargetInfo: FormValue | undefined
-  updateInfo: <T extends keyof FormValue>(props: {
-    key: T
-    value: FormValue[T]
-  }) => void
+  editTargetInfo: FormValue
+  handleChange: (
+    key: keyof FormValue
+  ) => (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
+function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
   const { setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
 
   const { value, message } = formState
-
-  useEffect(() => {
-    if (editTargetInfo === undefined) {
-      dispatchForm({ type: "initField" })
-    } else {
-      dispatchForm({
-        type: "select",
-        value: {
-          ...editTargetInfo,
-          id: 0,
-          imageURL: "",
-          descriptions: [],
-          details: [],
-        },
-      })
-    }
-  }, [editTargetInfo])
 
   return (
     <Container>
@@ -58,14 +40,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
             <FormInput
               label={"商品名"}
               field={"name"}
-              value={value.name}
+              value={editTargetInfo.name}
               message={message.name}
-              onChange={e => {
-                updateInfo({
-                  key: "name",
-                  value: e.target.value,
-                })
-              }}
+              onChange={handleChange("name")}
               dispatch={dispatchForm}
             />
           </Columns.Column>
@@ -78,14 +55,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
                 <FormInput
                   label={"値段(税抜き)"}
                   field={"price"}
-                  value={value.price}
+                  value={editTargetInfo.price}
                   message={message.price}
-                  onChange={e => {
-                    updateInfo({
-                      key: "price",
-                      value: e.target.value,
-                    })
-                  }}
+                  onChange={handleChange("price")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -94,9 +66,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
                 <FormInput
                   label={"重さ(g)"}
                   field={"weight"}
-                  value={value.weight}
+                  value={editTargetInfo.weight}
                   message={message.weight}
-                  // onChange={handleChange("weight")}
+                  onChange={handleChange("weight")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -110,9 +82,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
                 <FormInput
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
-                  value={value.stockRakuten}
+                  value={editTargetInfo.stockRakuten}
                   message={message.stockRakuten}
-                  // onChange={handleChange("stockRakuten")}
+                  onChange={handleChange("stockRakuten")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -121,9 +93,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
                 <FormInput
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
-                  value={value.stockMakeshop}
+                  value={editTargetInfo.stockMakeshop}
                   message={message.stockMakeshop}
-                  // onChange={handleChange("stockMakeshop")}
+                  onChange={handleChange("stockMakeshop")}
                   dispatch={dispatchForm}
                   type={"number"}
                 />
@@ -137,9 +109,9 @@ function ItemEditor({ editTargetInfo, updateInfo }: Props): JSX.Element {
             <FormInput
               label={"JANコード"}
               field={"jancode"}
-              value={value.jancode}
+              value={editTargetInfo.jancode}
               message={message.jancode}
-              // onChange={handleChange("jancode")}
+              onChange={handleChange("jancode")}
               dispatch={dispatchForm}
             />
           </Columns.Column>

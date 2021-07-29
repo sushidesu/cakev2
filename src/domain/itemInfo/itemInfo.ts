@@ -13,13 +13,21 @@ export interface UseItemInfo {
     value: ItemInfoFormValue[T]
   }) => void
   initFormValue: (value: ItemInfoFormValue) => void
-  itemInfoFormValue: ItemInfoFormValue | undefined
+  itemInfoFormValue: ItemInfoFormValue
 }
 
 export const useItemInfo = (): UseItemInfo => {
-  const [itemInfoFormValue, setItemInfoFormValue] = useState<
-    ItemInfoFormValue | undefined
-  >()
+  const [itemInfoFormValue, setItemInfoFormValue] = useState<ItemInfoFormValue>(
+    {
+      name: "",
+      price: "0",
+      weight: "0",
+      stockMakeshop: "0",
+      stockRakuten: "0",
+      jancode: "",
+    }
+  )
+  console.log("form", itemInfoFormValue)
 
   const init = useCallback((value: ItemInfoFormValue) => {
     setItemInfoFormValue(value)

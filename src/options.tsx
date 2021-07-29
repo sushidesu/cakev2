@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect, useCallback, useMemo } from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 import { Container, Columns } from "react-bulma-components"
@@ -7,7 +7,7 @@ import "react-bulma-components/dist/react-bulma-components.min.css"
 import { ItemStoreProvider } from "./components/itemStore"
 import Header from "./components/header"
 import ItemList from "./components/itemList"
-import ItemEditor from "./components/itemEditor"
+import ItemEditor, { Props as ItemEditorProps } from "./components/itemEditor"
 
 import { useItemCollection } from "./domain/item/useItem"
 import { useItemInfo } from "./domain/itemInfo/itemInfo"
@@ -35,9 +35,10 @@ const Options = (): JSX.Element => {
     initFormValue,
     setItemInfoFormValue,
   } = useItemInfo()
-  console.log(itemInfoFormValue)
+
   useEffect(() => {
     if (target) {
+      console.log("init", target)
       initFormValue({
         name: target.name,
         price: target.price.toString(),
@@ -48,6 +49,16 @@ const Options = (): JSX.Element => {
       })
     }
   }, [target])
+
+  const handleInfoChange: ItemEditorProps["handleChange"] = useCallback(
+    key => e => {
+      setItemInfoFormValue({
+        key,
+        value: e.target.value,
+      })
+    },
+    [setItemInfoFormValue]
+  )
 
   return (
     <Wrapper>
@@ -73,7 +84,7 @@ const Options = (): JSX.Element => {
           <Columns.Column>
             <ItemEditor
               editTargetInfo={itemInfoFormValue}
-              updateInfo={setItemInfoFormValue}
+              handleChange={handleInfoChange}
             />
           </Columns.Column>
         </Columns>
