@@ -43,7 +43,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
               value={editTargetInfo.name}
               message={message.name}
               onChange={handleChange("name")}
-              dispatch={dispatchForm}
             />
           </Columns.Column>
         </Columns>
@@ -58,7 +57,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   value={editTargetInfo.price}
                   message={message.price}
                   onChange={handleChange("price")}
-                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -69,7 +67,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   value={editTargetInfo.weight}
                   message={message.weight}
                   onChange={handleChange("weight")}
-                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -85,7 +82,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   value={editTargetInfo.stockRakuten}
                   message={message.stockRakuten}
                   onChange={handleChange("stockRakuten")}
-                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -96,7 +92,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
                   value={editTargetInfo.stockMakeshop}
                   message={message.stockMakeshop}
                   onChange={handleChange("stockMakeshop")}
-                  dispatch={dispatchForm}
                   type={"number"}
                 />
               </Columns.Column>
@@ -112,7 +107,6 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
               value={editTargetInfo.jancode}
               message={message.jancode}
               onChange={handleChange("jancode")}
-              dispatch={dispatchForm}
             />
           </Columns.Column>
           <Columns.Column size={"half"} />
@@ -127,7 +121,7 @@ function ItemEditor({ editTargetInfo, handleChange }: Props): JSX.Element {
               field={"imageURL"}
               value={value.imageURL}
               message={message.imageURL}
-              dispatch={dispatchForm}
+              onChange={() => {}}
             />
           </Columns.Column>
         </Columns>
