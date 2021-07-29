@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react"
 import { IShopItem } from "../shopItem"
-import { getChromeStorage, setChromeStorage } from "../plugins/chromeAPI"
+import { getChromeStorage } from "../plugins/chromeAPI"
 
 export type GlobalState = {
   shopItems: IShopItem[]
@@ -153,11 +153,6 @@ export const ItemStoreProvider: React.FC = ({ children }) => {
     // on mounted
     syncData()
   }, [dispatch])
-
-  useEffect(() => {
-    // on state changed
-    setChromeStorage(state)
-  }, [state.shopItems, state.nowItemIndex])
 
   return (
     <ItemStore.Provider
