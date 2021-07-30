@@ -47,6 +47,8 @@ export class ChromeStorageClient {
             resolve()
           }
         )
+      } else {
+        resolve()
       }
     })
   }
