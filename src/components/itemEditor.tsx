@@ -1,11 +1,9 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Container, Columns, Heading } from "react-bulma-components"
-import { ItemStore } from "./itemStore"
 import { useFormReducer } from "./formState"
 import { FormInput, FormImageInput } from "./formSingleInputs"
 import { FormDescriptions, FormDetails } from "./formMultipleInputs"
-import FormButtons from "./formButtons"
 import { InputError } from "../utils/inputError"
 
 const FormWrapper = styled.div`
@@ -35,9 +33,7 @@ function ItemEditor({
   formError,
   handleChange,
 }: Props): JSX.Element {
-  const { setGlobalState } = useContext(ItemStore)
   const [formState, dispatchForm] = useFormReducer()
-
   const { value, message } = formState
 
   return (
@@ -159,12 +155,6 @@ function ItemEditor({
           </Columns.Column>
         </Columns>
       </FormWrapper>
-
-      <FormButtons
-        formValues={value}
-        setGlobalState={setGlobalState}
-        disabled={Object.values(message).some(msg => msg !== "")}
-      />
     </Container>
   )
 }

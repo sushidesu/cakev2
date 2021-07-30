@@ -61,6 +61,20 @@ export function OptionsContainer(): JSX.Element {
         formError: itemInfoFormError,
         handleChange: handleInfoChange,
       }}
+      controllerProps={{
+        createButton: {
+          visible: target === undefined,
+        },
+        saveButton: {
+          visible: target !== undefined,
+        },
+        copyButton: {
+          visible: target !== undefined,
+        },
+        deleteButton: {
+          visible: target !== undefined,
+        },
+      }}
     />
   )
 }
