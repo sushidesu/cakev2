@@ -1,98 +1,11 @@
-import React, { useEffect, useCallback, useMemo } from "react"
+import React from "react"
 import ReactDOM from "react-dom"
-import styled from "styled-components"
-import { Container, Columns } from "react-bulma-components"
 import "react-bulma-components/dist/react-bulma-components.min.css"
-
 import { ItemStoreProvider } from "./components/itemStore"
-import Header from "./components/header"
-import ItemList from "./components/itemList"
-import ItemEditor, { Props as ItemEditorProps } from "./components/itemEditor"
-
-import { useItemCollection } from "./domain/item/useItem"
-import { useItemInfo } from "./domain/itemInfo/itemInfo"
-
-const Wrapper = styled.div`
-  margin: 0 10px;
-  & > .container {
-    margin-top: 20px;
-  }
-  .sidemenu {
-    min-width: 230px;
-  }
-`
+import { OptionsContainer } from "./components/options/OptionsContainer"
 
 const Options = (): JSX.Element => {
-  const { selectedItemId, itemList, select, create } = useItemCollection()
-  const target = useMemo(
-    () =>
-      itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),
-    [itemList, selectedItemId]
-  )
-
-  const {
-    itemInfoFormValue,
-    itemInfoFormError,
-    initFormValue,
-    setItemInfoFormValue,
-  } = useItemInfo()
-
-  useEffect(() => {
-    if (target) {
-      console.log("init", target)
-      initFormValue({
-        name: target.name,
-        price: target.price.toString(),
-        weight: target.weight.toString(),
-        stockRakuten: target.stockRakuten.toString(),
-        stockMakeshop: target.stockMakeshop.toString(),
-        jancode: target.jancode.toString(),
-      })
-    }
-  }, [target])
-
-  const handleInfoChange: ItemEditorProps["handleChange"] = useCallback(
-    key => e => {
-      setItemInfoFormValue({
-        key,
-        value: e.target.value,
-      })
-    },
-    [setItemInfoFormValue]
-  )
-
-  return (
-    <Wrapper>
-      <Header />
-      <Container>
-        <Columns className={"is-mobile"}>
-          <Columns.Column size={3} className={"sidemenu"}>
-            <ItemList
-              onClickCreateButton={create}
-              createButtonDisabled={selectedItemId === null}
-              items={itemList.map(item => ({
-                id: item.id.value,
-                name: item.name,
-                selected: selectedItemId
-                  ? item.id.equals(selectedItemId)
-                  : false,
-                onClick: () => {
-                  select(item.id)
-                },
-              }))}
-            />
-          </Columns.Column>
-          <Columns.Column>
-            <ItemEditor
-              editTargetInfo={itemInfoFormValue}
-              formError={itemInfoFormError}
-              handleChange={handleInfoChange}
-            />
-          </Columns.Column>
-        </Columns>
-      </Container>
-    </Wrapper>
-  )
+  return <OptionsContainer />
 }
 
 try {
