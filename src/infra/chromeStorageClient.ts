@@ -20,44 +20,43 @@ import {
 import { stringToNumber } from "../utils/stringToNumber"
 
 export class ChromeStorageClient implements ItemRepositoryInterface {
-  public migrate(entireStorage: { [key: string]: any }): Promise<void> {
-    return new Promise<void>(resolve => {
-      if (Reflect.has(entireStorage, KEY_VERSION_3)) {
-        // migrateの必要なし
-        // resolve()
-        console.log("cakev3 is already exist")
-        // return
-      }
-
-      if (Reflect.has(entireStorage, KEY_VERSION_2)) {
-        console.log("migrate")
-        const values = entireStorage[KEY_VERSION_2] as Storage_v2
-        const items = Object.fromEntries(
-          values.shopItems.map(item => {
-            const id = uuidv4()
-            return [id, ChromeStorageClient.convertV2toV3(id, item)]
-          })
-        )
-        const keys = Object.keys(items)
-        const id = keys.length ? keys[0] : null
-        const newValues: Storage_v3 = {
-          selectedItemId: id,
-          items,
-        }
-        chrome.storage.local.set(
-          {
-            [KEY_VERSION_3]: newValues,
-          },
-          () => {
-            resolve()
-          }
-        )
-      } else {
-        resolve()
-      }
-    })
+  public async migrate(): Promise<void> {
+    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v2 = await ChromeStorageClient.storageV2LocalGet()
+    if (storage_v3) {
+      // migrateの必要なし
+      // resolve()
+      console.log("cakev3 is already exist")
+      // return
+    }
+    if (storage_v2) {
+      console.log("migrate")
+      const items = Object.fromEntries(
+        storage_v2.shopItems.map(item => {
+          const id = uuidv4()
+          return [id, ChromeStorageClient.convertV2toV3(id, item)]
+        })
+      )
+      const keys = Object.keys(items)
+      const firstItemId = keys.length ? keys[0] : null
+      await ChromeStorageClient.storageV3LocalSet({
+        selectedItemId: firstItemId,
+        items,
+      })
+    }
   }
 
+  private static async storageV2LocalGet(): Promise<undefined | Storage_v2> {
+    return new Promise(resolve => {
+      chrome.storage.local.get(KEY_VERSION_2, storage => {
+        if (!Reflect.has(storage, KEY_VERSION_2)) {
+          resolve(undefined)
+        } else {
+          resolve(storage[KEY_VERSION_2])
+        }
+      })
+    })
+  }
   private static async storageV3LocalGet(): Promise<undefined | Storage_v3> {
     return new Promise(resolve => {
       chrome.storage.local.get(KEY_VERSION_3, storage => {
@@ -118,36 +117,26 @@ export class ChromeStorageClient implements ItemRepositoryInterface {
   }
 
   public async getAllItems(): Promise<Item[]> {
-    return new Promise<Item[]>(resolve => {
-      chrome.storage.local.get(KEY_VERSION_3, storage => {
-        if (Reflect.has(storage, KEY_VERSION_3)) {
-          const v3 = storage[KEY_VERSION_3] as Storage_v3
-          resolve(
-            Object.values(v3.items).map(item =>
-              ChromeStorageClient.resourceToEntity(item)
-            )
-          )
-        } else {
-          resolve([])
-        }
-      })
-    })
+    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    if (!storage_v3) {
+      return []
+    }
+    return Object.values(storage_v3.items).map(item =>
+      ChromeStorageClient.resourceToEntity(item)
+    )
   }
+
   public async getSelectedItemId(): Promise<ItemId | null> {
-    return new Promise<ItemId | null>(resolve => {
-      chrome.storage.local.get(KEY_VERSION_3, storage => {
-        if (Reflect.has(storage, KEY_VERSION_3)) {
-          const v3 = storage[KEY_VERSION_3] as Storage_v3
-          if (v3.selectedItemId) {
-            resolve(ItemId.reconstruct(v3.selectedItemId))
-          } else {
-            resolve(null)
-          }
-        } else {
-          resolve(null)
-        }
-      })
-    })
+    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    if (!storage_v3) {
+      return null
+    }
+
+    if (storage_v3.selectedItemId) {
+      return ItemId.reconstruct(storage_v3.selectedItemId)
+    } else {
+      return null
+    }
   }
 
   private static convertV2toV3(id: string, item: IShopItem): ItemValue {

@@ -10,8 +10,11 @@ async function main() {
   const entireStorage = await getAll()
   console.log(entireStorage)
   console.groupEnd()
-  console.log("migrate")
-  await client.migrate(entireStorage)
+
+  console.group("--- migrate ---")
+  await client.migrate()
+  console.groupEnd()
+
   console.group("--- get all ---")
   const result = await getAll()
   console.log(result)
