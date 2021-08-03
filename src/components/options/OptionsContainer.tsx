@@ -4,7 +4,14 @@ import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
 
 export function OptionsContainer(): JSX.Element {
-  const { selectedItemId, itemList, select, create } = useItemCollection()
+  const {
+    selectedItemId,
+    itemList,
+    startCreate,
+    select,
+    create,
+    update,
+  } = useItemCollection()
   const target = useMemo(
     () =>
       itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),
@@ -42,10 +49,24 @@ export function OptionsContainer(): JSX.Element {
     [setItemInfoFormValue]
   )
 
+  const handleCreateItem = () => {
+    create({
+      itemInfo: itemInfoFormValue,
+      blocks: [],
+    })
+  }
+
+  const handleSaveItem = () => {
+    update({
+      itemInfo: itemInfoFormValue,
+      blocks: [],
+    })
+  }
+
   return (
     <OptionsTemplate
       itemListProps={{
-        onClickCreateButton: create,
+        onClickCreateButton: startCreate,
         createButtonDisabled: selectedItemId === null,
         items: itemList.map(item => ({
           id: item.id.value,
@@ -64,9 +85,11 @@ export function OptionsContainer(): JSX.Element {
       controllerProps={{
         createButton: {
           visible: target === undefined,
+          onClick: handleCreateItem,
         },
         saveButton: {
           visible: target !== undefined,
+          onClick: handleSaveItem,
         },
         copyButton: {
           visible: target !== undefined,

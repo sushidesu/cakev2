@@ -1,21 +1,22 @@
 import { useCallback, useEffect, useState } from "react"
 import { Item } from "./item"
 import { ItemId } from "./itemId"
-import { CustomBlock } from "../block/block"
+import { Jancode } from "../jancode"
 import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { stringToNumber } from "../../utils/stringToNumber"
 
 export interface ItemCollection {
   selectedItemId: ItemId | null
   itemList: Item[]
-  create: () => void
+  create: (props: ItemCreateProps) => void
   update: (props: ItemUpdateProps) => void
-  updateBlock: (props: BlockUpdateProps) => void
   remove: (id: ItemId) => void
   duplicate: (id: ItemId) => void
+  startCreate: () => void
   select: (id: ItemId) => void
 }
 
-export type ItemFormValue = {
+export type ItemInfoFormValue = {
   name: string
   price: string
   weight: string
@@ -24,13 +25,14 @@ export type ItemFormValue = {
   jancode: string
 }
 
-export type ItemUpdateProps = {
-  id: ItemId
-  value: ItemFormValue
+export type ItemCreateProps = {
+  itemInfo: ItemInfoFormValue
+  blocks: []
 }
-export type BlockUpdateProps = {
-  id: ItemId
-  value: CustomBlock[]
+
+export type ItemUpdateProps = {
+  itemInfo: ItemInfoFormValue
+  blocks: []
 }
 
 export const useItemCollection = (): ItemCollection => {
@@ -57,15 +59,39 @@ export const useItemCollection = (): ItemCollection => {
     }
   }, [])
 
-  const create = useCallback(() => {
-    // TODO
-  }, [])
-  const update = useCallback(({}: ItemUpdateProps) => {
-    // TODO
-  }, [])
-  const updateBlock = useCallback(({}: BlockUpdateProps) => {
-    // TODO
-  }, [])
+  const create = useCallback(
+    async ({ itemInfo, blocks }: ItemCreateProps) => {
+      const id = ItemId.create()
+      console.log(itemInfo.jancode)
+      const item = formToEntity({
+        id,
+        info: itemInfo,
+        blocks,
+      })
+      await storage.saveItem({
+        id,
+        item,
+      })
+      setItems(prev => [...prev, item])
+      setSelectedItemId(id)
+    },
+    [storage]
+  )
+
+  const update = useCallback(
+    async ({ itemInfo, blocks }: ItemUpdateProps) => {
+      if (selectedItemId) {
+        const item = formToEntity({
+          id: selectedItemId,
+          info: itemInfo,
+          blocks,
+        })
+        await storage.saveItem({ id: selectedItemId, item })
+      }
+    },
+    [storage]
+  )
+
   const remove = useCallback((id: ItemId) => {
     console.log(id)
     // TODO
@@ -74,6 +100,11 @@ export const useItemCollection = (): ItemCollection => {
     console.log(id)
     // TODO
   }, [])
+
+  const startCreate = useCallback(() => {
+    setSelectedItemId(null)
+  }, [])
+
   const select = useCallback((id: ItemId) => {
     setSelectedItemId(id)
     console.log("select", id)
@@ -84,9 +115,28 @@ export const useItemCollection = (): ItemCollection => {
     itemList: items,
     create,
     update,
-    updateBlock,
     remove,
     duplicate,
+    startCreate,
     select,
   }
 }
+
+const formToEntity = ({
+  id,
+  info,
+  blocks,
+}: {
+  id: ItemId
+  info: ItemInfoFormValue
+  blocks: []
+}): Item => ({
+  id,
+  name: info.name,
+  price: stringToNumber(info.price),
+  weight: stringToNumber(info.weight),
+  stockRakuten: stringToNumber(info.stockRakuten),
+  stockMakeshop: stringToNumber(info.stockMakeshop),
+  jancode: Jancode.create(info.jancode),
+  blocks,
+})
