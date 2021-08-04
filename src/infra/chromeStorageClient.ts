@@ -144,6 +144,14 @@ export class ChromeStorageClient implements ChromeStorageInterface {
     await ChromeStorageClient.storageV3LocalSet(storage_v3)
   }
 
+  async unSelectItem(): Promise<void> {
+    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    if (!storage_v3) return
+
+    storage_v3.selectedItemId = null
+    await ChromeStorageClient.storageV3LocalSet(storage_v3)
+  }
+
   public async getSelectedItemId(): Promise<ItemId | null> {
     const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
     if (!storage_v3) {

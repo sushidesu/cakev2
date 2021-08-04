@@ -84,12 +84,22 @@ export const useItemCollection = (
   const update = useCallback(
     async ({ itemInfo, blocks }: ItemUpdateProps) => {
       if (selectedItemId) {
+        console.log("save", itemInfo)
         const item = formToEntity({
           id: selectedItemId,
           info: itemInfo,
           blocks,
         })
         await storage.saveItem({ id: selectedItemId, item })
+        setItems(prev =>
+          prev.map(cur => {
+            if (cur.id.equals(selectedItemId)) {
+              return item
+            } else {
+              return cur
+            }
+          })
+        )
       }
     },
     [storage, selectedItemId]
@@ -108,7 +118,8 @@ export const useItemCollection = (
     // TODO
   }, [])
 
-  const startCreate = useCallback(() => {
+  const startCreate = useCallback(async () => {
+    await storage.unSelectItem()
     setSelectedItemId(null)
   }, [])
 

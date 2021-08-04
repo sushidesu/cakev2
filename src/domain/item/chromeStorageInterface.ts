@@ -24,5 +24,6 @@ export interface ChromeStorageInterface {
   saveItem(props: SaveItemProps): Promise<void>
   getItem(props: GetItemProps): Promise<Item | undefined>
   removeItem(props: RemoveItemProps): Promise<void>
+  unSelectItem(): Promise<void>
   selectItem(props: SelectItemProps): Promise<void>
 }
