@@ -72,6 +72,9 @@ export const useItemCollection = (
         id,
         item,
       })
+      await storage.selectItem({
+        id,
+      })
       setItems(prev => [...prev, item])
       setSelectedItemId(id)
     },
@@ -109,10 +112,14 @@ export const useItemCollection = (
     setSelectedItemId(null)
   }, [])
 
-  const select = useCallback((id: ItemId) => {
-    setSelectedItemId(id)
-    console.log("select", id)
-  }, [])
+  const select = useCallback(
+    async (id: ItemId) => {
+      console.log("select", id)
+      await storage.selectItem({ id })
+      setSelectedItemId(id)
+    },
+    [storage]
+  )
 
   return {
     selectedItemId,
