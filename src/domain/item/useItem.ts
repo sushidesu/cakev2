@@ -62,7 +62,6 @@ export const useItemCollection = (): ItemCollection => {
   const create = useCallback(
     async ({ itemInfo, blocks }: ItemCreateProps) => {
       const id = ItemId.create()
-      console.log(itemInfo.jancode)
       const item = formToEntity({
         id,
         info: itemInfo,
