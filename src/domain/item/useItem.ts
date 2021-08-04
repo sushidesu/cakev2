@@ -148,6 +148,6 @@ const formToEntity = ({
   weight: stringToNumber(info.weight),
   stockRakuten: stringToNumber(info.stockRakuten),
   stockMakeshop: stringToNumber(info.stockMakeshop),
-  jancode: Jancode.create(info.jancode),
+  jancode: info.jancode !== "" ? Jancode.create(info.jancode) : undefined,
   blocks,
 })

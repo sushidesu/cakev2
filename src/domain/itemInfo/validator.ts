@@ -61,6 +61,13 @@ export const validator: ItemInfoValidators = {
   stockRakuten: stockValidator,
   stockMakeshop: stockValidator,
   jancode: value => {
+    if (value === "") {
+      return {
+        error: false,
+        message: "",
+      }
+    }
+
     try {
       Jancode.validateLength(value)
     } catch (err) {

@@ -9,6 +9,6 @@ export interface Item {
   weight: number
   stockRakuten: number
   stockMakeshop: number
-  jancode: Jancode
+  jancode: Jancode | undefined
   blocks: CustomBlock[]
 }

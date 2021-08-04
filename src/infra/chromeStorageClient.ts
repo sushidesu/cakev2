@@ -226,7 +226,7 @@ export class ChromeStorageClient implements ChromeStorageInterface {
       weight: entity.weight,
       stockRakuten: entity.stockRakuten,
       stockMakeshop: entity.stockMakeshop,
-      jancodeString: entity.jancode.toString(),
+      jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks,
     }
   }

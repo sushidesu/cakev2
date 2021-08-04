@@ -27,6 +27,7 @@ export function OptionsContainer(): JSX.Element {
     initFormValue,
     clearFormValue,
     setItemInfoFormValue,
+    submitDisabled,
   } = useItemInfo()
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function OptionsContainer(): JSX.Element {
         weight: target.weight.toString(),
         stockRakuten: target.stockRakuten.toString(),
         stockMakeshop: target.stockMakeshop.toString(),
-        jancode: target.jancode.toString(),
+        jancode: target.jancode?.toString() ?? "",
       })
     } else {
       console.log("clear", target)
@@ -96,10 +97,12 @@ export function OptionsContainer(): JSX.Element {
       controllerProps={{
         createButton: {
           visible: target === undefined,
+          disabled: submitDisabled,
           onClick: handleCreateItem,
         },
         saveButton: {
           visible: target !== undefined,
+          disabled: submitDisabled,
           onClick: handleSaveItem,
         },
         copyButton: {
