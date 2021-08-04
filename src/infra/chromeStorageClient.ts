@@ -129,7 +129,11 @@ export class ChromeStorageClient implements ChromeStorageInterface {
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
-    // TODO
+    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    if (!storage_v3) return
+
+    delete storage_v3.items[id.value]
+    ChromeStorageClient.storageV3LocalSet(storage_v3)
   }
 
   async selectItem({ id }: SelectItemProps): Promise<void> {

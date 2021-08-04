@@ -13,6 +13,7 @@ export function OptionsContainer(): JSX.Element {
     select,
     create,
     update,
+    remove,
   } = useItemCollection(chromeStorageClient)
   const target = useMemo(
     () =>
@@ -24,6 +25,7 @@ export function OptionsContainer(): JSX.Element {
     itemInfoFormValue,
     itemInfoFormError,
     initFormValue,
+    clearFormValue,
     setItemInfoFormValue,
   } = useItemInfo()
 
@@ -38,6 +40,9 @@ export function OptionsContainer(): JSX.Element {
         stockMakeshop: target.stockMakeshop.toString(),
         jancode: target.jancode.toString(),
       })
+    } else {
+      console.log("clear", target)
+      clearFormValue()
     }
   }, [target])
 
@@ -63,6 +68,10 @@ export function OptionsContainer(): JSX.Element {
       itemInfo: itemInfoFormValue,
       blocks: [],
     })
+  }
+
+  const handleRemoveItem = () => {
+    remove()
   }
 
   return (
@@ -98,6 +107,7 @@ export function OptionsContainer(): JSX.Element {
         },
         deleteButton: {
           visible: target !== undefined,
+          onClick: handleRemoveItem,
         },
       }}
     />

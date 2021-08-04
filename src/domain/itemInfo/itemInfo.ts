@@ -18,20 +18,23 @@ export interface UseItemInfo {
     value: ItemInfoFormValue[T]
   }) => void
   initFormValue: (value: ItemInfoFormValue) => void
+  clearFormValue: () => void
   itemInfoFormValue: ItemInfoFormValue
   itemInfoFormError: ItemInfoFormError
 }
 
+const INITIAL_VALUES: ItemInfoFormValue = {
+  name: "",
+  price: "0",
+  weight: "0",
+  stockMakeshop: "0",
+  stockRakuten: "0",
+  jancode: "",
+}
+
 export const useItemInfo = (): UseItemInfo => {
   const [itemInfoFormValue, setItemInfoFormValue] = useState<ItemInfoFormValue>(
-    {
-      name: "",
-      price: "0",
-      weight: "0",
-      stockMakeshop: "0",
-      stockRakuten: "0",
-      jancode: "",
-    }
+    INITIAL_VALUES
   )
   const initialError: InputError = {
     error: false,
@@ -51,6 +54,10 @@ export const useItemInfo = (): UseItemInfo => {
 
   const init = useCallback((value: ItemInfoFormValue) => {
     setItemInfoFormValue(value)
+  }, [])
+
+  const clear = useCallback(() => {
+    setItemInfoFormValue(INITIAL_VALUES)
   }, [])
 
   const update = useCallback(
@@ -80,6 +87,7 @@ export const useItemInfo = (): UseItemInfo => {
   return {
     setItemInfoFormValue: update,
     initFormValue: init,
+    clearFormValue: clear,
     itemInfoFormValue,
     itemInfoFormError,
   }

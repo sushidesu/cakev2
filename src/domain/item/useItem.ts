@@ -10,7 +10,7 @@ export interface ItemCollection {
   itemList: Item[]
   create: (props: ItemCreateProps) => void
   update: (props: ItemUpdateProps) => void
-  remove: (id: ItemId) => void
+  remove: () => void
   duplicate: (id: ItemId) => void
   startCreate: () => void
   select: (id: ItemId) => void
@@ -89,16 +89,17 @@ export const useItemCollection = (
         await storage.saveItem({ id: selectedItemId, item })
       }
     },
-    [storage]
+    [storage, selectedItemId]
   )
 
-  const remove = useCallback(
-    (id: ItemId) => {
-      console.log(id)
-      // TODO
-    },
-    [storage]
-  )
+  const remove = useCallback(async () => {
+    if (selectedItemId) {
+      console.log("remove", selectedItemId)
+      await storage.removeItem({ id: selectedItemId })
+      setItems(prev => prev.filter(item => !item.id.equals(selectedItemId)))
+      setSelectedItemId(null)
+    }
+  }, [storage, selectedItemId])
   const duplicate = useCallback((id: ItemId) => {
     console.log(id)
     // TODO
