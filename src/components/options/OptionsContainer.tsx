@@ -2,8 +2,10 @@ import React, { useEffect, useCallback, useMemo } from "react"
 import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
+import { ChromeStorageClient } from "../../infra/chromeStorageClient"
 
 export function OptionsContainer(): JSX.Element {
+  const chromeStorageClient = new ChromeStorageClient()
   const {
     selectedItemId,
     itemList,
@@ -11,7 +13,7 @@ export function OptionsContainer(): JSX.Element {
     select,
     create,
     update,
-  } = useItemCollection()
+  } = useItemCollection(chromeStorageClient)
   const target = useMemo(
     () =>
       itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),

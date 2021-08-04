@@ -1,9 +1,11 @@
 import { v4 as uuidv4 } from "uuid"
 import {
   GetItemProps,
-  ItemRepositoryInterface,
+  ChromeStorageInterface,
   SaveItemProps,
-} from "../domain/item/itemRepositoryInterface"
+  RemoveItemProps,
+  SelectItemProps,
+} from "../domain/item/chromeStorageInterface"
 import { CustomBlock } from "../domain/block/block"
 import { IShopItem } from "../shopItem"
 import { ItemId } from "../domain/item/itemId"
@@ -19,7 +21,7 @@ import {
 } from "./scheme"
 import { stringToNumber } from "../utils/stringToNumber"
 
-export class ChromeStorageClient implements ItemRepositoryInterface {
+export class ChromeStorageClient implements ChromeStorageInterface {
   public async migrate(): Promise<void> {
     const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
     const storage_v2 = await ChromeStorageClient.storageV2LocalGet()
@@ -124,6 +126,14 @@ export class ChromeStorageClient implements ItemRepositoryInterface {
     return Object.values(storage_v3.items).map(item =>
       ChromeStorageClient.resourceToEntity(item)
     )
+  }
+
+  async removeItem({ id }: RemoveItemProps): Promise<void> {
+    // TODO
+  }
+
+  async selectItem({ id }: SelectItemProps): Promise<void> {
+    // TODO
   }
 
   public async getSelectedItemId(): Promise<ItemId | null> {

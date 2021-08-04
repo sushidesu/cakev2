@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Item } from "./item"
 import { ItemId } from "./itemId"
 import { Jancode } from "../jancode"
-import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { ChromeStorageInterface } from "../../domain/item/chromeStorageInterface"
 import { stringToNumber } from "../../utils/stringToNumber"
 
 export interface ItemCollection {
@@ -35,8 +35,9 @@ export type ItemUpdateProps = {
   blocks: []
 }
 
-export const useItemCollection = (): ItemCollection => {
-  const storage = new ChromeStorageClient()
+export const useItemCollection = (
+  storage: ChromeStorageInterface
+): ItemCollection => {
   const [selectedItemId, setSelectedItemId] = useState<ItemId | null>(null)
   const [items, setItems] = useState<Item[]>([])
 
@@ -91,10 +92,13 @@ export const useItemCollection = (): ItemCollection => {
     [storage]
   )
 
-  const remove = useCallback((id: ItemId) => {
-    console.log(id)
-    // TODO
-  }, [])
+  const remove = useCallback(
+    (id: ItemId) => {
+      console.log(id)
+      // TODO
+    },
+    [storage]
+  )
   const duplicate = useCallback((id: ItemId) => {
     console.log(id)
     // TODO
