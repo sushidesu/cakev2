@@ -44,8 +44,10 @@ export const useItemCollection = (
     let unmounted = false
 
     const fetcher = async () => {
-      const result = await storage.getAllItems()
-      const id = await storage.getSelectedItemId()
+      const [result, id] = await Promise.all([
+        storage.getAllItems(),
+        storage.getSelectedItemId(),
+      ])
       console.log({ result, id })
       if (!unmounted) {
         setItems(result)
@@ -67,13 +69,15 @@ export const useItemCollection = (
         info: itemInfo,
         blocks,
       })
-      await storage.saveItem({
-        id,
-        item,
-      })
-      await storage.selectItem({
-        id,
-      })
+      await Promise.all([
+        storage.saveItem({
+          id,
+          item,
+        }),
+        storage.selectItem({
+          id,
+        }),
+      ])
       setItems(prev => [...prev, item])
       setSelectedItemId(id)
     },
@@ -112,6 +116,7 @@ export const useItemCollection = (
       setSelectedItemId(null)
     }
   }, [storage, selectedItemId])
+
   const duplicate = useCallback((id: ItemId) => {
     console.log(id)
     // TODO
