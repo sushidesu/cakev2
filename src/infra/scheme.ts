@@ -21,6 +21,7 @@ export interface ItemValue {
   stockMakeshop: number
   jancodeString: string
   blocks: BlockValue[]
+  order: number
 }
 
 export interface Storage_v3 {

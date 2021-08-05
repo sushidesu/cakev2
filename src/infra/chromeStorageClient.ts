@@ -50,9 +50,9 @@ export class ChromeStorageClient implements IChromeStorageClient {
 
   convertStorageV2ToV3(storage_v2: Storage_v2): Storage_v3 {
     const itemsConverted = Object.fromEntries(
-      storage_v2.shopItems.map(item => {
+      storage_v2.shopItems.map((item, index) => {
         const id = uuidv4()
-        return [id, ChromeStorageClient.convertV2toV3(id, item)]
+        return [id, ChromeStorageClient.convertV2toV3(id, index, item)]
       })
     )
     const keys = Object.keys(itemsConverted)
@@ -64,7 +64,11 @@ export class ChromeStorageClient implements IChromeStorageClient {
     }
   }
 
-  private static convertV2toV3(id: string, item: IShopItem): ItemValue {
+  private static convertV2toV3(
+    id: string,
+    index: number,
+    item: IShopItem
+  ): ItemValue {
     const { descriptions, details, imageURL } = item
     const imageBlock: CustomBlock[] = imageURL
       ? [
@@ -122,6 +126,7 @@ export class ChromeStorageClient implements IChromeStorageClient {
       stockMakeshop: stringToNumber(item.stockMakeshop),
       jancodeString: item.jancode,
       blocks,
+      order: index,
     }
   }
 }

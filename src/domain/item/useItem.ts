@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react"
-import { Item, copyItem } from "./item"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { Item, copyItem, updateItem } from "./item"
 import { ItemId } from "./itemId"
 import { IItemCollectionRepository } from "./interface/itemCollectionRepository"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
-import { formValueToEntity } from "./formValueToEntity"
+import { ItemFactory } from "./service/itemFactory"
 
 export interface ItemCollection {
   selectedItemId: ItemId | null
@@ -36,10 +36,16 @@ export type ItemUpdateProps = {
 }
 
 export const useItemCollection = (
-  storage: IItemCollectionRepository
+  storage: IItemCollectionRepository,
+  itemFactory: ItemFactory
 ): ItemCollection => {
   const [selectedItemId, setSelectedItemId] = useState<ItemId | null>(null)
   const [items, setItems] = useState<Item[]>([])
+
+  const target = useMemo<Item | undefined>(() => {
+    if (!selectedItemId) return undefined
+    return items.find(item => item.id.equals(selectedItemId))
+  }, [selectedItemId, items])
 
   useEffect(() => {
     let unmounted = false
@@ -64,12 +70,9 @@ export const useItemCollection = (
 
   const create = useCallback(
     async ({ itemInfo, blocks }: ItemCreateProps) => {
-      const id = ItemId.create()
-      const item = formValueToEntity({
-        id,
-        info: itemInfo,
-        blocks,
-      })
+      const item = await itemFactory.create({ itemInfo, blocks })
+      const id = item.id
+
       await Promise.all([
         storage.saveItem({
           id,
@@ -87,26 +90,25 @@ export const useItemCollection = (
 
   const update = useCallback(
     async ({ itemInfo, blocks }: ItemUpdateProps) => {
-      if (selectedItemId) {
-        console.log("save", itemInfo)
-        const item = formValueToEntity({
-          id: selectedItemId,
-          info: itemInfo,
-          blocks,
+      if (!target) return
+
+      const item = updateItem({
+        target,
+        itemInfo,
+        blocks,
+      })
+      await storage.saveItem({ id: item.id, item })
+      setItems(prev =>
+        prev.map(cur => {
+          if (cur.id.equals(item.id)) {
+            return item
+          } else {
+            return cur
+          }
         })
-        await storage.saveItem({ id: selectedItemId, item })
-        setItems(prev =>
-          prev.map(cur => {
-            if (cur.id.equals(selectedItemId)) {
-              return item
-            } else {
-              return cur
-            }
-          })
-        )
-      }
+      )
     },
-    [storage, selectedItemId]
+    [storage, target]
   )
 
   const remove = useCallback(async () => {

@@ -60,9 +60,9 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     if (!storage_v3) {
       return []
     }
-    return Object.values(storage_v3.items).map(item =>
-      ItemCollectionRepository.resourceToEntity(item)
-    )
+    return Object.values(storage_v3.items)
+      .map(item => ItemCollectionRepository.resourceToEntity(item))
+      .sort((left, right) => left.order - right.order)
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
@@ -112,6 +112,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks,
+      order: entity.order,
     }
   }
   private static resourceToEntity(value: ItemValue): Item {
@@ -124,6 +125,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: value.stockMakeshop,
       jancode: Jancode.reconstruct(value.jancodeString),
       blocks: value.blocks,
+      order: value.order,
     }
   }
 }
