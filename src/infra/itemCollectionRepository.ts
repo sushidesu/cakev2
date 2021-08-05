@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid"
 import {
   GetItemProps,
-  ChromeStorageInterface,
+  IItemCollectionRepository,
   SaveItemProps,
   RemoveItemProps,
   SelectItemProps,
-} from "../domain/item/chromeStorageInterface"
+} from "../domain/item/interface/itemCollectionRepository"
 import { CustomBlock } from "../domain/block/block"
 import { IShopItem } from "../shopItem"
 import { ItemId } from "../domain/item/itemId"
@@ -21,10 +21,10 @@ import {
 } from "./scheme"
 import { stringToNumber } from "../utils/stringToNumber"
 
-export class ChromeStorageClient implements ChromeStorageInterface {
+export class ItemCollectionRepository implements IItemCollectionRepository {
   public async migrate(): Promise<void> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
-    const storage_v2 = await ChromeStorageClient.storageV2LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
+    const storage_v2 = await ItemCollectionRepository.storageV2LocalGet()
     if (storage_v3) {
       // migrateの必要なし
       // resolve()
@@ -36,12 +36,12 @@ export class ChromeStorageClient implements ChromeStorageInterface {
       const items = Object.fromEntries(
         storage_v2.shopItems.map(item => {
           const id = uuidv4()
-          return [id, ChromeStorageClient.convertV2toV3(id, item)]
+          return [id, ItemCollectionRepository.convertV2toV3(id, item)]
         })
       )
       const keys = Object.keys(items)
       const firstItemId = keys.length ? keys[0] : null
-      await ChromeStorageClient.storageV3LocalSet({
+      await ItemCollectionRepository.storageV3LocalSet({
         selectedItemId: firstItemId,
         items,
       })
@@ -84,30 +84,30 @@ export class ChromeStorageClient implements ChromeStorageInterface {
   }
 
   public async saveItem({ id, item }: SaveItemProps): Promise<void> {
-    const prev = await ChromeStorageClient.storageV3LocalGet()
+    const prev = await ItemCollectionRepository.storageV3LocalGet()
     if (!prev) {
       console.info("cake_v3 not found")
       const newValue: Storage_v3 = {
         selectedItemId: id.value,
         items: {
-          [id.value]: ChromeStorageClient.entityToResource(item),
+          [id.value]: ItemCollectionRepository.entityToResource(item),
         },
       }
-      await ChromeStorageClient.storageV3LocalSet(newValue)
+      await ItemCollectionRepository.storageV3LocalSet(newValue)
     } else {
       const newValue: Storage_v3 = {
         ...prev,
         items: {
           ...prev.items,
-          [id.value]: ChromeStorageClient.entityToResource(item),
+          [id.value]: ItemCollectionRepository.entityToResource(item),
         },
       }
-      await ChromeStorageClient.storageV3LocalSet(newValue)
+      await ItemCollectionRepository.storageV3LocalSet(newValue)
     }
   }
 
   public async getItem({ id }: GetItemProps): Promise<Item | undefined> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) {
       return undefined
     }
@@ -115,45 +115,45 @@ export class ChromeStorageClient implements ChromeStorageInterface {
       return undefined
     }
     const itemValue = storage_v3.items[id.value]
-    return ChromeStorageClient.resourceToEntity(itemValue)
+    return ItemCollectionRepository.resourceToEntity(itemValue)
   }
 
   public async getAllItems(): Promise<Item[]> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) {
       return []
     }
     return Object.values(storage_v3.items).map(item =>
-      ChromeStorageClient.resourceToEntity(item)
+      ItemCollectionRepository.resourceToEntity(item)
     )
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) return
 
     delete storage_v3.items[id.value]
-    await ChromeStorageClient.storageV3LocalSet(storage_v3)
+    await ItemCollectionRepository.storageV3LocalSet(storage_v3)
   }
 
   async selectItem({ id }: SelectItemProps): Promise<void> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) return
 
     storage_v3.selectedItemId = id.value
-    await ChromeStorageClient.storageV3LocalSet(storage_v3)
+    await ItemCollectionRepository.storageV3LocalSet(storage_v3)
   }
 
   async unSelectItem(): Promise<void> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) return
 
     storage_v3.selectedItemId = null
-    await ChromeStorageClient.storageV3LocalSet(storage_v3)
+    await ItemCollectionRepository.storageV3LocalSet(storage_v3)
   }
 
   public async getSelectedItemId(): Promise<ItemId | null> {
-    const storage_v3 = await ChromeStorageClient.storageV3LocalGet()
+    const storage_v3 = await ItemCollectionRepository.storageV3LocalGet()
     if (!storage_v3) {
       return null
     }

@@ -2,10 +2,10 @@ import React, { useEffect, useCallback, useMemo } from "react"
 import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
-import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
 
 export function OptionsContainer(): JSX.Element {
-  const chromeStorageClient = new ChromeStorageClient()
+  const chromeStorageClient = new ItemCollectionRepository()
   const {
     selectedItemId,
     itemList,

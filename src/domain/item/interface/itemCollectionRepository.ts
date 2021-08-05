@@ -1,5 +1,5 @@
-import { ItemId } from "./itemId"
-import { Item } from "./item"
+import { ItemId } from "../itemId"
+import { Item } from "../item"
 
 export type SaveItemProps = {
   id: ItemId
@@ -18,7 +18,7 @@ export type SelectItemProps = {
   id: ItemId
 }
 
-export interface ChromeStorageInterface {
+export interface IItemCollectionRepository {
   getAllItems(): Promise<Item[]>
   getSelectedItemId(): Promise<ItemId | null>
   saveItem(props: SaveItemProps): Promise<void>

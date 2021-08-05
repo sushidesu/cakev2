@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Item, copyItem } from "./item"
 import { ItemId } from "./itemId"
-import { ChromeStorageInterface } from "../../domain/item/chromeStorageInterface"
+import { IItemCollectionRepository } from "./interface/itemCollectionRepository"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
 import { formValueToEntity } from "./formValueToEntity"
 
@@ -36,7 +36,7 @@ export type ItemUpdateProps = {
 }
 
 export const useItemCollection = (
-  storage: ChromeStorageInterface
+  storage: IItemCollectionRepository
 ): ItemCollection => {
   const [selectedItemId, setSelectedItemId] = useState<ItemId | null>(null)
   const [items, setItems] = useState<Item[]>([])
