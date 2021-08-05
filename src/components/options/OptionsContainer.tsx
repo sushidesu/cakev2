@@ -3,9 +3,13 @@ import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
 import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
+import { ChromeStorageClient } from "../../infra/chromeStorageClient"
 
 export function OptionsContainer(): JSX.Element {
-  const chromeStorageClient = new ItemCollectionRepository()
+  const chromeStorageClient = new ChromeStorageClient()
+  const itemCollectionRepository = new ItemCollectionRepository(
+    chromeStorageClient
+  )
   const {
     selectedItemId,
     itemList,
@@ -15,7 +19,7 @@ export function OptionsContainer(): JSX.Element {
     update,
     remove,
     duplicate,
-  } = useItemCollection(chromeStorageClient)
+  } = useItemCollection(itemCollectionRepository)
   const target = useMemo(
     () =>
       itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),
