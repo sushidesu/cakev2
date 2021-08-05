@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { Item } from "./item"
 import { ItemId } from "./itemId"
-import { Jancode } from "../jancode"
 import { ChromeStorageInterface } from "../../domain/item/chromeStorageInterface"
-import { stringToNumber } from "../../utils/stringToNumber"
+import { formValueToEntity } from "./formValueToEntity"
 
 export interface ItemCollection {
   selectedItemId: ItemId | null
@@ -63,7 +62,7 @@ export const useItemCollection = (
   const create = useCallback(
     async ({ itemInfo, blocks }: ItemCreateProps) => {
       const id = ItemId.create()
-      const item = formToEntity({
+      const item = formValueToEntity({
         id,
         info: itemInfo,
         blocks,
@@ -85,7 +84,7 @@ export const useItemCollection = (
     async ({ itemInfo, blocks }: ItemUpdateProps) => {
       if (selectedItemId) {
         console.log("save", itemInfo)
-        const item = formToEntity({
+        const item = formValueToEntity({
           id: selectedItemId,
           info: itemInfo,
           blocks,
@@ -143,22 +142,3 @@ export const useItemCollection = (
     select,
   }
 }
-
-const formToEntity = ({
-  id,
-  info,
-  blocks,
-}: {
-  id: ItemId
-  info: ItemInfoFormValue
-  blocks: []
-}): Item => ({
-  id,
-  name: info.name,
-  price: stringToNumber(info.price),
-  weight: stringToNumber(info.weight),
-  stockRakuten: stringToNumber(info.stockRakuten),
-  stockMakeshop: stringToNumber(info.stockMakeshop),
-  jancode: info.jancode !== "" ? Jancode.create(info.jancode) : undefined,
-  blocks,
-})
