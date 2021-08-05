@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
-import { Item } from "./item"
+import { Item, copyItem } from "./item"
 import { ItemId } from "./itemId"
 import { ChromeStorageInterface } from "../../domain/item/chromeStorageInterface"
+import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
 import { formValueToEntity } from "./formValueToEntity"
 
 export interface ItemCollection {
@@ -10,7 +11,7 @@ export interface ItemCollection {
   create: (props: ItemCreateProps) => void
   update: (props: ItemUpdateProps) => void
   remove: () => void
-  duplicate: (id: ItemId) => void
+  duplicate: () => void
   startCreate: () => void
   select: (id: ItemId) => void
 }
@@ -117,10 +118,20 @@ export const useItemCollection = (
     }
   }, [storage, selectedItemId])
 
-  const duplicate = useCallback((id: ItemId) => {
-    console.log(id)
-    // TODO
-  }, [])
+  const duplicate = useCallback(async () => {
+    if (!selectedItemId) return
+
+    console.log("duplicate", selectedItemId)
+    const target = items.find(item => item.id.equals(selectedItemId))
+    if (!target) throw Error(`${selectedItemId.value} not found`)
+
+    const createNameOfCopyItem = new CreateNameOfCopyItem(items)
+    const duplicated = copyItem({ target, createNameOfCopyItem })
+    const newId = duplicated.id
+
+    await Promise.all([storage.saveItem({ id: newId, item: duplicated })])
+    setItems(prev => [...prev, duplicated])
+  }, [storage, selectedItemId, items])
 
   const startCreate = useCallback(async () => {
     await storage.unSelectItem()

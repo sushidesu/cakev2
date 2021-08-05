@@ -14,6 +14,7 @@ export function OptionsContainer(): JSX.Element {
     create,
     update,
     remove,
+    duplicate,
   } = useItemCollection(chromeStorageClient)
   const target = useMemo(
     () =>
@@ -71,6 +72,10 @@ export function OptionsContainer(): JSX.Element {
     })
   }
 
+  const handleCopy = () => {
+    duplicate()
+  }
+
   const handleRemoveItem = () => {
     remove()
   }
@@ -107,6 +112,7 @@ export function OptionsContainer(): JSX.Element {
         },
         copyButton: {
           visible: target !== undefined,
+          onClick: handleCopy,
         },
         deleteButton: {
           visible: target !== undefined,
