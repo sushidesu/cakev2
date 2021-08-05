@@ -22,7 +22,6 @@ export interface IItemCollectionRepository {
   getAllItems(): Promise<Item[]>
   getSelectedItemId(): Promise<ItemId | null>
   saveItem(props: SaveItemProps): Promise<void>
-  getItem(props: GetItemProps): Promise<Item | undefined>
   removeItem(props: RemoveItemProps): Promise<void>
   unSelectItem(): Promise<void>
   selectItem(props: SelectItemProps): Promise<void>

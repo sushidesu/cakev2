@@ -55,18 +55,6 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }
   }
 
-  public async getItem({ id }: GetItemProps): Promise<Item | undefined> {
-    const storage_v3 = await this.chromeStorageClient.storageV3LocalGet()
-    if (!storage_v3) {
-      return undefined
-    }
-    if (!Reflect.has(storage_v3.items, id.value)) {
-      return undefined
-    }
-    const itemValue = storage_v3.items[id.value]
-    return ItemCollectionRepository.resourceToEntity(itemValue)
-  }
-
   public async getAllItems(): Promise<Item[]> {
     const storage_v3 = await this.chromeStorageClient.storageV3LocalGet()
     if (!storage_v3) {
