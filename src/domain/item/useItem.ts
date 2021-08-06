@@ -6,7 +6,7 @@ import { ItemInfoFormValue } from "./interface/inputData"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
 
 export interface ItemCollection {
-  selectedItemId: ItemId | null
+  target: Item | undefined
   itemList: Item[]
   create: (props: ItemCreateProps) => void
   update: (props: ItemUpdateProps) => void
@@ -137,7 +137,7 @@ export const useItemCollection = (
   )
 
   return {
-    selectedItemId,
+    target,
     itemList: items,
     create,
     update,

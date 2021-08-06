@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react"
+import React, { useEffect, useCallback } from "react"
 import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
@@ -12,7 +12,7 @@ export function OptionsContainer(): JSX.Element {
     chromeStorageClient
   )
   const {
-    selectedItemId,
+    target,
     itemList,
     startCreate,
     select,
@@ -21,11 +21,6 @@ export function OptionsContainer(): JSX.Element {
     remove,
     duplicate,
   } = useItemCollection(itemCollectionRepository)
-  const target = useMemo(
-    () =>
-      itemList.find(item => selectedItemId && item.id.equals(selectedItemId)),
-    [itemList, selectedItemId]
-  )
 
   const {
     itemInfoFormValue,
@@ -99,11 +94,11 @@ export function OptionsContainer(): JSX.Element {
     <OptionsTemplate
       itemListProps={{
         onClickCreateButton: startCreate,
-        createButtonDisabled: selectedItemId === null,
+        createButtonDisabled: target === undefined,
         items: itemList.map(item => ({
           id: item.id.value,
           name: item.name,
-          selected: selectedItemId ? item.id.equals(selectedItemId) : false,
+          selected: target ? item.id.equals(target.id) : false,
           onClick: () => {
             select(item.id)
           },
