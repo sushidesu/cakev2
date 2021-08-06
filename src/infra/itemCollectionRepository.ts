@@ -24,7 +24,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       // return
     }
     if (storage_v2) {
-      console.log("excute migrate")
+      console.log("execute migrate")
       const new_storage_v3 = this.chromeStorageClient.convertStorageV2ToV3(
         storage_v2
       )
