@@ -14,13 +14,19 @@ export interface Item {
   stockMakeshop: number
   jancode: Jancode | undefined
   blocks: CustomBlock[]
-  order: number
 }
 
-export const create = () => {
-  // itemFactoryを削除
-  // かわりにorderを作ってくれるserviceを作成
-  // create() と copyItem() ではそれを使う
+export type CreateItemProps = {
+  itemInfo: ItemInfoFormValue
+  blocks: []
+}
+
+export const createItem = ({ itemInfo, blocks }: CreateItemProps): Item => {
+  const id = ItemId.create()
+  return {
+    ...convertFormValue({ itemInfo, blocks }),
+    id,
+  }
 }
 
 export type CopyItemProps = {
@@ -56,6 +62,5 @@ export const updateItem = ({
   return {
     ...convertFormValue({ itemInfo, blocks }),
     id: target.id,
-    order: target.order,
   }
 }

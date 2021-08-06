@@ -1,6 +1,6 @@
 import {
-  GetItemProps,
   IItemCollectionRepository,
+  CreateItemProps,
   SaveItemProps,
   RemoveItemProps,
   SelectItemProps,
@@ -32,27 +32,44 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }
   }
 
-  public async saveItem({ id, item }: SaveItemProps): Promise<void> {
+  public async createItem({ item }: CreateItemProps): Promise<void> {
     const prev = await this.chromeStorageClient.storageV3LocalGet()
-    if (!prev) {
-      console.info("cake_v3 not found")
-      const newValue: Storage_v3 = {
-        selectedItemId: id.value,
-        items: {
-          [id.value]: ItemCollectionRepository.entityToResource(item),
-        },
-      }
-      await this.chromeStorageClient.storageV3LocalSet(newValue)
-    } else {
-      const newValue: Storage_v3 = {
-        ...prev,
-        items: {
-          ...prev.items,
-          [id.value]: ItemCollectionRepository.entityToResource(item),
-        },
-      }
-      await this.chromeStorageClient.storageV3LocalSet(newValue)
+    const id = item.id.value
+    const order = prev ? ItemCollectionRepository.getNumberOfItems(prev) : 0
+    const itemValue = ItemCollectionRepository.entityToResource(item, order)
+
+    const next: Storage_v3 = {
+      selectedItemId: id,
+      items: {
+        ...prev?.items,
+        [id]: itemValue,
+      },
     }
+    await this.chromeStorageClient.storageV3LocalSet(next)
+  }
+
+  public async saveItem({ item }: SaveItemProps): Promise<void> {
+    const prev = await this.chromeStorageClient.storageV3LocalGet()
+    if (!prev) throw new Error("cake_v3 not found")
+
+    const id = item.id.value
+    if (!Reflect.has(prev.items, id)) {
+      throw new Error(`${id} not found`)
+    }
+
+    const target = prev.items[id]
+    const itemValue = ItemCollectionRepository.entityToResource(
+      item,
+      target.order
+    )
+    const next: Storage_v3 = {
+      selectedItemId: id,
+      items: {
+        ...prev.items,
+        [id]: itemValue,
+      },
+    }
+    await this.chromeStorageClient.storageV3LocalSet(next)
   }
 
   public async getAllItems(): Promise<Item[]> {
@@ -61,8 +78,8 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       return []
     }
     return Object.values(storage_v3.items)
-      .map(item => ItemCollectionRepository.resourceToEntity(item))
       .sort((left, right) => left.order - right.order)
+      .map(item => ItemCollectionRepository.resourceToEntity(item))
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
@@ -102,7 +119,11 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }
   }
 
-  private static entityToResource(entity: Item): ItemValue {
+  private static getNumberOfItems(storage_v3: Storage_v3): number {
+    return Object.keys(storage_v3.items).length
+  }
+
+  private static entityToResource(entity: Item, order: number): ItemValue {
     return {
       id: entity.id.value,
       name: entity.name,
@@ -112,7 +133,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks,
-      order: entity.order,
+      order,
     }
   }
   private static resourceToEntity(value: ItemValue): Item {
@@ -125,7 +146,6 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: value.stockMakeshop,
       jancode: Jancode.reconstruct(value.jancodeString),
       blocks: value.blocks,
-      order: value.order,
     }
   }
 }

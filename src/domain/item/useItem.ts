@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { Item, copyItem, updateItem } from "./item"
+import { Item, createItem, copyItem, updateItem } from "./item"
 import { ItemId } from "./itemId"
 import { IItemCollectionRepository } from "./interface/itemCollectionRepository"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
-import { ItemFactory } from "./service/itemFactory"
 
 export interface ItemCollection {
   selectedItemId: ItemId | null
@@ -36,8 +35,7 @@ export type ItemUpdateProps = {
 }
 
 export const useItemCollection = (
-  storage: IItemCollectionRepository,
-  itemFactory: ItemFactory
+  storage: IItemCollectionRepository
 ): ItemCollection => {
   const [selectedItemId, setSelectedItemId] = useState<ItemId | null>(null)
   const [items, setItems] = useState<Item[]>([])
@@ -70,19 +68,16 @@ export const useItemCollection = (
 
   const create = useCallback(
     async ({ itemInfo, blocks }: ItemCreateProps) => {
-      const item = await itemFactory.create({ itemInfo, blocks })
+      const item = createItem({ itemInfo, blocks })
       const id = item.id
 
-      await Promise.all([
-        storage.saveItem({
-          id,
-          item,
-        }),
-        storage.selectItem({
-          id,
-        }),
-      ])
-      setItems(prev => [...prev, item])
+      await storage.createItem({
+        item,
+      })
+      await storage.selectItem({
+        id,
+      }),
+        setItems(prev => [...prev, item])
       setSelectedItemId(id)
     },
     [storage]
@@ -129,9 +124,8 @@ export const useItemCollection = (
 
     const createNameOfCopyItem = new CreateNameOfCopyItem(items)
     const duplicated = copyItem({ target, createNameOfCopyItem })
-    const newId = duplicated.id
 
-    await Promise.all([storage.saveItem({ id: newId, item: duplicated })])
+    await storage.createItem({ item: duplicated })
     setItems(prev => [...prev, duplicated])
   }, [storage, selectedItemId, items])
 
