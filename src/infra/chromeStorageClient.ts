@@ -8,7 +8,8 @@ import {
   BlockValue,
   ItemValue,
 } from "./scheme"
-import { CustomBlock } from "../domain/block/block"
+import { BlockId } from "../domain/block/blockId"
+import { CustomBlock } from "../domain/customBlock/block"
 import { IShopItem } from "../shopItem"
 import { stringToNumber } from "../utils/stringToNumber"
 
@@ -73,7 +74,7 @@ export class ChromeStorageClient implements IChromeStorageClient {
     const imageBlock: CustomBlock[] = imageURL
       ? [
           {
-            id: uuidv4(),
+            id: BlockId.create(),
             type: "image",
             value: {
               imageUrl: imageURL,
@@ -84,14 +85,14 @@ export class ChromeStorageClient implements IChromeStorageClient {
     const textBlocks: CustomBlock[] = descriptions.flatMap<BlockValue>(desc => {
       return [
         {
-          id: uuidv4(),
+          id: BlockId.create(),
           type: "heading",
           value: {
             content: desc.title,
           },
         },
         {
-          id: uuidv4(),
+          id: BlockId.create(),
           type: "text",
           value: {
             content: desc.body,
@@ -102,7 +103,7 @@ export class ChromeStorageClient implements IChromeStorageClient {
     const tableBlock: CustomBlock[] = details.length
       ? [
           {
-            id: uuidv4(),
+            id: BlockId.create(),
             type: "table",
             value: {
               rows: details.map(detail => {

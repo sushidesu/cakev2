@@ -5,6 +5,8 @@ import Header from "../header"
 import ItemList, { Props as ItemListProps } from "../itemList"
 import ItemEditor, { Props as ItemEditorProps } from "../itemEditor"
 import { Button } from "../Button"
+import { CustomBlock } from "../../domain/customBlock/block"
+import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 
 export type Props = {
   controllerProps: {
@@ -15,6 +17,13 @@ export type Props = {
   }
   itemListProps: ItemListProps
   itemEditorProps: ItemEditorProps
+  blocks: BlockEditorProps<CustomBlock>[]
+  blockEditorControllerProps: {
+    addHeadingBlockButton: ButtonControlProps
+    addTextBlockButton: ButtonControlProps
+    addImageBlockButton: ButtonControlProps
+    addTableBlockButton: ButtonControlProps
+  }
 }
 
 type ButtonControlProps = {
@@ -59,8 +68,16 @@ export function OptionsTemplate({
   itemListProps,
   itemEditorProps,
   controllerProps,
+  blocks,
+  blockEditorControllerProps,
 }: Props): JSX.Element {
   const { createButton, saveButton, copyButton, deleteButton } = controllerProps
+  const {
+    addHeadingBlockButton,
+    addTextBlockButton,
+    addImageBlockButton,
+    addTableBlockButton,
+  } = blockEditorControllerProps
   return (
     <Wrapper>
       <Header />
@@ -71,6 +88,20 @@ export function OptionsTemplate({
           </Columns.Column>
           <Columns.Column>
             <ItemEditor {...itemEditorProps} />
+            <hr />
+            <div>
+              <div>
+                {blocks.map(block => (
+                  <BlockEditor key={block.block.id.value} {...block} />
+                ))}
+              </div>
+              <div>
+                <Button {...addHeadingBlockButton}>タイトルを追加</Button>
+                <Button {...addTextBlockButton}>文章を追加</Button>
+                <Button {...addImageBlockButton}>画像を追加</Button>
+                <Button {...addTableBlockButton}>テーブルを追加</Button>
+              </div>
+            </div>
             <StickyButtonsWrapper>
               <div>
                 <Button {...createButton} color="primary">

@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react"
+import { BlockId } from "./blockId"
 import { removeElementFromArray } from "../../utils/removeElementFromArray"
 import { moveElementRelative } from "../../utils/moveElementRelative"
 
 // --- interface ---
 export interface BlockBase<T, U extends string> {
-  id: string
+  id: BlockId
   type: U
   value: T
 }
@@ -33,10 +34,10 @@ type AddBlockProps<Block extends BlockBase<any, any>> = {
   type: Block["type"]
 }
 type RemoveBlockProps = {
-  id: string
+  id: BlockId
 }
 type MoveBlockProps = {
-  id: string
+  id: BlockId
   type: "relative"
   offset: number
 }
@@ -45,11 +46,11 @@ type HandleBlockSubmit<Block extends BlockBase<any, any>> = (
 ) => () => void
 
 // update helper
-export type UpdateBlockProps<Block extends BlockBase<any, any>> = {
-  id: string
+type UpdateBlockProps<Block extends BlockBase<any, any>> = {
+  id: BlockId
   mutation: (prev: Block) => Block
 }
-export type UpdateBlockFunction<Block extends BlockBase<any, any>> = (
+type UpdateBlockFunction<Block extends BlockBase<any, any>> = (
   props: UpdateBlockProps<Block>
 ) => void
 
@@ -59,7 +60,7 @@ const findTargetBlockIndex = <Block extends BlockBase<any, any>>(
   id: Block["id"],
   blocks: Block[]
 ): number => {
-  const targetIndex = blocks.findIndex(block => block.id === id)
+  const targetIndex = blocks.findIndex(block => block.id.equals(id))
   if (targetIndex === -1) {
     throw Error("cannot find id")
   }

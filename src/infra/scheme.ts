@@ -1,4 +1,4 @@
-import { CustomBlock } from "../domain/block/block"
+import { CustomBlock } from "../domain/customBlock/block"
 import { IShopItem } from "../shopItem"
 
 export const KEY_VERSION_2 = "cakev2"

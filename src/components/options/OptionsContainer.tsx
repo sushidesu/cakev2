@@ -4,6 +4,7 @@ import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
 import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
 import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { useCustomBlock } from "../../domain/customBlock/useCustomBlock"
 
 export function OptionsContainer(): JSX.Element {
   const chromeStorageClient = new ChromeStorageClient()
@@ -84,6 +85,16 @@ export function OptionsContainer(): JSX.Element {
     remove()
   }
 
+  /////////////// block ///////////////
+  const {
+    blocks,
+    addBlock,
+    updateBlock,
+    moveBlock,
+    removeBlock,
+    handleSubmit,
+  } = useCustomBlock()
+
   return (
     <OptionsTemplate
       itemListProps={{
@@ -121,6 +132,41 @@ export function OptionsContainer(): JSX.Element {
         deleteButton: {
           visible: target !== undefined,
           onClick: handleRemoveItem,
+        },
+      }}
+      blocks={blocks.map(block => ({
+        block: block,
+        update: updateBlock,
+        remove: () => {
+          removeBlock({ id: block.id })
+        },
+        moveUp: () => {
+          moveBlock({ id: block.id, type: "relative", offset: -1 })
+        },
+        moveDown: () => {
+          moveBlock({ id: block.id, type: "relative", offset: 1 })
+        },
+      }))}
+      blockEditorControllerProps={{
+        addHeadingBlockButton: {
+          onClick: () => {
+            addBlock({ type: "heading" })
+          },
+        },
+        addTextBlockButton: {
+          onClick: () => {
+            addBlock({ type: "text" })
+          },
+        },
+        addImageBlockButton: {
+          onClick: () => {
+            addBlock({ type: "image" })
+          },
+        },
+        addTableBlockButton: {
+          onClick: () => {
+            addBlock({ type: "table" })
+          },
         },
       }}
     />

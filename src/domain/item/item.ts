@@ -1,6 +1,6 @@
 import { ItemId } from "./itemId"
 import { Jancode } from "../jancode"
-import { CustomBlock } from "../block/block"
+import { CustomBlock } from "../customBlock/block"
 import { ItemInfoFormValue } from "./interface/inputData"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
 import { convertFormValue } from "./convertFormValue"

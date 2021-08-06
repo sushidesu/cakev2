@@ -1,4 +1,4 @@
-import { BlockBase } from "./useBlock"
+import { BlockBase } from "../block/useBlock"
 
 export type HeadingBlock = BlockBase<{ content: string }, "heading">
 export type TextBlock = BlockBase<{ content: string }, "text">
