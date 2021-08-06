@@ -10,10 +10,6 @@ export type SaveItemProps = {
   item: Item
 }
 
-export type GetItemProps = {
-  id: ItemId
-}
-
 export type RemoveItemProps = {
   id: ItemId
 }
