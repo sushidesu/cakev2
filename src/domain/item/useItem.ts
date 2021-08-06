@@ -110,6 +110,7 @@ export const useItemCollection = (
     if (selectedItemId) {
       console.log("remove", selectedItemId)
       await storage.removeItem({ id: selectedItemId })
+      await storage.unSelectItem()
       setItems(prev => prev.filter(item => !item.id.equals(selectedItemId)))
       setSelectedItemId(null)
     }
