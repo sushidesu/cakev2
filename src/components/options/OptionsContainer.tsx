@@ -88,7 +88,16 @@ export function OptionsContainer(): JSX.Element {
     moveBlock,
     removeBlock,
     handleSubmit,
+    initBlocks,
   } = useCustomBlock()
+
+  useEffect(() => {
+    if (target) {
+      initBlocks(target?.blocks)
+    } else {
+      initBlocks([])
+    }
+  }, [target])
 
   return (
     <OptionsTemplate
