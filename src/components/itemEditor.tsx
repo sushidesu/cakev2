@@ -1,9 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Container, Columns, Heading } from "react-bulma-components"
-import { useFormReducer } from "./formState"
-import { FormInput, FormImageInput } from "./formSingleInputs"
-import { FormDescriptions, FormDetails } from "./formMultipleInputs"
+import { Container, Columns } from "react-bulma-components"
+import { FormInput } from "./formSingleInputs"
 import { InputError } from "../utils/inputError"
 
 const FormWrapper = styled.div`
@@ -33,9 +31,6 @@ function ItemEditor({
   formError,
   handleChange,
 }: Props): JSX.Element {
-  const [formState, dispatchForm] = useFormReducer()
-  const { value, message } = formState
-
   return (
     <Container>
       <FormWrapper>
@@ -114,45 +109,6 @@ function ItemEditor({
             />
           </Columns.Column>
           <Columns.Column size={"half"} />
-        </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <FormImageInput
-              label={"商品画像URL"}
-              field={"imageURL"}
-              value={value.imageURL}
-              message={message.imageURL}
-              onChange={() => {}}
-            />
-          </Columns.Column>
-        </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <Heading textAlignment={"centered"} subtitle>
-              商品説明
-            </Heading>
-            <FormDescriptions
-              value={value.descriptions}
-              dispatch={dispatchForm}
-            />
-          </Columns.Column>
-        </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <Heading textAlignment={"centered"} subtitle>
-              商品詳細
-            </Heading>
-            <FormDetails value={value.details} dispatch={dispatchForm} />
-          </Columns.Column>
         </Columns>
       </FormWrapper>
     </Container>
