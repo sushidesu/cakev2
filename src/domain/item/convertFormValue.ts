@@ -1,6 +1,6 @@
 import { Item } from "./item"
 import { Jancode } from "../jancode"
-import { ItemInfoFormValue } from "./useItem"
+import { ItemInfoFormValue } from "./interface/inputData"
 import { stringToNumber } from "../../utils/stringToNumber"
 
 export const convertFormValue = ({

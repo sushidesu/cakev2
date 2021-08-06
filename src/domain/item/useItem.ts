@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { Item, createItem, copyItem, updateItem } from "./item"
 import { ItemId } from "./itemId"
 import { IItemCollectionRepository } from "./interface/itemCollectionRepository"
+import { ItemInfoFormValue } from "./interface/inputData"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
 
 export interface ItemCollection {
@@ -13,15 +14,6 @@ export interface ItemCollection {
   duplicate: () => void
   startCreate: () => void
   select: (id: ItemId) => void
-}
-
-export type ItemInfoFormValue = {
-  name: string
-  price: string
-  weight: string
-  stockRakuten: string
-  stockMakeshop: string
-  jancode: string
 }
 
 export type ItemCreateProps = {
