@@ -9,9 +9,6 @@ export interface Storage_v2 {
 }
 
 export const KEY_VERSION_3 = "cakev3"
-
-export type BlockValue = CustomBlock
-
 export interface ItemValue {
   id: string
   name: string
@@ -20,7 +17,7 @@ export interface ItemValue {
   stockRakuten: number
   stockMakeshop: number
   jancodeString: string
-  blocks: BlockValue[]
+  blocks: CustomBlock[]
   order: number
 }
 

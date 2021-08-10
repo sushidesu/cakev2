@@ -1,5 +1,6 @@
 import { Item } from "./item"
 import { Jancode } from "../jancode"
+import { CustomBlock } from "../customBlock/block"
 import { ItemInfoFormValue } from "./interface/inputData"
 import { stringToNumber } from "../../utils/stringToNumber"
 
@@ -8,7 +9,7 @@ export const convertFormValue = ({
   blocks,
 }: {
   itemInfo: ItemInfoFormValue
-  blocks: []
+  blocks: CustomBlock[]
 }): Pick<
   Item,
   | "name"

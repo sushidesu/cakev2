@@ -5,7 +5,6 @@ import {
   Storage_v3,
   KEY_VERSION_2,
   KEY_VERSION_3,
-  BlockValue,
   ItemValue,
 } from "./scheme"
 import { BlockId } from "../domain/block/blockId"
@@ -82,24 +81,26 @@ export class ChromeStorageClient implements IChromeStorageClient {
           },
         ]
       : []
-    const textBlocks: CustomBlock[] = descriptions.flatMap<BlockValue>(desc => {
-      return [
-        {
-          id: BlockId.create(),
-          type: "heading",
-          value: {
-            content: desc.title,
+    const textBlocks: CustomBlock[] = descriptions.flatMap<CustomBlock>(
+      desc => {
+        return [
+          {
+            id: BlockId.create(),
+            type: "heading",
+            value: {
+              content: desc.title,
+            },
           },
-        },
-        {
-          id: BlockId.create(),
-          type: "text",
-          value: {
-            content: desc.body,
+          {
+            id: BlockId.create(),
+            type: "text",
+            value: {
+              content: desc.body,
+            },
           },
-        },
-      ]
-    })
+        ]
+      }
+    )
     const tableBlock: CustomBlock[] = details.length
       ? [
           {

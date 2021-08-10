@@ -18,7 +18,7 @@ export interface Item {
 
 export type CreateItemProps = {
   itemInfo: ItemInfoFormValue
-  blocks: []
+  blocks: CustomBlock[]
 }
 
 export const createItem = ({ itemInfo, blocks }: CreateItemProps): Item => {
@@ -51,7 +51,7 @@ export const copyItem = ({
 export type UpdateItemProps = {
   target: Item
   itemInfo: ItemInfoFormValue
-  blocks: []
+  blocks: CustomBlock[]
 }
 
 export const updateItem = ({

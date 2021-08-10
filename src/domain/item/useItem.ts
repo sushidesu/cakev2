@@ -4,6 +4,7 @@ import { ItemId } from "./itemId"
 import { IItemCollectionRepository } from "./interface/itemCollectionRepository"
 import { ItemInfoFormValue } from "./interface/inputData"
 import { CreateNameOfCopyItem } from "./service/createNameOfCopyItem"
+import { CustomBlock } from "../customBlock/block"
 
 export interface ItemCollection {
   target: Item | undefined
@@ -18,12 +19,12 @@ export interface ItemCollection {
 
 export type ItemCreateProps = {
   itemInfo: ItemInfoFormValue
-  blocks: []
+  blocks: CustomBlock[]
 }
 
 export type ItemUpdateProps = {
   itemInfo: ItemInfoFormValue
-  blocks: []
+  blocks: CustomBlock[]
 }
 
 export const useItemCollection = (
