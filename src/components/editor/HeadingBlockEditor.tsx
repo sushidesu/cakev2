@@ -2,6 +2,7 @@ import React from "react"
 import { HeadingBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
+import { Input } from "../atom/Input"
 
 export function HeadingBlockEditor({
   block,
@@ -10,7 +11,7 @@ export function HeadingBlockEditor({
 }: BlockEditorProps<HeadingBlock>): JSX.Element {
   return (
     <BlockEditorWrapper label={"見出し"} {...rest}>
-      <input
+      <Input
         defaultValue={block.value.content}
         onBlur={e => {
           e.persist()

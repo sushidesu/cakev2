@@ -3,6 +3,7 @@ import { TableBlock, TableRow } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 import { TableRowEditor } from "./TableRowEditor"
+import { Button } from "../Button"
 
 export function TableBlockEditor({
   block,
@@ -81,8 +82,8 @@ export function TableBlockEditor({
           ))}
         </tbody>
       </table>
-      <button onClick={addRow}>追加</button>
-      <button onClick={removeRow}>削除</button>
+      <Button onClick={addRow}>行を追加</Button>
+      <Button onClick={removeRow}>行を削除</Button>
     </BlockEditorWrapper>
   )
 }

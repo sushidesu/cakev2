@@ -1,4 +1,8 @@
 import React from "react"
+import styled from "styled-components"
+import { Button } from "../Button"
+import { CloseButton } from "../CloseButton"
+import { Icon } from "../atom/Icon"
 
 const css = (_: unknown) => ""
 
@@ -18,45 +22,54 @@ export function BlockEditorWrapper({
   children,
 }: Props): JSX.Element {
   return (
-    <div
-      className={css`
-        position: relative;
-        padding: 20px 24px;
-        box-shadow: 2px 4px 12px rgba(73, 73, 60, 0.2);
-      `}
-    >
-      <p
-        className={css`
-          display: block;
-          font-weight: bold;
-          margin: 0;
-        `}
-      >
-        {label}
-      </p>
-      <div
-        className={css`
-          margin-top: 1rem;
-        `}
-      >
-        {children}
-      </div>
-      <div
-        className={css`
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          display: flex;
-          flex-direction: column;
-          & > button + button {
-            margin-top: 8px;
-          }
-        `}
-      >
-        <button onClick={remove}>X</button>
-        <button onClick={moveUp}>↑</button>
-        <button onClick={moveDown}>↓</button>
-      </div>
-    </div>
+    <Wrapper className={"field box"}>
+      <Editor>
+        <label className={"label"}>{label}</label>
+        <div className={"control"}>{children}</div>
+      </Editor>
+      <Controller>
+        <div className="delete-button">
+          <CloseButton onClick={remove} />
+        </div>
+        <div className="move-buttons">
+          <Button onClick={moveUp}>
+            <Icon>↑</Icon>
+          </Button>
+          <Button onClick={moveDown}>
+            <Icon>↓</Icon>
+          </Button>
+        </div>
+      </Controller>
+    </Wrapper>
   )
 }
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+`
+
+const Editor = styled.div`
+  flex: 1 1 auto;
+`
+
+const Controller = styled.div`
+  margin-left: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  align-items: right;
+
+  & > .delete-button {
+    width: fit-content;
+    margin: 0 auto;
+  }
+  & > .move-buttons {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    & > .button + .button {
+      margin-top: 0.5em;
+    }
+  }
+`

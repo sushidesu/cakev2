@@ -41,7 +41,17 @@ const Wrapper = styled.div`
     min-width: 230px;
   }
 `
+
+const BlockEditorController = styled.div`
+  margin-top: 2em;
+  display: flex;
+  & > .button + .button {
+    margin-left: 1em;
+  }
+`
+
 const StickyButtonsWrapper = styled.div`
+  margin-top: 2em;
   position: sticky;
   bottom: 0;
   background-color: white;
@@ -95,12 +105,12 @@ export function OptionsTemplate({
                   <BlockEditor key={block.block.id.value} {...block} />
                 ))}
               </div>
-              <div>
+              <BlockEditorController>
                 <Button {...addHeadingBlockButton}>タイトルを追加</Button>
                 <Button {...addTextBlockButton}>文章を追加</Button>
                 <Button {...addImageBlockButton}>画像を追加</Button>
                 <Button {...addTableBlockButton}>テーブルを追加</Button>
-              </div>
+              </BlockEditorController>
             </div>
             <StickyButtonsWrapper>
               <div>

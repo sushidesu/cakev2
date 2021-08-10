@@ -2,6 +2,7 @@ import React from "react"
 import { TextBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
+import { Input } from "../atom/Input"
 
 export function TextBlockEditor({
   block,
@@ -10,7 +11,7 @@ export function TextBlockEditor({
 }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
     <BlockEditorWrapper label="文章" {...rest}>
-      <input
+      <Input
         defaultValue={block.value.content}
         onBlur={e => {
           e.persist()

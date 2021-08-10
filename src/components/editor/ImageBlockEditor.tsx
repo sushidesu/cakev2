@@ -2,6 +2,7 @@ import React from "react"
 import { ImageBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
+import { Input } from "../atom/Input"
 
 export function ImageBlockEditor({
   block,
@@ -10,7 +11,7 @@ export function ImageBlockEditor({
 }: BlockEditorProps<ImageBlock>): JSX.Element {
   return (
     <BlockEditorWrapper label={"画像"} {...rest}>
-      <input
+      <Input
         defaultValue={block.value.imageUrl}
         onBlur={e => {
           e.persist()

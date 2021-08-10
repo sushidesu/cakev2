@@ -1,5 +1,6 @@
 import React from "react"
 import { TableRow } from "../../domain/customBlock/block"
+import { Input } from "../atom/Input"
 
 type TableRowEditorProps = {
   row: TableRow
@@ -13,7 +14,7 @@ export function TableRowEditor({
   return (
     <tr>
       <th>
-        <input
+        <Input
           defaultValue={row.title}
           onBlur={e => {
             e.persist()
@@ -25,7 +26,7 @@ export function TableRowEditor({
         />
       </th>
       <td>
-        <input
+        <Input
           defaultValue={row.body}
           onBlur={e => {
             e.persist()
