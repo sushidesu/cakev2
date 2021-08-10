@@ -1,4 +1,5 @@
 import React from "react"
+import styled from "styled-components"
 import { TableBlock, TableRow } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
@@ -75,15 +76,28 @@ export function TableBlockEditor({
   }
   return (
     <BlockEditorWrapper label="テーブル" {...rest}>
-      <table>
+      <table className="table is-fullwidth">
         <tbody>
           {block.value.rows.map((row, i) => (
             <TableRowEditor key={i} row={row} update={rowUpdater(i)} />
           ))}
         </tbody>
       </table>
-      <Button onClick={addRow}>行を追加</Button>
-      <Button onClick={removeRow}>行を削除</Button>
+      <Controller>
+        <Button color="light" onClick={addRow}>
+          行を追加
+        </Button>
+        <Button color="light" onClick={removeRow}>
+          行を削除
+        </Button>
+      </Controller>
     </BlockEditorWrapper>
   )
 }
+
+const Controller = styled.div`
+  margin-top: 1em;
+  & > .button + .button {
+    margin-left: 0.5em;
+  }
+`

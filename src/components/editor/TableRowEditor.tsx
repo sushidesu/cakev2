@@ -26,7 +26,9 @@ export function TableRowEditor({
         />
       </th>
       <td>
-        <Input
+        <textarea
+          className="textarea"
+          rows={3}
           defaultValue={row.body}
           onBlur={e => {
             e.persist()
