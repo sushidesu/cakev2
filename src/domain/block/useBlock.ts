@@ -127,8 +127,10 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
   )
 
   const initBlocks = useCallback((blocks: readonly Block[]) => {
+    console.info(blocks)
     setBlocks([...blocks])
   }, [])
+  console.log("blocks", blocks)
 
   return {
     blocks,

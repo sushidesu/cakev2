@@ -93,7 +93,7 @@ export function OptionsContainer(): JSX.Element {
 
   useEffect(() => {
     if (target) {
-      initBlocks(target?.blocks)
+      initBlocks(target.blocks)
     } else {
       initBlocks([])
     }

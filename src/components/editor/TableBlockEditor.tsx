@@ -16,6 +16,7 @@ export function TableBlockEditor({
         if (prev.type === "table") {
           return {
             ...prev,
+            type: "table",
             value: {
               ...prev.value,
               rows: prev.value.rows.concat({ title: "", body: "" }),
@@ -34,6 +35,7 @@ export function TableBlockEditor({
         if (prev.type === "table") {
           return {
             ...prev,
+            type: "table",
             value: {
               ...prev.value,
               rows: prev.value.rows.slice(0, prev.value.rows.length - 1),
@@ -58,6 +60,7 @@ export function TableBlockEditor({
           newRows[index] = rowMutation(newRows[index])
           return {
             ...prev,
+            type: "table",
             value: {
               ...prev.value,
               rows: newRows,

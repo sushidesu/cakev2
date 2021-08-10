@@ -6,9 +6,8 @@ import {
   KEY_VERSION_2,
   KEY_VERSION_3,
   ItemValue,
+  BlockValue,
 } from "./scheme"
-import { BlockId } from "../domain/block/blockId"
-import { CustomBlock } from "../domain/customBlock/block"
 import { IShopItem } from "../shopItem"
 import { stringToNumber } from "../utils/stringToNumber"
 
@@ -70,10 +69,10 @@ export class ChromeStorageClient implements IChromeStorageClient {
     item: IShopItem
   ): ItemValue {
     const { descriptions, details, imageURL } = item
-    const imageBlock: CustomBlock[] = imageURL
+    const imageBlock: BlockValue[] = imageURL
       ? [
           {
-            id: BlockId.create(),
+            id: uuidv4(),
             type: "image",
             value: {
               imageUrl: imageURL,
@@ -81,30 +80,28 @@ export class ChromeStorageClient implements IChromeStorageClient {
           },
         ]
       : []
-    const textBlocks: CustomBlock[] = descriptions.flatMap<CustomBlock>(
-      desc => {
-        return [
-          {
-            id: BlockId.create(),
-            type: "heading",
-            value: {
-              content: desc.title,
-            },
+    const textBlocks: BlockValue[] = descriptions.flatMap<BlockValue>(desc => {
+      return [
+        {
+          id: uuidv4(),
+          type: "heading",
+          value: {
+            content: desc.title,
           },
-          {
-            id: BlockId.create(),
-            type: "text",
-            value: {
-              content: desc.body,
-            },
+        },
+        {
+          id: uuidv4(),
+          type: "text",
+          value: {
+            content: desc.body,
           },
-        ]
-      }
-    )
-    const tableBlock: CustomBlock[] = details.length
+        },
+      ]
+    })
+    const tableBlock: BlockValue[] = details.length
       ? [
           {
-            id: BlockId.create(),
+            id: uuidv4(),
             type: "table",
             value: {
               rows: details.map(detail => {
@@ -117,7 +114,7 @@ export class ChromeStorageClient implements IChromeStorageClient {
           },
         ]
       : []
-    const blocks: CustomBlock[] = [...imageBlock, ...textBlocks, ...tableBlock]
+    const blocks: BlockValue[] = [...imageBlock, ...textBlocks, ...tableBlock]
 
     return {
       id,

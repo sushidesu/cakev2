@@ -18,8 +18,11 @@ export function HeadingBlockEditor({
             id: block.id,
             mutation: prev => {
               return {
-                ...prev,
-                content: e.target.value,
+                id: prev.id,
+                type: "heading",
+                value: {
+                  content: e.target.value,
+                },
               }
             },
           })

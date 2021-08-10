@@ -20,6 +20,7 @@ export function ImageBlockEditor({
               if (prev.type === "image") {
                 return {
                   ...prev,
+                  type: "image",
                   value: {
                     ...prev.value,
                     imageUrl: e.target.value,

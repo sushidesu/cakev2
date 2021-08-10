@@ -20,6 +20,7 @@ export function TextBlockEditor({
               if (prev.type === "text") {
                 return {
                   ...prev,
+                  type: "text",
                   value: {
                     content: e.target.value,
                   },

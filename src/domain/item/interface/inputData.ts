@@ -6,5 +6,3 @@ export type ItemInfoFormValue = {
   stockMakeshop: string
   jancode: string
 }
-
-export type BlockValue = {}

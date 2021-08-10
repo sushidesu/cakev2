@@ -8,8 +8,10 @@ import {
 import { ItemId } from "../domain/item/itemId"
 import { Jancode } from "../domain/jancode"
 import { Item } from "../domain/item/item"
-import { ItemValue, Storage_v3 } from "./scheme"
+import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
 import { ChromeStorageClient } from "./chromeStorageClient"
+import { CustomBlock } from "../domain/customBlock/block"
+import { BlockId } from "../domain/block/blockId"
 
 export class ItemCollectionRepository implements IItemCollectionRepository {
   public constructor(private chromeStorageClient: ChromeStorageClient) {}
@@ -132,7 +134,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockRakuten: entity.stockRakuten,
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
-      blocks: [...entity.blocks],
+      blocks: entity.blocks.map(this.blockEntityToResource),
       order,
     }
   }
@@ -145,7 +147,30 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockRakuten: value.stockRakuten,
       stockMakeshop: value.stockMakeshop,
       jancode: Jancode.reconstruct(value.jancodeString),
-      blocks: value.blocks,
+      blocks: value.blocks.map(this.blockResourceToEntity),
+    }
+  }
+  private static blockEntityToResource(blockEntity: CustomBlock): BlockValue {
+    return {
+      id: blockEntity.id.value,
+      type: blockEntity.type,
+      value: blockEntity.value,
+    }
+  }
+  private static blockResourceToEntity(blockValue: BlockValue): CustomBlock {
+    const id = BlockId.reconstruct(blockValue.id)
+    switch (blockValue.type) {
+      case "heading":
+      case "text":
+      case "image":
+      case "table":
+        return {
+          id,
+          type: blockValue.type,
+          value: blockValue.value,
+        }
+      default:
+        throw Error("invalid type")
     }
   }
 }
