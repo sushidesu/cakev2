@@ -68,7 +68,7 @@ export function OptionsContainer(): JSX.Element {
   const handleSaveItem = () => {
     update({
       itemInfo: itemInfoFormValue,
-      blocks: [],
+      blocks: blocks,
     })
   }
 
