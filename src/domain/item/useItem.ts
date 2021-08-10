@@ -19,12 +19,12 @@ export interface ItemCollection {
 
 export type ItemCreateProps = {
   itemInfo: ItemInfoFormValue
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }
 
 export type ItemUpdateProps = {
   itemInfo: ItemInfoFormValue
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }
 
 export const useItemCollection = (

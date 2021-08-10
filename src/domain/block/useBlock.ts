@@ -18,7 +18,7 @@ export interface BlockCollection<Block extends BlockBase<any, any>> {
   moveBlock: (props: MoveBlockProps) => void
   updateBlock: (props: UpdateBlockProps<Block>) => void
   handleSubmit: HandleBlockSubmit<Block>
-  initBlocks: (blocks: Block[]) => void
+  initBlocks: (blocks: readonly Block[]) => void
 }
 
 // helpers
@@ -126,8 +126,8 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
     [blocks]
   )
 
-  const initBlocks = useCallback((blocks: Block[]) => {
-    setBlocks(blocks)
+  const initBlocks = useCallback((blocks: readonly Block[]) => {
+    setBlocks([...blocks])
   }, [])
 
   return {

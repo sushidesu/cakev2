@@ -132,7 +132,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockRakuten: entity.stockRakuten,
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
-      blocks: entity.blocks,
+      blocks: [...entity.blocks],
       order,
     }
   }

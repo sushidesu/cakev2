@@ -9,7 +9,7 @@ export const convertFormValue = ({
   blocks,
 }: {
   itemInfo: ItemInfoFormValue
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }): Pick<
   Item,
   | "name"

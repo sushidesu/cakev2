@@ -13,12 +13,12 @@ export interface Item {
   stockRakuten: number
   stockMakeshop: number
   jancode: Jancode | undefined
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }
 
 export type CreateItemProps = {
   itemInfo: ItemInfoFormValue
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }
 
 export const createItem = ({ itemInfo, blocks }: CreateItemProps): Item => {
@@ -51,7 +51,7 @@ export const copyItem = ({
 export type UpdateItemProps = {
   target: Item
   itemInfo: ItemInfoFormValue
-  blocks: CustomBlock[]
+  blocks: readonly CustomBlock[]
 }
 
 export const updateItem = ({

@@ -61,7 +61,7 @@ export function OptionsContainer(): JSX.Element {
   const handleCreateItem = () => {
     create({
       itemInfo: itemInfoFormValue,
-      blocks: [],
+      blocks: blocks,
     })
   }
 
