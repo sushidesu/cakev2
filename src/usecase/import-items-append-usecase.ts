@@ -1,8 +1,16 @@
+import { IItemCollectionRepository } from "../domain/item/interface/itemCollectionRepository"
+import { JsonClientInterface } from "./interface/json-client-interface"
+
 export class ImportItemsAppendUsecase {
-  exec(): void {
+  constructor(
+    private jsonClient: JsonClientInterface,
+    private itemCollectionRepository: IItemCollectionRepository
+  ) {}
+
+  async exec(file: File): Promise<void> {
     // JSONから items を取得
-    // items を storageに保存
-    // 同じIDの商品は上書き
-    // それ以外は後ろに追加
+    const items = await this.jsonClient.getItemsFromJSONFile(file)
+    // items を storageに保存 (後ろに追加)
+    await this.itemCollectionRepository.saveItems({ items })
   }
 }

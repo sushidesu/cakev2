@@ -5,6 +5,10 @@ export type CreateItemProps = {
   item: Item
 }
 
+export type SaveItemsProps = {
+  items: Item[]
+}
+
 export type SaveItemProps = {
   id: ItemId
   item: Item
@@ -23,7 +27,9 @@ export interface IItemCollectionRepository {
   getSelectedItemId(): Promise<ItemId | null>
   createItem(props: CreateItemProps): Promise<void>
   saveItem(props: SaveItemProps): Promise<void>
+  saveItems(props: SaveItemsProps): Promise<void>
   removeItem(props: RemoveItemProps): Promise<void>
+  clear(): Promise<void>
   unSelectItem(): Promise<void>
   selectItem(props: SelectItemProps): Promise<void>
 }
