@@ -4,6 +4,7 @@ import {
   SaveItemProps,
   RemoveItemProps,
   SelectItemProps,
+  SaveItemsProps,
 } from "../domain/item/interface/itemCollectionRepository"
 import { ItemId } from "../domain/item/itemId"
 import { Jancode } from "../domain/jancode"
@@ -74,6 +75,11 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     await this.chromeStorageClient.storageV3LocalSet(next)
   }
 
+  public async saveItems({}: SaveItemsProps): Promise<void> {
+    // TODO
+    console.log("SAVE ITEMS!")
+  }
+
   public async getAllItems(): Promise<Item[]> {
     const storage_v3 = await this.chromeStorageClient.storageV3LocalGet()
     if (!storage_v3) {
@@ -82,6 +88,11 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     return Object.values(storage_v3.items)
       .sort((left, right) => left.order - right.order)
       .map(item => ItemCollectionRepository.resourceToEntity(item))
+  }
+
+  async clear(): Promise<void> {
+    // TODO
+    console.log("CLEAR STORAGE!")
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
