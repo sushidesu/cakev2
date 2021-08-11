@@ -2,14 +2,13 @@ import { Item } from "../domain/item/item"
 import { JsonClientInterface } from "./interface/json-client-interface"
 import { IItemCollectionRepository } from "../domain/item/interface/itemCollectionRepository"
 
-export class ExportAllItemsUsecase {
+export class ExportItemsUsecase {
   constructor(
     private JSONClient: JsonClientInterface,
     private itemCollectionRepository: IItemCollectionRepository
   ) {}
 
-  exec(items: Item[]): File {
-    const jsonFile = this.JSONClient.exportItemsAsJSONFile(items)
-    return jsonFile
+  exec(items: Item[]): void {
+    this.JSONClient.exportItemsAsJSONFile(items)
   }
 }

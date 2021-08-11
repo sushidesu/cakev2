@@ -101,6 +101,7 @@ export function OptionsContainer(): JSX.Element {
 
   return (
     <OptionsTemplate
+      itemList={itemList}
       itemListProps={{
         onClickCreateButton: startCreate,
         createButtonDisabled: target === undefined,

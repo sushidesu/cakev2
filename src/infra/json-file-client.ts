@@ -10,9 +10,13 @@ export class JSONFileClient implements JsonClientInterface {
     return []
   }
 
-  exportItemsAsJSONFile(): File {
+  exportItemsAsJSONFile(items: Item[]): void {
     // TODO
-    console.log("EXPORT FILE")
-    return new File([], "hoge.test")
+    console.log("EXPORT FILE", { items })
   }
+}
+
+type SchemeV3 = {
+  version: number
+  items: {}
 }

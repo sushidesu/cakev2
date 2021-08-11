@@ -7,8 +7,10 @@ import ItemEditor, { Props as ItemEditorProps } from "../itemEditor"
 import { Button } from "../Button"
 import { CustomBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
+import { Item } from "../../domain/item/item"
 
 export type Props = {
+  itemList: Item[]
   controllerProps: {
     createButton: ButtonControlProps
     saveButton: ButtonControlProps
@@ -75,6 +77,7 @@ const StickyButtonsWrapper = styled.div`
 `
 
 export function OptionsTemplate({
+  itemList,
   itemListProps,
   itemEditorProps,
   controllerProps,
@@ -90,7 +93,7 @@ export function OptionsTemplate({
   } = blockEditorControllerProps
   return (
     <Wrapper>
-      <Header />
+      <Header itemList={itemList} />
       <Container>
         <Columns className={"is-mobile"}>
           <Columns.Column size={3} className={"sidemenu"}>
