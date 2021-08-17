@@ -3,7 +3,7 @@ import { Modal, Form, Button } from "react-bulma-components"
 
 import { Item } from "../domain/item/item"
 import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
-import { JSONFileClient } from "../infra/json-file-client"
+import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
 
