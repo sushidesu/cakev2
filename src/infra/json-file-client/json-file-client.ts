@@ -13,6 +13,9 @@ export class JSONFileClient implements JsonClientInterface {
     this.scheme_v2_converter = new SchemeV2Client()
   }
 
+  /**
+   * idは新規生成します
+   */
   public getItemsFromJSONFile(json: any): Item[] {
     console.log("IMPORT JSON", { json })
 

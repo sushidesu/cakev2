@@ -78,8 +78,25 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
   }
 
   public async saveItems({ items }: SaveItemsProps): Promise<void> {
-    // TODO
     console.log("SAVE ITEMS!", items)
+    const prev = await this.chromeStorageClient.storageV3LocalGet()
+    if (!prev) throw new Error("cake_v3 not found")
+
+    const oldItems = prev.items
+    const newItems = Object.fromEntries(
+      items
+        .map(item => ItemCollectionRepository.entityToResource(item))
+        .map(itemValue => [itemValue.id.value, item])
+    )
+    const next: Storage_v3 = {
+      selectedItemId: null,
+      items: {
+        ...oldItems,
+        ...newItems,
+      },
+    }
+
+    await this.chromeStorageClient.storageV3LocalSet(next)
   }
 
   public async getAllItems(): Promise<Item[]> {
