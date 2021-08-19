@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { Modal, Form, Button } from "react-bulma-components"
-
 import { Item } from "../domain/item/item"
 import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
-import { ChromeStorageClient } from "../infra/chromeStorageClient"
-import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
 
 export type Props = {
   show: boolean
@@ -15,9 +12,7 @@ export type Props = {
 
 const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
   const jsonClient = new JSONFileClient()
-  const chromeClient = new ChromeStorageClient()
-  const itemRepository = new ItemCollectionRepository(chromeClient)
-  const exportItemsUsecase = new ExportItemsUsecase(jsonClient, itemRepository)
+  const exportItemsUsecase = new ExportItemsUsecase(jsonClient)
 
   const handleClickExport = () => {
     let items: Item[]
