@@ -9,7 +9,8 @@ export class ImportItemsAppendUsecase {
 
   async exec(file: File): Promise<void> {
     // JSONから items を取得
-    const items = await this.jsonClient.getItemsFromJSONFile(file)
+    const json = file // TODO
+    const items = await this.jsonClient.getItemsFromJSONFile(json)
     // items を storageに保存 (後ろに追加)
     await this.itemCollectionRepository.saveItems({ items })
   }

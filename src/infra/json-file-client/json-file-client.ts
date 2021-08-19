@@ -14,10 +14,8 @@ export class JSONFileClient implements JsonClientInterface {
     this.scheme_v2_converter = new SchemeV2Client()
   }
 
-  public getItemsFromJSONFile(file: File): Item[] {
-    console.log("IMPORT FILE", { file })
-    const str = "" // await this.readFile(file)
-    const json = JSON.parse(str ?? "")
+  public getItemsFromJSONFile(json: any): Item[] {
+    console.log("IMPORT JSON", { json })
 
     let items: Item[]
     // --- PARSE ---
@@ -46,10 +44,10 @@ export class JSONFileClient implements JsonClientInterface {
     return items
   }
 
-  public exportItemsAsJSONFile(items: Item[]): void {
+  public exportItemsAsJSONFile(items: Item[]): JSONScheme {
     console.log("EXPORT FILE", { items })
 
-    const value: JSONScheme = {
+    return {
       version: 3,
       items: Object.fromEntries(
         items
@@ -57,7 +55,8 @@ export class JSONFileClient implements JsonClientInterface {
           .map(item => [item.id, item])
       ),
     }
-    const encoded = encodeURIComponent(JSON.stringify(value))
+
+    const encoded = encodeURIComponent(JSON.stringify({}))
     const url = `data:text/json;charset=utf-8,${encoded}`
     const date = YYYY_MM_DD_HHmmss()
     const fileName = `item-list-${date}.json`

@@ -9,7 +9,8 @@ export class ImportItemsOverwriteUsecase {
 
   async exec(file: File): Promise<void> {
     // JSON から items を取得
-    const items = await this.jsonClient.getItemsFromJSONFile(file)
+    const json = file // TODO
+    const items = await this.jsonClient.getItemsFromJSONFile(json)
     // storageを削除
     await this.itemCollectionRepository.clear()
     // itemsをstorageに全部保存
