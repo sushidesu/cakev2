@@ -32,7 +32,7 @@ export class JSONFileClient implements JsonClientInterface {
       // case V2
       const storage_v2 = json as JSONScheme_V2
       // convert V2 -> V3 -> items
-      const storage_v3 = this.scheme_v2_converter.storageV2ToV3(
+      const storage_v3 = this.scheme_v2_converter.convertStorageV2ToV3(
         storage_v2.cakev2
       )
       items = Object.values(storage_v3.items)

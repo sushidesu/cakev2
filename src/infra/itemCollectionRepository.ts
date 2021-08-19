@@ -13,9 +13,13 @@ import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
 import { ChromeStorageClient } from "./chromeStorageClient"
 import { CustomBlock } from "../domain/customBlock/block"
 import { BlockId } from "../domain/block/blockId"
+import { SchemeV2Client } from "./scheme-v2-client/scheme-v2-client"
 
 export class ItemCollectionRepository implements IItemCollectionRepository {
-  public constructor(private chromeStorageClient: ChromeStorageClient) {}
+  private converter: SchemeV2Client
+  public constructor(private chromeStorageClient: ChromeStorageClient) {
+    this.converter = new SchemeV2Client()
+  }
 
   public async migrate(): Promise<void> {
     const storage_v3 = await this.chromeStorageClient.storageV3LocalGet()
@@ -28,9 +32,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }
     if (storage_v2) {
       console.log("execute migrate")
-      const new_storage_v3 = this.chromeStorageClient.convertStorageV2ToV3(
-        storage_v2
-      )
+      const new_storage_v3 = this.converter.convertStorageV2ToV3(storage_v2)
       await this.chromeStorageClient.storageV3LocalSet(new_storage_v3)
     }
   }
