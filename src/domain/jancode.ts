@@ -5,9 +5,14 @@ export class Jancode {
     this.validate(value)
     return new Jancode(value)
   }
-  public static reconstruct(value: string): Jancode {
+
+  public static reconstruct(value: string): Jancode | undefined {
     // not validated as it reconstructs from repository or tests
-    return new Jancode(value)
+    if (value) {
+      return new Jancode(value)
+    } else {
+      return undefined
+    }
   }
 
   public static validate(value: string): void {

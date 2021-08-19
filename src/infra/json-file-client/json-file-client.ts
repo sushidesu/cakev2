@@ -21,14 +21,18 @@ export class JSONFileClient implements JsonClientInterface {
     if (hasOwn.call(json, "version") && hasOwn.call(json, "items")) {
       // case V3
       const storage = json as JSONScheme
-      items = Object.values(storage.items)
-        //      .sort((left, right) => left.order - right.order)
-        .map(itemJson => this.converter.JSONToEntity(itemJson))
       // convert V3 -> items
+      items = Object.values(storage.items)
+        // .sort((left, right) => left.order - right.order)
+        .map(itemJson => this.converter.JSON_V3ToEntity(itemJson))
     } else if (hasOwn.call(json, "cakev2")) {
       // case V2
       const storage = json as JSONScheme_V2
       // convert V2 -> V3 -> items
+      items = Object.values(storage.cakev2.shopItems).map(itemJson =>
+        this.converter.JSON_V2ToEntity(itemJson)
+      )
+      //
     } else {
       // case unknown
       throw Error("インポートに失敗しました。対応していないファイルです。")
