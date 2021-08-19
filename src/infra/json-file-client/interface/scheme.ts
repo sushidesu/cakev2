@@ -1,3 +1,6 @@
+import { Storage_v2 } from "../../scheme-v2-client/interface/scheme"
+import { ItemValue, BlockValue } from "../../scheme"
+
 export type JSONScheme = {
   version: number
   items: {
@@ -5,45 +8,9 @@ export type JSONScheme = {
   }
 }
 
-export type ItemJSON = {
-  id: string
-  name: string
-  price: number
-  weight: number
-  stockRakuten: number
-  stockMakeshop: number
-  jancode: string
-  blocks: BlockJSON[]
-}
-
-export type BlockJSON = {
-  id: string
-  type: string
-  value: any
-}
+export type ItemJSON = ItemValue
+export type BlockJSON = BlockValue
 
 export type JSONScheme_V2 = {
-  cakev2: {
-    shopItems: ItemJSON_V2[]
-    nowItemIndex: number
-  }
-}
-
-export type ItemJSON_V2 = {
-  id: number
-  name: string
-  price: string
-  weight: string
-  stockRakuten: string
-  stockMakeshop: string
-  jancode: string
-  imageURL: string
-  descriptions: ItemText[]
-  details: ItemText[]
-}
-
-export type ItemText = {
-  index: number
-  title: string
-  body: string
+  cakev2: Storage_v2
 }
