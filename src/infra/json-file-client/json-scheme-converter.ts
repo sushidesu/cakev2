@@ -24,4 +24,7 @@ export class JSONShcemeConverter {
       value: block.value,
     }
   }
+
+  public JSON_V3ToEntity(json: ItemJSON): Item {}
+  public JSON_V3ToBlock(json: BlockJSON): CustomBlock {}
 }

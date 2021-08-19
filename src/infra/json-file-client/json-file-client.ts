@@ -16,10 +16,14 @@ export class JSONFileClient implements JsonClientInterface {
     const str = "" // await this.readFile(file)
     const json = JSON.parse(str ?? "")
 
+    let items: Item[]
     // parse
     if (hasOwn.call(json, "version") && hasOwn.call(json, "items")) {
       // case V3
       const storage = json as JSONScheme
+      items = Object.values(storage.items)
+        //      .sort((left, right) => left.order - right.order)
+        .map(itemJson => this.converter.JSONToEntity(itemJson))
       // convert V3 -> items
     } else if (hasOwn.call(json, "cakev2")) {
       // case V2
@@ -30,7 +34,7 @@ export class JSONFileClient implements JsonClientInterface {
       throw Error("インポートに失敗しました。対応していないファイルです。")
     }
 
-    return []
+    return items
   }
 
   public exportItemsAsJSONFile(items: Item[]): void {
