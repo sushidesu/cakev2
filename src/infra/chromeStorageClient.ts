@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from "uuid"
 import { IChromeStorageClient } from "./interface/chromeStorageClient"
 import {
-  Storage_v2,
   Storage_v3,
   KEY_VERSION_2,
   KEY_VERSION_3,
   ItemValue,
   BlockValue,
 } from "./scheme"
+import { Storage_v2 } from "./scheme-v2-client/interface/scheme"
 import { IShopItem } from "../shopItem"
 import { stringToNumber } from "../utils/stringToNumber"
 
