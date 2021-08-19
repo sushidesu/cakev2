@@ -3,6 +3,7 @@ import { Modal, Form, Button } from "react-bulma-components"
 import { Item } from "../domain/item/item"
 import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
+import { FileIOClient } from "../infra/file-io-client"
 
 export type Props = {
   show: boolean
@@ -12,7 +13,8 @@ export type Props = {
 
 const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
   const jsonClient = new JSONFileClient()
-  const exportItemsUsecase = new ExportItemsUsecase(jsonClient)
+  const fileIOClient = new FileIOClient()
+  const exportItemsUsecase = new ExportItemsUsecase(jsonClient, fileIOClient)
 
   const handleClickExport = () => {
     let items: Item[]

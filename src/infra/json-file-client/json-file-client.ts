@@ -1,7 +1,6 @@
 import { Item } from "../../domain/item/item"
 import { JsonClientInterface } from "../../usecase/interface/json-client-interface"
 import { JSONScheme, JSONScheme_V2 } from "./interface/scheme"
-import { YYYY_MM_DD_HHmmss } from "../../plugins/date"
 import { JSONShcemeConverter } from "./json-scheme-converter"
 import { SchemeV2Client } from "../scheme-v2-client/scheme-v2-client"
 
@@ -55,28 +54,5 @@ export class JSONFileClient implements JsonClientInterface {
           .map(item => [item.id, item])
       ),
     }
-
-    const encoded = encodeURIComponent(JSON.stringify({}))
-    const url = `data:text/json;charset=utf-8,${encoded}`
-    const date = YYYY_MM_DD_HHmmss()
-    const fileName = `item-list-${date}.json`
-
-    chrome.downloads.download({
-      url,
-      filename: fileName,
-    })
-  }
-
-  private readFile(file: File): Promise<string | undefined> {
-    const reader = new FileReader()
-    reader.readAsText(file)
-
-    return new Promise<string | undefined>(resolve => {
-      reader.onload = (ev: ProgressEvent<FileReader>) => {
-        ev.target?.result && typeof ev.target.result === "string"
-          ? resolve(ev.target.result)
-          : resolve(undefined)
-      }
-    })
   }
 }
