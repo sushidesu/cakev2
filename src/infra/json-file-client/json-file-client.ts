@@ -20,6 +20,7 @@ export class JSONFileClient implements JsonClientInterface {
     // --- PARSE ---
     if (hasOwn.call(json, "version") && hasOwn.call(json, "items")) {
       // case V3
+      console.log("import v3")
       const storage = json as JSONScheme
       // convert V3 -> items
       items = Object.values(storage.items)
@@ -27,6 +28,7 @@ export class JSONFileClient implements JsonClientInterface {
         .map(itemJson => this.converter.JSON_V3ToEntity(itemJson))
     } else if (hasOwn.call(json, "cakev2")) {
       // case V2
+      console.log("import v2")
       const storage_v2 = json as JSONScheme_V2
       // convert V2 -> V3 -> items
       const storage_v3 = this.scheme_v2_converter.convertStorageV2ToV3(

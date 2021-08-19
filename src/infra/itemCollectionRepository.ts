@@ -77,9 +77,9 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     await this.chromeStorageClient.storageV3LocalSet(next)
   }
 
-  public async saveItems({}: SaveItemsProps): Promise<void> {
+  public async saveItems({ items }: SaveItemsProps): Promise<void> {
     // TODO
-    console.log("SAVE ITEMS!")
+    console.log("SAVE ITEMS!", items)
   }
 
   public async getAllItems(): Promise<Item[]> {

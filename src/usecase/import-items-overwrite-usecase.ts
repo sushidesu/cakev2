@@ -11,7 +11,7 @@ export class ImportItemsOverwriteUsecase {
 
   async exec(file: File): Promise<void> {
     // JSON file から items を取得
-    const json = this.fileIO.load(file)
+    const json = await this.fileIO.load(file)
     const items = await this.jsonClient.getItemsFromJSONFile(json)
     // storageを削除
     await this.itemCollectionRepository.clear()
