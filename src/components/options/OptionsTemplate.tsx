@@ -53,21 +53,26 @@ const BlockEditorController = styled.div`
   }
 `
 
+const Spacer = styled.div`
+  margin: 0 0.5em;
+`
+
 const StickyButtonsWrapper = styled.div`
-  margin-top: 2em;
+  margin-top: 3em;
   position: sticky;
   bottom: 0;
   background-color: white;
   display: flex;
   justify-content: space-between;
-  padding: 40px 20px 20px;
+  padding: 20px;
 
   &:before {
     content: "";
     position: absolute;
-    top: 0;
+    top: -20px;
     left: 0;
     box-shadow: inset 0 -5px 5px #efefef;
+    background-color: transparent;
     border-radius: 4px;
     width: 100%;
     height: 20px;
@@ -102,9 +107,11 @@ export function OptionsTemplate({
             <ItemList {...itemListProps} />
           </Columns.Column>
           <Columns.Column>
-            <ItemEditor {...itemEditorProps} />
+            <Spacer>
+              <ItemEditor {...itemEditorProps} />
+            </Spacer>
             <hr />
-            <div>
+            <Spacer>
               <div>
                 {blocks.map(block => (
                   <BlockEditor key={block.block.id.value} {...block} />
@@ -116,7 +123,7 @@ export function OptionsTemplate({
                 <Button {...addImageBlockButton}>画像を追加</Button>
                 <Button {...addTableBlockButton}>テーブルを追加</Button>
               </BlockEditorController>
-            </div>
+            </Spacer>
             <StickyButtonsWrapper>
               <div>
                 <Button {...createButton} color="primary">
