@@ -15,6 +15,7 @@ export interface ItemCollection {
   duplicate: () => void
   startCreate: () => void
   select: (id: ItemId) => void
+  reset: () => Promise<void>
 }
 
 export type ItemCreateProps = {
@@ -58,6 +59,27 @@ export const useItemCollection = (
       unmounted = true
     }
   }, [])
+
+  /// observe mount
+  const [_unmounted, _setUnmounted] = useState(false)
+  useEffect(() => {
+    return () => {
+      _setUnmounted(true)
+    }
+  }, [])
+  /// reset items
+  const reset = useCallback(async () => {
+    const [result, id] = await Promise.all([
+      storage.getAllItems(),
+      storage.getSelectedItemId(),
+    ])
+    console.log({ result, id })
+
+    if (!_unmounted) {
+      setItems(result)
+      setSelectedItemId(id)
+    }
+  }, [storage, _unmounted])
 
   const create = useCallback(
     async ({ itemInfo, blocks }: ItemCreateProps) => {
@@ -139,6 +161,7 @@ export const useItemCollection = (
 
   return {
     target,
+    reset,
     itemList: items,
     create,
     update,

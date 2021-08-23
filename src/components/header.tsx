@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react"
 import { Navbar, Container } from "react-bulma-components"
 import Logo from "../images/sweets_cheesecake.png"
-import ImportModal from "./importModal"
+import ImportModal, { Props as ImportModalProps } from "./importModal"
 import ExportModal from "./exportModal"
 import { Item } from "../domain/item/item"
 
 export type Props = {
   itemList: Item[]
+  resetItemCollection: ImportModalProps["resetItemCollection"]
 }
 
-export default ({ itemList }: Props) => {
+export default ({ itemList, resetItemCollection }: Props) => {
   const [show, setShow] = useState(false)
   const [showExport, setShowExport] = useState(false)
   useEffect(() => {
@@ -48,7 +49,11 @@ export default ({ itemList }: Props) => {
         </Container>
       </Navbar>
 
-      <ImportModal show={show} setShow={setShow} />
+      <ImportModal
+        show={show}
+        setShow={setShow}
+        resetItemCollection={resetItemCollection}
+      />
       <ExportModal
         itemList={itemList}
         show={showExport}

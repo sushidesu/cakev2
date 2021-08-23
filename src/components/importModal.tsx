@@ -7,10 +7,17 @@ import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client"
 
-const ImportModal: React.FC<{
+export type Props = {
   show: boolean
   setShow: (show: boolean) => void
-}> = ({ show, setShow }) => {
+  resetItemCollection: () => Promise<void>
+}
+
+const ImportModal = ({
+  show,
+  setShow,
+  resetItemCollection,
+}: Props): JSX.Element => {
   const [filename, setFilename] = useState<string | undefined>(undefined)
   const [overwrite, setOverwrite] = useState(false)
   const fileinput = useRef<HTMLInputElement | null>(null)
@@ -53,10 +60,11 @@ const ImportModal: React.FC<{
     }
     const file = files[0]
     if (overwrite) {
-      importItemsOverwrite.exec(file)
+      await importItemsOverwrite.exec(file)
     } else {
-      importItemsAppend.exec(file)
+      await importItemsAppend.exec(file)
     }
+    await resetItemCollection()
     close()
   }
 

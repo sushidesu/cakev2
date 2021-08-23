@@ -20,8 +20,14 @@ export function OptionsContainer(): JSX.Element {
     update,
     remove,
     duplicate,
+    reset,
   } = useItemCollection(itemCollectionRepository)
 
+  const resetItemCollection = async () => {
+    await reset()
+  }
+
+  ////// info /////
   const {
     itemInfoFormValue,
     itemInfoFormError,
@@ -102,6 +108,7 @@ export function OptionsContainer(): JSX.Element {
   return (
     <OptionsTemplate
       itemList={itemList}
+      resetItemCollection={resetItemCollection}
       itemListProps={{
         onClickCreateButton: startCreate,
         createButtonDisabled: target === undefined,

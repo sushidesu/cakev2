@@ -11,6 +11,7 @@ import { Item } from "../../domain/item/item"
 
 export type Props = {
   itemList: Item[]
+  resetItemCollection: () => Promise<void>
   controllerProps: {
     createButton: ButtonControlProps
     saveButton: ButtonControlProps
@@ -78,6 +79,7 @@ const StickyButtonsWrapper = styled.div`
 
 export function OptionsTemplate({
   itemList,
+  resetItemCollection,
   itemListProps,
   itemEditorProps,
   controllerProps,
@@ -93,7 +95,7 @@ export function OptionsTemplate({
   } = blockEditorControllerProps
   return (
     <Wrapper>
-      <Header itemList={itemList} />
+      <Header itemList={itemList} resetItemCollection={resetItemCollection} />
       <Container>
         <Columns className={"is-mobile"}>
           <Columns.Column size={3} className={"sidemenu"}>
