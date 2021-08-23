@@ -13,6 +13,7 @@ export function TextBlockEditor({
   return (
     <BlockEditorWrapper label="文章" {...rest}>
       <Textarea
+        placeholder="例: 肌にやさしい洗剤です。ふんわり仕上がります。"
         defaultValue={block.value.content}
         onBlur={e => {
           e.persist()

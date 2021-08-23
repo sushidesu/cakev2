@@ -18,6 +18,7 @@ export function ImageBlockEditor({
         </div>
         <div className="media-content">
           <Input
+            placeholder="画像ファイルのURLを入力"
             defaultValue={block.value.imageUrl}
             onBlur={e => {
               e.persist()

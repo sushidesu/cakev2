@@ -17,6 +17,7 @@ export function TableRowEditor({
     <tr>
       <NarrowTh>
         <Input
+          placeholder="例: 内容量"
           defaultValue={row.title}
           onBlur={e => {
             e.persist()
@@ -29,6 +30,7 @@ export function TableRowEditor({
       </NarrowTh>
       <td>
         <Textarea
+          placeholder="例: 100g"
           rows={3}
           defaultValue={row.body}
           onBlur={e => {
