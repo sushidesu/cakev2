@@ -118,8 +118,11 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
   }
 
   async clear(): Promise<void> {
-    // TODO
     console.log("CLEAR STORAGE!")
+    this.chromeStorageClient.storageV3LocalSet({
+      items: {},
+      selectedItemId: null,
+    })
   }
 
   async removeItem({ id }: RemoveItemProps): Promise<void> {
