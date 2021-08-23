@@ -3,6 +3,7 @@ import { TextBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 import { Input } from "../atom/Input"
+import { Textarea } from "../atom/Textarea"
 
 export function TextBlockEditor({
   block,
@@ -11,7 +12,7 @@ export function TextBlockEditor({
 }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
     <BlockEditorWrapper label="文章" {...rest}>
-      <Input
+      <Textarea
         defaultValue={block.value.content}
         onBlur={e => {
           e.persist()

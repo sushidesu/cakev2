@@ -1,6 +1,7 @@
 import React from "react"
 import { TableRow } from "../../domain/customBlock/block"
 import { Input } from "../atom/Input"
+import { Textarea } from "../atom/Textarea"
 
 type TableRowEditorProps = {
   row: TableRow
@@ -26,8 +27,7 @@ export function TableRowEditor({
         />
       </th>
       <td>
-        <textarea
-          className="textarea"
+        <Textarea
           rows={3}
           defaultValue={row.body}
           onBlur={e => {
