@@ -3,6 +3,9 @@ import { CheckboxState } from "../popup"
 
 export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
   const frame = document.querySelector("[name='mainframe']") as HTMLFrameElement
+  if (!frame.contentWindow) {
+    return
+  }
   const form = frame.contentWindow.document
 
   // ポイント => 1%
@@ -53,7 +56,7 @@ export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
         "#cke_1_contents > textarea"
       ) as HTMLTextAreaElement) ||
       (() => {
-        form.getElementById("cke_23").click()
+        form.getElementById("cke_23")?.click()
         return form.querySelector(
           "#cke_1_contents > textarea"
         ) as HTMLTextAreaElement
@@ -65,7 +68,7 @@ export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
         "#cke_2_contents > textarea"
       ) as HTMLTextAreaElement) ||
       (() => {
-        form.getElementById("cke_87").click()
+        form.getElementById("cke_87")?.click()
         return form.querySelector(
           "#cke_2_contents > textarea"
         ) as HTMLTextAreaElement

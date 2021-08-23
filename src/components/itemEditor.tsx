@@ -1,31 +1,36 @@
-import React, { useContext, useEffect } from "react"
+import React from "react"
 import styled from "styled-components"
-import { Container, Columns, Heading } from "react-bulma-components"
-import { ItemStore } from "./itemStore"
-import { useFormReducer } from "./formState"
-import { FormInput, FormImageInput } from "./formSingleInputs"
-import { FormDescriptions, FormDetails } from "./formMultipleInputs"
-import FormButtons from "./formButtons"
+import { Container, Columns } from "react-bulma-components"
+import { FormInput } from "./formSingleInputs"
+import { InputError } from "../utils/inputError"
 
 const FormWrapper = styled.div`
   margin: 0 5px;
 `
+export type FormValue = {
+  name: string
+  price: string
+  weight: string
+  stockRakuten: string
+  stockMakeshop: string
+  jancode: string
+}
 
-export default () => {
-  const { globalState, setGlobalState } = useContext(ItemStore)
-  const [formState, dispatchForm] = useFormReducer()
+export type Props = {
+  editTargetInfo: FormValue
+  formError: {
+    [key in keyof FormValue]: InputError
+  }
+  handleChange: (
+    key: keyof FormValue
+  ) => (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-  const { value, message } = formState
-
-  useEffect(() => {
-    if (globalState.nowItemIndex === null) {
-      dispatchForm({ type: "initField" })
-    } else {
-      const selected = globalState.shopItems[globalState.nowItemIndex]
-      dispatchForm({ type: "select", value: selected })
-    }
-  }, [globalState.nowItemIndex])
-
+function ItemEditor({
+  editTargetInfo,
+  formError,
+  handleChange,
+}: Props): JSX.Element {
   return (
     <Container>
       <FormWrapper>
@@ -34,9 +39,9 @@ export default () => {
             <FormInput
               label={"商品名"}
               field={"name"}
-              value={value.name}
-              message={message.name}
-              dispatch={dispatchForm}
+              value={editTargetInfo.name}
+              message={formError.name.message}
+              onChange={handleChange("name")}
             />
           </Columns.Column>
         </Columns>
@@ -48,9 +53,9 @@ export default () => {
                 <FormInput
                   label={"値段(税抜き)"}
                   field={"price"}
-                  value={value.price}
-                  message={message.price}
-                  dispatch={dispatchForm}
+                  value={editTargetInfo.price}
+                  message={formError.price.message}
+                  onChange={handleChange("price")}
                   type={"number"}
                 />
               </Columns.Column>
@@ -58,9 +63,9 @@ export default () => {
                 <FormInput
                   label={"重さ(g)"}
                   field={"weight"}
-                  value={value.weight}
-                  message={message.weight}
-                  dispatch={dispatchForm}
+                  value={editTargetInfo.weight}
+                  message={formError.weight.message}
+                  onChange={handleChange("weight")}
                   type={"number"}
                 />
               </Columns.Column>
@@ -73,9 +78,9 @@ export default () => {
                 <FormInput
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
-                  value={value.stockRakuten}
-                  message={message.stockRakuten}
-                  dispatch={dispatchForm}
+                  value={editTargetInfo.stockRakuten}
+                  message={formError.stockRakuten.message}
+                  onChange={handleChange("stockRakuten")}
                   type={"number"}
                 />
               </Columns.Column>
@@ -83,9 +88,9 @@ export default () => {
                 <FormInput
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
-                  value={value.stockMakeshop}
-                  message={message.stockMakeshop}
-                  dispatch={dispatchForm}
+                  value={editTargetInfo.stockMakeshop}
+                  message={formError.stockMakeshop.message}
+                  onChange={handleChange("stockMakeshop")}
                   type={"number"}
                 />
               </Columns.Column>
@@ -98,59 +103,16 @@ export default () => {
             <FormInput
               label={"JANコード"}
               field={"jancode"}
-              value={value.jancode}
-              message={message.jancode}
-              dispatch={dispatchForm}
+              value={editTargetInfo.jancode}
+              message={formError.jancode.message}
+              onChange={handleChange("jancode")}
             />
           </Columns.Column>
           <Columns.Column size={"half"} />
         </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <FormImageInput
-              label={"商品画像URL"}
-              field={"imageURL"}
-              value={value.imageURL}
-              message={message.imageURL}
-              dispatch={dispatchForm}
-            />
-          </Columns.Column>
-        </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <Heading textAlignment={"centered"} subtitle>
-              商品説明
-            </Heading>
-            <FormDescriptions
-              value={value.descriptions}
-              dispatch={dispatchForm}
-            />
-          </Columns.Column>
-        </Columns>
-
-        <hr />
-
-        <Columns>
-          <Columns.Column>
-            <Heading textAlignment={"centered"} subtitle>
-              商品詳細
-            </Heading>
-            <FormDetails value={value.details} dispatch={dispatchForm} />
-          </Columns.Column>
-        </Columns>
       </FormWrapper>
-
-      <FormButtons
-        formValues={value}
-        setGlobalState={setGlobalState}
-        disabled={Object.values(message).some(msg => msg !== "")}
-      />
     </Container>
   )
 }
+
+export default ItemEditor

@@ -1,19 +1,33 @@
-import React, { useState, useRef, useContext } from "react"
+import React, { useState, useRef } from "react"
 import { Modal, Form, Button, Icon } from "react-bulma-components"
-import { ItemStore } from "./itemStore"
-import { importFile } from "../utils"
+import { ImportItemsAppendUsecase } from "../usecase/import-items-append-usecase"
+import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-usecase"
+import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
+import { ChromeStorageClient } from "../infra/chromeStorageClient"
+import { JSONFileClient } from "../infra/json-file-client/json-file-client"
+import { FileIOClient } from "../infra/file-io-client"
 
-const ImportModal: React.FC<{
+export type Props = {
   show: boolean
   setShow: (show: boolean) => void
-}> = ({ show, setShow }) => {
-  const { setGlobalState } = useContext(ItemStore)
-  const [filename, setFilename] = useState(undefined)
+  resetItemCollection: () => Promise<void>
+}
+
+const ImportModal = ({
+  show,
+  setShow,
+  resetItemCollection,
+}: Props): JSX.Element => {
+  const [filename, setFilename] = useState<string | undefined>(undefined)
   const [overwrite, setOverwrite] = useState(false)
-  const fileinput = useRef<HTMLInputElement>()
+  const fileinput = useRef<HTMLInputElement | null>(null)
 
   const fileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilename(e.target.files.length > 0 ? e.target.files[0].name : undefined)
+    setFilename(
+      e.target.files?.length && e.target.files.length > 0
+        ? e.target.files[0].name
+        : undefined
+    )
   }
 
   const close = () => {
@@ -21,13 +35,36 @@ const ImportModal: React.FC<{
     setShow(false)
   }
 
+  const chromeStorageClient = new ChromeStorageClient()
+  const itemCollectionRepository = new ItemCollectionRepository(
+    chromeStorageClient
+  )
+  const jsonClient = new JSONFileClient()
+  const fileIOClient = new FileIOClient()
+  const importItemsAppend = new ImportItemsAppendUsecase(
+    jsonClient,
+    itemCollectionRepository,
+    fileIOClient
+  )
+  const importItemsOverwrite = new ImportItemsOverwriteUsecase(
+    jsonClient,
+    itemCollectionRepository,
+    fileIOClient
+  )
+
   const _import = async () => {
-    const files = fileinput.current.files
-    if (files.length === 0) {
+    const files = fileinput?.current?.files
+    if (!files || files.length === 0) {
       window.alert("ファイルが選択されていません")
       return
     }
-    importFile(files[0], overwrite, setGlobalState)
+    const file = files[0]
+    if (overwrite) {
+      await importItemsOverwrite.exec(file)
+    } else {
+      await importItemsAppend.exec(file)
+    }
+    await resetItemCollection()
     close()
   }
 

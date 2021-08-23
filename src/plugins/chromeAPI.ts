@@ -6,7 +6,7 @@ export type ChromeStorageItem = {
   cakev2: StateToManageInChromeStorage
 }
 
-export const getAll = () =>
+export const getAll = (): Promise<{ [key: string]: any }> =>
   new Promise(resolve => {
     chrome.storage.local.get(null, items => {
       resolve(items)

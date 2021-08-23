@@ -22,7 +22,7 @@ export type MultipleItemFields = Pick<IShopItem, "descriptions" | "details">
 export type SingleItemFields = Omit<IShopItem, keyof MultipleItemFields | "id">
 
 export const initialItem: IShopItem = {
-  id: null,
+  id: 0,
   name: "",
   price: "",
   weight: "",

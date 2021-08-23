@@ -2,7 +2,8 @@ import { IShopItem } from "../shopItem"
 import { CheckboxState } from "../popup"
 import { rakutenSPDescription } from "./rakutenSPDescription"
 
-const setValue = (element: HTMLInputElement, value: string) => {
+const setValue = (element: HTMLInputElement | null, value: string) => {
+  if (!element) return
   try {
     element.value = value
     const event = new Event("input", { bubbles: true })

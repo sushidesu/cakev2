@@ -1,8 +1,6 @@
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Menu, Button } from "react-bulma-components"
-import { ItemStore } from "./itemStore"
-import { IShopItem } from "../shopItem"
 
 const Wrapper = styled.div`
   position: sticky;
@@ -23,33 +21,36 @@ const ButtonWrapper = styled.div`
   margin-bottom: 1rem;
 `
 
-export default () => {
-  const { globalState, setGlobalState } = useContext(ItemStore)
+export type Props = {
+  onClickCreateButton?: () => void
+  createButtonDisabled?: boolean
+  items: {
+    id: string
+    name: string
+    selected?: boolean
+    onClick?: () => void
+  }[]
+}
 
+function ItemList({
+  onClickCreateButton,
+  createButtonDisabled,
+  items,
+}: Props): JSX.Element {
   return (
     <Wrapper>
       <ButtonWrapper>
-        <Button
-          onClick={() => {
-            setGlobalState({ type: "select", index: null })
-          }}
-          disabled={globalState.nowItemIndex === null}
-        >
+        <Button onClick={onClickCreateButton} disabled={createButtonDisabled}>
           新しい商品を追加
         </Button>
       </ButtonWrapper>
       <Menu>
         <Menu.List title="Item List">
-          {globalState.shopItems.map((item: IShopItem) => (
+          {items.map(item => (
             <Menu.List.Item
               key={item.id}
-              active={item.id === globalState.nowItemIndex}
-              onClick={() =>
-                setGlobalState({
-                  type: "select",
-                  index: item.id,
-                })
-              }
+              active={item.selected}
+              onClick={item.onClick}
             >
               {item.name}
             </Menu.List.Item>
@@ -59,3 +60,5 @@ export default () => {
     </Wrapper>
   )
 }
+
+export default ItemList
