@@ -27,9 +27,8 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     const storage_v2 = await this.chromeStorageClient.storageV2LocalGet()
     if (storage_v3) {
       // migrateの必要なし
-      // resolve()
       console.log("cakev3 is already exist")
-      // return
+      return
     }
     if (storage_v2) {
       console.log("execute migrate")
