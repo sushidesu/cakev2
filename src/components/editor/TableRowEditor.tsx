@@ -1,4 +1,5 @@
 import React from "react"
+import styled from "styled-components"
 import { TableRow } from "../../domain/customBlock/block"
 import { Input } from "../atom/Input"
 import { Textarea } from "../atom/Textarea"
@@ -14,7 +15,7 @@ export function TableRowEditor({
 }: TableRowEditorProps): JSX.Element {
   return (
     <tr>
-      <th>
+      <NarrowTh>
         <Input
           defaultValue={row.title}
           onBlur={e => {
@@ -25,7 +26,7 @@ export function TableRowEditor({
             }))
           }}
         />
-      </th>
+      </NarrowTh>
       <td>
         <Textarea
           rows={3}
@@ -42,3 +43,7 @@ export function TableRowEditor({
     </tr>
   )
 }
+
+const NarrowTh = styled.th`
+  width: 40%;
+`
