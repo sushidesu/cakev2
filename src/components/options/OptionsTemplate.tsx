@@ -8,6 +8,7 @@ import { Button } from "../Button"
 import { CustomBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 import { Item } from "../../domain/item/item"
+import { useAlertContext } from "../../contexts/alert/alertContext"
 
 export type Props = {
   itemList: Item[]
@@ -98,12 +99,21 @@ export function OptionsTemplate({
     addImageBlockButton,
     addTableBlockButton,
   } = blockEditorControllerProps
+  // 仮
+  const { showAlert } = useAlertContext()
   return (
     <Wrapper>
       <Header itemList={itemList} resetItemCollection={resetItemCollection} />
       <Container>
         <Columns className={"is-mobile"}>
           <Columns.Column size={3} className={"sidemenu"}>
+            <button
+              onClick={() => {
+                showAlert("HEY HEY HEY")
+              }}
+            >
+              みろ！
+            </button>
             <ItemList {...itemListProps} />
           </Columns.Column>
           <Columns.Column>
