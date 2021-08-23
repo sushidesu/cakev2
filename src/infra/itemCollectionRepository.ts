@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid"
 import {
   IItemCollectionRepository,
   CreateItemProps,
@@ -82,18 +83,25 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     const prev = await this.chromeStorageClient.storageV3LocalGet()
     if (!prev) throw new Error("cake_v3 not found")
 
-    const oldItems = prev.items
-    const newItems = Object.fromEntries(
-      items
-        .map(item => ItemCollectionRepository.entityToResource(item))
-        .map(itemValue => [itemValue.id.value, item])
-    )
+    const oldItems = Object.values(prev.items).sort((a, b) => a.order - b.order)
+    const numOfItems = ItemCollectionRepository.getNumberOfItems(prev)
+    const newItems = items
+      .map((item, index) =>
+        ItemCollectionRepository.entityToResource(item, numOfItems + index)
+      )
+      .map(itemValue => ({
+        ...itemValue,
+        id: uuidv4(), // 既存のitemを上書きしない
+      }))
+
+    const merged = oldItems.concat(newItems)
+    const sorted = merged.map((item, index) => ({
+      ...item,
+      order: index, // 一応orderを上書き
+    }))
     const next: Storage_v3 = {
       selectedItemId: null,
-      items: {
-        ...oldItems,
-        ...newItems,
-      },
+      items: Object.fromEntries(sorted.map(item => [item.id, item])),
     }
 
     await this.chromeStorageClient.storageV3LocalSet(next)
