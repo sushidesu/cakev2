@@ -3,9 +3,14 @@ import ReactDOM from "react-dom"
 import "react-bulma-components/dist/react-bulma-components.min.css"
 import { ItemStoreProvider } from "./components/itemStore"
 import { OptionsContainer } from "./components/options/OptionsContainer"
+import { AlertContextProvider } from "./contexts/alert/alertContext"
 
 const Options = (): JSX.Element => {
-  return <OptionsContainer />
+  return (
+    <AlertContextProvider>
+      <OptionsContainer />
+    </AlertContextProvider>
+  )
 }
 
 try {

@@ -6,6 +6,7 @@ import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
 import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client"
+import { useAlertContext } from "../contexts/alert/alertContext"
 
 export type Props = {
   show: boolean
@@ -52,20 +53,39 @@ const ImportModal = ({
     fileIOClient
   )
 
+  const { showAlert } = useAlertContext()
   const _import = async () => {
-    const files = fileinput?.current?.files
-    if (!files || files.length === 0) {
-      window.alert("ファイルが選択されていません")
-      return
+    try {
+      const files = fileinput?.current?.files
+      if (!files || files.length === 0) {
+        window.alert("ファイルが選択されていません")
+        return
+      }
+      const file = files[0]
+      if (overwrite) {
+        if (
+          !window.confirm(
+            "現在登録されている商品は全て消去されます。よろしいですか？"
+          )
+        ) {
+          close()
+          showAlert({
+            type: "error",
+            message: "インポートをキャンセルしました。",
+          })
+          return
+        }
+        await importItemsOverwrite.exec(file)
+      } else {
+        await importItemsAppend.exec(file)
+      }
+      await resetItemCollection()
+      close()
+      const message = overwrite ? "上書きしました。" : "追加しました。"
+      showAlert({ type: "success", message })
+    } catch (err) {
+      showAlert({ type: "error", message: err.message })
     }
-    const file = files[0]
-    if (overwrite) {
-      await importItemsOverwrite.exec(file)
-    } else {
-      await importItemsAppend.exec(file)
-    }
-    await resetItemCollection()
-    close()
   }
 
   return (

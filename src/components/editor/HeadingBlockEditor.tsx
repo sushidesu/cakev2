@@ -12,6 +12,7 @@ export function HeadingBlockEditor({
   return (
     <BlockEditorWrapper label={"見出し"} {...rest}>
       <Input
+        placeholder="例: とってもすてきな洗剤"
         defaultValue={block.value.content}
         onBlur={e => {
           e.persist()

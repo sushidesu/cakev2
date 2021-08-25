@@ -18,6 +18,7 @@ export function ImageBlockEditor({
         </div>
         <div className="media-content">
           <Input
+            placeholder="画像ファイルのURLを入力"
             defaultValue={block.value.imageUrl}
             onBlur={e => {
               e.persist()
@@ -57,6 +58,27 @@ const Figure = styled.figure`
   }
 `
 
+const NoImage = styled.div`
+  position: relative;
+  width: 128px;
+  height: 128px;
+  text-align: center;
+  user-select: none;
+  &:before {
+    content: "No Image";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+`
+
 const Thumbnail = ({ src }: { src: string }): JSX.Element => (
-  <Figure className={"image is-128x128"}>{src && <img src={src} />}</Figure>
+  <Figure className={"image is-128x128"}>
+    {src ? (
+      <img src={src} />
+    ) : (
+      <NoImage className="has-background-light has-text-grey" />
+    )}
+  </Figure>
 )

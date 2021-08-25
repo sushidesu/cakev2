@@ -1,6 +1,8 @@
 import React from "react"
+import styled from "styled-components"
 import { TableRow } from "../../domain/customBlock/block"
 import { Input } from "../atom/Input"
+import { Textarea } from "../atom/Textarea"
 
 type TableRowEditorProps = {
   row: TableRow
@@ -13,8 +15,9 @@ export function TableRowEditor({
 }: TableRowEditorProps): JSX.Element {
   return (
     <tr>
-      <th>
+      <NarrowTh>
         <Input
+          placeholder="例: 内容量"
           defaultValue={row.title}
           onBlur={e => {
             e.persist()
@@ -24,10 +27,10 @@ export function TableRowEditor({
             }))
           }}
         />
-      </th>
+      </NarrowTh>
       <td>
-        <textarea
-          className="textarea"
+        <Textarea
+          placeholder="例: 100g"
           rows={3}
           defaultValue={row.body}
           onBlur={e => {
@@ -42,3 +45,7 @@ export function TableRowEditor({
     </tr>
   )
 }
+
+const NarrowTh = styled.th`
+  width: 40%;
+`
