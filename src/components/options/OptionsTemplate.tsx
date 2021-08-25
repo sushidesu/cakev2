@@ -99,21 +99,12 @@ export function OptionsTemplate({
     addImageBlockButton,
     addTableBlockButton,
   } = blockEditorControllerProps
-  // 仮
-  const { showAlert } = useAlertContext()
   return (
     <Wrapper>
       <Header itemList={itemList} resetItemCollection={resetItemCollection} />
       <Container>
         <Columns className={"is-mobile"}>
           <Columns.Column size={3} className={"sidemenu"}>
-            <button
-              onClick={() => {
-                showAlert("HEY HEY HEY")
-              }}
-            >
-              みろ！
-            </button>
             <ItemList {...itemListProps} />
           </Columns.Column>
           <Columns.Column>

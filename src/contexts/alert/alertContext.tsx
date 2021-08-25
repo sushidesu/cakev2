@@ -1,8 +1,13 @@
-import React, { createContext, useCallback, useContext, useState } from "react"
-import { AlertMessage } from "./AlertMessage"
+import React, { createContext, useCallback, useContext } from "react"
+import toast, { Toaster } from "react-hot-toast"
+
+export type ShowAlertProps = {
+  message: string
+  type: "success" | "error"
+}
 
 export type AlertContextProps = {
-  showAlert: (message: string) => void
+  showAlert: (props: ShowAlertProps) => void
 }
 
 const Context = createContext<AlertContextProps>({
@@ -11,49 +16,26 @@ const Context = createContext<AlertContextProps>({
   },
 })
 
-type AlertHandler =
-  | {
-      show: false
-    }
-  | {
-      show: true
-      message: string
-    }
-
 export function AlertContextProvider({
   children,
 }: {
   children?: React.ReactNode
 }): JSX.Element {
-  const [alert, setAlert] = useState<AlertHandler>({
-    show: false,
-  })
-
-  const showAlert = useCallback((message: string) => {
-    setAlert({
-      show: true,
-      message: message,
-    })
-  }, [])
-
-  const removeAlert = useCallback(() => {
-    setAlert({
-      show: false,
-    })
+  const showAlert = useCallback(({ type, message }: ShowAlertProps) => {
+    switch (type) {
+      case "success":
+        toast.success(message)
+        break
+      case "error":
+        toast.error(message)
+        break
+    }
   }, [])
 
   return (
     <Context.Provider value={{ showAlert }}>
+      <Toaster />
       {children}
-      <div>
-        {alert.show ? (
-          <AlertMessage
-            type="info"
-            message={alert.message}
-            onClickRemove={removeAlert}
-          />
-        ) : null}
-      </div>
     </Context.Provider>
   )
 }
