@@ -8,7 +8,7 @@ on:
   push:
     branches:
       - 'renovate/**'
-  pull_request_target:
+  pull_request:
     types: [opened, ready_for_review, reopened]
     branches:
       - 'renovate/**'
