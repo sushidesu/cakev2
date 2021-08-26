@@ -1,0 +1,57 @@
+# ref: https://zenn.dev/ryo_kawamata/articles/improve-dependabot-pr
+name: Compare static assets
+
+on:
+  pull_request_target:
+    types: [opened, ready_for_review, reopened]
+
+jobs:
+  compare-static-assets-job:
+    timeout-minutes: 10
+    if: contains(github.head_ref, 'dependabot/npm_and_yarn')
+    runs-on: ubuntu-18.04
+    steps:
+      # 前処理
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      # プルリクエストのブランチでビルド
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install dependencies
+        run: yarn
+      - name: Build on current branch
+        run: export OUT_DIR=/tmp/current; yarn build:compare
+      # masterブランチでビルド
+      - name: Checkout master branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+      - name: Reinstall dependencies
+        run: yarn
+      - name: Build on master branch
+        run: export OUT_DIR=/tmp/master; yarn build:compare
+      # 静的アセットの比較
+      - name: Compare static assets
+        run: git diff --compact-summary /tmp/current /tmp/master > /tmp/result.txt || true
+      # 結果をPRにコメント
+      - name: Comment to PR
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs')
+            const result = fs.readFileSync('/tmp/result.txt', 'utf8')
+            const commentBody = result ?
+              `静的アセットのビルド結果に差分があります👀<details><summary>詳細</summary><pre>${result}</pre></details>`
+              : '静的アセットのビルド結果に差分はありません🎉'
+
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            })
