@@ -42,10 +42,15 @@ jobs:
               repo: context.repo.repo,
               commit_sha: context.sha,
             })
-            console.log(pulls)
-          #  github.issues.createComment({
-          #    issue_number: context.issue.number,
-          #    owner: context.repo.owner,
-          #    repo: context.repo.repo,
-          #    body: '👋 Thanks for reporting!'
-          #  })
+            if (pulls.data && pulls.data.length) {
+              const pull = pulls.data[0]
+              github.issues.createComment({
+                issue_number: pull.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '👋 Thanks for reporting!'
+              })
+            } else {
+              console.error("pull.data not found")
+              console.error({ pull })
+            }
