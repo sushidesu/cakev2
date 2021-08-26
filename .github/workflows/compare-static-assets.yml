@@ -8,7 +8,7 @@ on:
 jobs:
   compare-static-assets-job:
     timeout-minutes: 10
-    if: contains(github.head_ref, 'dependabot/npm_and_yarn')
+    if: contains(github.head_ref, 'renovate/')
     runs-on: ubuntu-18.04
     steps:
       # 前処理
