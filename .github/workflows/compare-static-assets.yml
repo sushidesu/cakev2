@@ -2,12 +2,9 @@
 name: Compare static assets
 
 on:
-  pull_request_target:
-    branches: 'renovate/**'
-    types: [opened, ready_for_review, reopened]
   push:
     branches:
-      - 'renovate/**'
+      - "renovate/**"
 
 jobs:
   compare-static-assets-job:
@@ -51,10 +48,23 @@ jobs:
             const commentBody = result ?
               `静的アセットのビルド結果に差分があります👀<details><summary>詳細</summary><pre>${result}</pre></details>`
               : '静的アセットのビルド結果に差分はありません🎉'
+            console.log({ commentBody })
 
-            await github.issues.createComment({
-              issue_number: context.issue.number,
+            // get pull request number
+            const pulls = await github.repos.listPullRequestsAssociatedWithCommit({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: commentBody
+              commit_sha: context.sha,
             })
+            if (pulls.data && pulls.data.length) {
+              const pull = pulls.data[0]
+              await github.issues.createComment({
+                issue_number: pull.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              })
+            } else {
+              console.error("pull.data not found")
+              console.error({ pull })
+            }
