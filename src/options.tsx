@@ -1,7 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "react-bulma-components/dist/react-bulma-components.min.css"
-import { ItemStoreProvider } from "./components/itemStore"
 import { OptionsContainer } from "./components/options/OptionsContainer"
 import { AlertContextProvider } from "./contexts/alert/alertContext"
 
@@ -14,12 +13,7 @@ const Options = (): JSX.Element => {
 }
 
 try {
-  ReactDOM.render(
-    <ItemStoreProvider>
-      <Options />
-    </ItemStoreProvider>,
-    document.getElementById("root")
-  )
+  ReactDOM.render(<Options />, document.getElementById("root"))
 } catch (err) {
   console.log(err)
   ReactDOM.render(
