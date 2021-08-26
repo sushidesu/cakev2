@@ -3,7 +3,11 @@ name: Compare static assets
 
 on:
   pull_request_target:
+    branches: 'renovate/**'
     types: [opened, ready_for_review, reopened]
+  push:
+    branches:
+      - 'renovate/**'
 
 jobs:
   compare-static-assets-job:
