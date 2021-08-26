@@ -142,6 +142,7 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleCopy,
         },
         deleteButton: {
+          // TODO: 削除時のconfirm
           visible: target !== undefined,
           onClick: handleRemoveItem,
         },

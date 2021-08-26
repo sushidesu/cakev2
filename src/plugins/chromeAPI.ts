@@ -1,9 +1,12 @@
-import { GlobalState } from "../components/itemStore"
+import { IShopItem } from "../shopItem"
 
-type StateToManageInChromeStorage = GlobalState
+type GlobalState = {
+  shopItems: IShopItem[]
+  nowItemIndex: number | null
+}
 
 export type ChromeStorageItem = {
-  cakev2: StateToManageInChromeStorage
+  cakev2: GlobalState
 }
 
 export const getAll = (): Promise<{ [key: string]: any }> =>
