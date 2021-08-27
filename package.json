@@ -7,7 +7,8 @@
   "scripts": {
     "build": "webpack --mode production --config webpack.config.js",
     "dev": "webpack --config webpack.dev.js --watch",
-    "format": "prettier --write src/**/*.{js,jsx,tx,tsx,json,md}",
+    "format": "prettier src/**/*.{ts,tsx,json,md} --check",
+    "format:fix": "prettier src/**/*.{ts,tsx,json,md} --write",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "yarn lint --fix",
     "test": "jest",
