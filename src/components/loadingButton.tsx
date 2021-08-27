@@ -8,7 +8,7 @@ type ButtonStatus = "default" | "loading" | "loaded"
 const Loading: React.FC<
   ButtonProps & {
     label?: string
-    asyncfunc: () => Promise<any>
+    asyncfunc: <T>() => Promise<T>
   }
 > = ({ label, asyncfunc, disabled, color, size }) => {
   const [status, setStatus] = useState<ButtonStatus>("default")
