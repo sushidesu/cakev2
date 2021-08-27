@@ -11,7 +11,7 @@ export const rakutenSPDescription = (item: IShopItem): string => {
   const contents_section = `
     ${item.descriptions
       .map(
-        text => `
+        (text) => `
       <br>
       <p><b><font size="3">${text.title}</font></b></p>
       <p><font color="#565656">${text.body}</font></p>

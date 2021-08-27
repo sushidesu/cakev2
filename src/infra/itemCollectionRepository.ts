@@ -88,7 +88,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       .map((item, index) =>
         ItemCollectionRepository.entityToResource(item, numOfItems + index)
       )
-      .map(itemValue => ({
+      .map((itemValue) => ({
         ...itemValue,
         id: uuidv4(), // 既存のitemを上書きしない
       }))
@@ -100,7 +100,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }))
     const next: Storage_v3 = {
       selectedItemId: null,
-      items: Object.fromEntries(sorted.map(item => [item.id, item])),
+      items: Object.fromEntries(sorted.map((item) => [item.id, item])),
     }
 
     await this.chromeStorageClient.storageV3LocalSet(next)
@@ -113,7 +113,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     }
     return Object.values(storage_v3.items)
       .sort((left, right) => left.order - right.order)
-      .map(item => ItemCollectionRepository.resourceToEntity(item))
+      .map((item) => ItemCollectionRepository.resourceToEntity(item))
   }
 
   async clear(): Promise<void> {
