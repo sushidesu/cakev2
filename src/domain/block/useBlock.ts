@@ -51,9 +51,6 @@ type UpdateBlockProps<Block extends BlockBase<any, any>> = {
   id: BlockId
   mutation: (prev: Block) => Block
 }
-type UpdateBlockFunction<Block extends BlockBase<any, any>> = (
-  props: UpdateBlockProps<Block>
-) => void
 
 // --- implements ---
 // helper
@@ -61,7 +58,7 @@ const findTargetBlockIndex = <Block extends BlockBase<any, any>>(
   id: Block["id"],
   blocks: Block[]
 ): number => {
-  const targetIndex = blocks.findIndex(block => block.id.equals(id))
+  const targetIndex = blocks.findIndex((block) => block.id.equals(id))
   if (targetIndex === -1) {
     throw Error("cannot find id")
   }
@@ -77,7 +74,7 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
 
   const addBlock = useCallback(
     ({ type }: AddBlockProps<Block>) => {
-      setBlocks(prev => {
+      setBlocks((prev) => {
         const newBlock = blockInitializer(type)
         return prev.concat(newBlock)
       })
@@ -86,14 +83,14 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
   )
 
   const removeBlock = useCallback(({ id }: RemoveBlockProps) => {
-    setBlocks(prev => {
+    setBlocks((prev) => {
       const targetIndex = findTargetBlockIndex(id, prev)
       return removeElementFromArray(prev, targetIndex)
     })
   }, [])
 
   const moveBlock = useCallback(({ id, offset }: MoveBlockProps) => {
-    setBlocks(prev => {
+    setBlocks((prev) => {
       if (offset === 0) {
         return prev
       }
@@ -105,7 +102,7 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
 
   const updateBlock = useCallback(
     ({ id, mutation }: UpdateBlockProps<Block>) => {
-      setBlocks(prev => {
+      setBlocks((prev) => {
         const targetIndex = findTargetBlockIndex(id, prev)
         const target = prev[targetIndex]
         const newBlock = mutation(target)
@@ -118,7 +115,7 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
   )
 
   const handleSubmit: HandleBlockSubmit<Block> = useCallback(
-    func => {
+    (func) => {
       return () => {
         func(blocks)
       }

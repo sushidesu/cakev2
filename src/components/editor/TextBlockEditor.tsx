@@ -2,7 +2,6 @@ import React from "react"
 import { TextBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
-import { Input } from "../atom/Input"
 import { Textarea } from "../atom/Textarea"
 
 export function TextBlockEditor({
@@ -15,11 +14,11 @@ export function TextBlockEditor({
       <Textarea
         placeholder="例: 肌にやさしい洗剤です。ふんわり仕上がります。"
         defaultValue={block.value.content}
-        onBlur={e => {
+        onBlur={(e) => {
           e.persist()
           update({
             id: block.id,
-            mutation: prev => {
+            mutation: (prev) => {
               if (prev.type === "text") {
                 return {
                   ...prev,

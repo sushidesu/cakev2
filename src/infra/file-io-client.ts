@@ -21,7 +21,7 @@ export class FileIOClient implements FileIOClientInterface {
     })
   }
 
-  public export(json: any) {
+  public export(json: { [key: string]: any }): void {
     const encoded = encodeURIComponent(JSON.stringify(json))
     const url = `data:text/json;charset=utf-8,${encoded}`
 

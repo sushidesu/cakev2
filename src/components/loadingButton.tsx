@@ -1,14 +1,14 @@
 import React, { useState } from "react"
 import { Button, ButtonProps } from "react-bulma-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCheck, faCross } from "@fortawesome/free-solid-svg-icons"
+import { faCheck } from "@fortawesome/free-solid-svg-icons"
 
 type ButtonStatus = "default" | "loading" | "loaded"
 
 const Loading: React.FC<
   ButtonProps & {
     label?: string
-    asyncfunc: () => Promise<any>
+    asyncfunc: <T>() => Promise<T>
   }
 > = ({ label, asyncfunc, disabled, color, size }) => {
   const [status, setStatus] = useState<ButtonStatus>("default")
