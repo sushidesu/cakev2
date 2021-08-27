@@ -1,7 +1,10 @@
 import { IShopItem } from "../shopItem"
 import { CheckboxState } from "../popup"
 
-export const write_to_makeshop = (item: IShopItem, checked: CheckboxState) => {
+export const write_to_makeshop = (
+  item: IShopItem,
+  checked: CheckboxState
+): void => {
   const frame = document.querySelector("[name='mainframe']") as HTMLFrameElement
   if (!frame.contentWindow) {
     return
@@ -88,7 +91,7 @@ const TABLE_CELL = "padding: 10px; border: 1px solid #ccc;"
 const Description = (
   descriptions: IShopItem["descriptions"],
   image: IShopItem["imageURL"]
-) => `
+): string => `
 <div>
   ${image && `<img src="${image}">`}
   ${descriptions
@@ -101,7 +104,7 @@ const Description = (
     .join("")}
 </div>
 `
-const Details = (details: IShopItem["details"]) => {
+const Details = (details: IShopItem["details"]): string => {
   if (details.length === 0) return ""
 
   return `

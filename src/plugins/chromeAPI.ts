@@ -16,11 +16,11 @@ export const getAll = (): Promise<{ [key: string]: any }> =>
     })
   })
 
-export const clearAll = () => {
+export const clearAll = (): void => {
   chrome.storage.local.clear()
 }
 
-export const getChromeStorage = () =>
+export const getChromeStorage = (): Promise<ChromeStorageItem> =>
   new Promise<ChromeStorageItem>((resolve) => {
     chrome.storage.local.get("cakev2", (items) => {
       const result = items["cakev2"]
@@ -37,7 +37,7 @@ export const getChromeStorage = () =>
     })
   })
 
-export const setChromeStorage = (state: GlobalState) => {
+export const setChromeStorage = (state: GlobalState): void => {
   const items: ChromeStorageItem = {
     cakev2: {
       nowItemIndex: state.nowItemIndex,
