@@ -4,8 +4,6 @@ import { Storage_v2, IShopItemV2 } from "./interface/scheme"
 import { stringToNumber } from "../../utils/stringToNumber"
 
 export class SchemeV2Client {
-  public constructor() {}
-
   public convertStorageV2ToV3(storage_v2: Storage_v2): Storage_v3 {
     const itemsConverted = Object.fromEntries(
       storage_v2.shopItems.map((item, index) => {
@@ -39,31 +37,33 @@ export class SchemeV2Client {
           },
         ]
       : []
-    const textBlocks: BlockValue[] = descriptions.flatMap<BlockValue>(desc => {
-      return [
-        {
-          id: uuidv4(),
-          type: "heading",
-          value: {
-            content: desc.title,
+    const textBlocks: BlockValue[] = descriptions.flatMap<BlockValue>(
+      (desc) => {
+        return [
+          {
+            id: uuidv4(),
+            type: "heading",
+            value: {
+              content: desc.title,
+            },
           },
-        },
-        {
-          id: uuidv4(),
-          type: "text",
-          value: {
-            content: desc.body,
+          {
+            id: uuidv4(),
+            type: "text",
+            value: {
+              content: desc.body,
+            },
           },
-        },
-      ]
-    })
+        ]
+      }
+    )
     const tableBlock: BlockValue[] = details.length
       ? [
           {
             id: uuidv4(),
             type: "table",
             value: {
-              rows: details.map(detail => {
+              rows: details.map((detail) => {
                 return {
                   title: detail.title,
                   body: detail.body,
