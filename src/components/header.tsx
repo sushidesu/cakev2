@@ -10,7 +10,7 @@ export type Props = {
   resetItemCollection: ImportModalProps["resetItemCollection"]
 }
 
-export default ({ itemList, resetItemCollection }: Props) => {
+function Header({ itemList, resetItemCollection }: Props): JSX.Element {
   const [show, setShow] = useState(false)
   const [showExport, setShowExport] = useState(false)
   useEffect(() => {
@@ -62,3 +62,5 @@ export default ({ itemList, resetItemCollection }: Props) => {
     </>
   )
 }
+
+export default Header
