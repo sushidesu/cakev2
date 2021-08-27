@@ -54,15 +54,16 @@ export function OptionsContainer(): JSX.Element {
     }
   }, [target])
 
-  const handleInfoChange: Props["itemEditorProps"]["handleChange"] = useCallback(
-    key => e => {
-      setItemInfoFormValue({
-        key,
-        value: e.target.value,
-      })
-    },
-    [setItemInfoFormValue]
-  )
+  const handleInfoChange: Props["itemEditorProps"]["handleChange"] =
+    useCallback(
+      (key) => (e) => {
+        setItemInfoFormValue({
+          key,
+          value: e.target.value,
+        })
+      },
+      [setItemInfoFormValue]
+    )
 
   const handleCreateItem = () => {
     create({
@@ -87,15 +88,8 @@ export function OptionsContainer(): JSX.Element {
   }
 
   /////////////// block ///////////////
-  const {
-    blocks,
-    addBlock,
-    updateBlock,
-    moveBlock,
-    removeBlock,
-    handleSubmit,
-    initBlocks,
-  } = useCustomBlock()
+  const { blocks, addBlock, updateBlock, moveBlock, removeBlock, initBlocks } =
+    useCustomBlock()
 
   useEffect(() => {
     if (target) {
@@ -112,7 +106,7 @@ export function OptionsContainer(): JSX.Element {
       itemListProps={{
         onClickCreateButton: startCreate,
         createButtonDisabled: target === undefined,
-        items: itemList.map(item => ({
+        items: itemList.map((item) => ({
           id: item.id.value,
           name: item.name,
           selected: target ? item.id.equals(target.id) : false,
@@ -147,7 +141,7 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleRemoveItem,
         },
       }}
-      blocks={blocks.map(block => ({
+      blocks={blocks.map((block) => ({
         block: block,
         update: updateBlock,
         remove: () => {

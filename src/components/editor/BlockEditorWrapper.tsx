@@ -4,8 +4,6 @@ import { Button } from "../Button"
 import { CloseButton } from "../CloseButton"
 import { Icon } from "../atom/Icon"
 
-const css = (_: unknown) => ""
-
 export type Props = {
   label: string
   remove: () => void

@@ -1,8 +1,4 @@
 import React from "react"
-import { Columns, Heading } from "react-bulma-components"
-import { FormDescriptions, FormDetails } from "../formMultipleInputs"
-import { FormImageInput } from "../formSingleInputs"
-
 import { BlockBase } from "../../domain/block/useBlock"
 import { BlockId } from ".././../domain/block/blockId"
 import { CustomBlock } from "../../domain/customBlock/block"
@@ -47,44 +43,4 @@ export function BlockEditor({
     default:
       return null
   }
-}
-
-function _BlockEditor(): JSX.Element {
-  return (
-    <div>
-      <Columns>
-        <Columns.Column>
-          <FormImageInput
-            label={"商品画像URL"}
-            field={"imageURL"}
-            value={""}
-            message={""}
-            onChange={() => {}}
-          />
-        </Columns.Column>
-      </Columns>
-
-      <hr />
-
-      <Columns>
-        <Columns.Column>
-          <Heading textAlignment={"centered"} subtitle>
-            商品説明
-          </Heading>
-          <FormDescriptions value={[]} dispatch={() => {}} />
-        </Columns.Column>
-      </Columns>
-
-      <hr />
-
-      <Columns>
-        <Columns.Column>
-          <Heading textAlignment={"centered"} subtitle>
-            商品詳細
-          </Heading>
-          <FormDetails value={[]} dispatch={() => {}} />
-        </Columns.Column>
-      </Columns>
-    </div>
-  )
 }

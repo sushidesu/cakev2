@@ -8,7 +8,6 @@ import { Button } from "../Button"
 import { CustomBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 import { Item } from "../../domain/item/item"
-import { useAlertContext } from "../../contexts/alert/alertContext"
 
 export type Props = {
   itemList: Item[]
@@ -114,7 +113,7 @@ export function OptionsTemplate({
             <hr />
             <Spacer>
               <div>
-                {blocks.map(block => (
+                {blocks.map((block) => (
                   <BlockEditor key={block.block.id.value} {...block} />
                 ))}
               </div>
