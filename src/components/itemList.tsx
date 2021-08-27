@@ -46,7 +46,7 @@ function ItemList({
       </ButtonWrapper>
       <Menu>
         <Menu.List title="Item List">
-          {items.map(item => (
+          {items.map((item) => (
             <Menu.List.Item
               key={item.id}
               active={item.selected}

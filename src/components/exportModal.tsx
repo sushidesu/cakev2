@@ -34,14 +34,14 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
   }
 
   const handleClickCheckAll = () => {
-    setCheckAll(prev => {
+    setCheckAll((prev) => {
       setAll(!prev)
       return !prev
     })
   }
 
   const handleClickItemCheckbox = (index: number) => () => {
-    setSelectedItemList(prev => {
+    setSelectedItemList((prev) => {
       const next = prev.map((checked, i) => {
         if (i === index) {
           return !checked
@@ -49,7 +49,7 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
           return checked
         }
       })
-      setCheckAll(next.every(checked => checked))
+      setCheckAll(next.every((checked) => checked))
       return next
     })
   }

@@ -5,10 +5,12 @@ import { faCheck, faCross } from "@fortawesome/free-solid-svg-icons"
 
 type ButtonStatus = "default" | "loading" | "loaded"
 
-const Loading: React.FC<ButtonProps & {
-  label?: string
-  asyncfunc: () => Promise<any>
-}> = ({ label, asyncfunc, disabled, color, size }) => {
+const Loading: React.FC<
+  ButtonProps & {
+    label?: string
+    asyncfunc: () => Promise<any>
+  }
+> = ({ label, asyncfunc, disabled, color, size }) => {
   const [status, setStatus] = useState<ButtonStatus>("default")
 
   const lazySetLoaded = () => {
@@ -26,7 +28,7 @@ const Loading: React.FC<ButtonProps & {
       size={size}
       onClick={() => {
         setStatus("loading")
-        asyncfunc().then(result => {
+        asyncfunc().then((result) => {
           if (result === "ok") {
             lazySetLoaded()
           } else if (result === undefined) {
