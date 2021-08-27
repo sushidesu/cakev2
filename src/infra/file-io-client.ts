@@ -11,7 +11,7 @@ export class FileIOClient implements FileIOClientInterface {
     const reader = new FileReader()
     reader.readAsText(file)
 
-    return new Promise<string>(resolve => {
+    return new Promise<string>((resolve) => {
       reader.onload = (ev: ProgressEvent<FileReader>) => {
         if (!ev.target || typeof ev.target.result !== "string") {
           throw Error("不正なファイルです。")

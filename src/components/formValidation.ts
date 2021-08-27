@@ -63,8 +63,8 @@ const isJancode = (jan: string): boolean => {
     return false
   }
 
-  const digits = jan.split("").map(n => parseInt(n))
-  if (digits.some(n => isNaN(n))) {
+  const digits = jan.split("").map((n) => parseInt(n))
+  if (digits.some((n) => isNaN(n))) {
     return false
   }
 

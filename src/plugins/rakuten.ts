@@ -31,9 +31,8 @@ export const write_to_rakuten = (
     // item_number.value = item.jancode
     setValue(item_number, item.jancode)
 
-    const item_name = document.querySelector<HTMLInputElement>(
-      '[name="item_name"]'
-    )
+    const item_name =
+      document.querySelector<HTMLInputElement>('[name="item_name"]')
     // item_name.value = item.name
     setValue(item_name, item.name)
 
@@ -93,7 +92,7 @@ const TABLE_CELL = "padding: 10px; border: 1px solid #ccc;"
 const Description = (descriptions: IShopItem["descriptions"]) => {
   return descriptions
     .map(
-      desc => `
+      (desc) => `
   <h2 ="" style="${TITLE_STYLE}">${desc.title}</h2 ="">
   <p ="" style="${PARAGRAPH_STYLE}">${desc.body}</p ="">
 `
@@ -106,7 +105,7 @@ const Details = (details: IShopItem["details"]) => {
 
   const body = details
     .map(
-      detail => `
+      (detail) => `
       <tr>
         <th ="" style="${TABLE_CELL} ${TABLE_HEADER}">${detail.title}</th ="">
         <td ="" style="${TABLE_CELL}">${detail.body}</td ="">

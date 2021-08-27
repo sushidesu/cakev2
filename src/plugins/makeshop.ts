@@ -93,7 +93,7 @@ const Description = (
   ${image && `<img src="${image}">`}
   ${descriptions
     .map(
-      desc => `
+      (desc) => `
   <h3 style="${TITLE_STYLE}">${desc.title}</h3>
   <p style="${PARAGRAPH_STYLE}">${desc.body}</p>
   `
@@ -110,7 +110,7 @@ const Details = (details: IShopItem["details"]) => {
   <tbody>
     ${details
       .map(
-        detail => `
+        (detail) => `
     <tr>
       <th style="${TABLE_CELL} ${TABLE_HEADER}">${detail.title}</th>
       <td style="${TABLE_CELL}">${detail.body}</td>

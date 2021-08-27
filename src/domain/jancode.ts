@@ -35,12 +35,12 @@ export class Jancode {
   public static validateCheckDigit(value: string): void {
     // validate check digit with Modulus 10, Weight 3:1
     const length = value.length
-    const numbers = value.split("").map(n => parseInt(n))
+    const numbers = value.split("").map((n) => parseInt(n))
     const body = numbers.slice(0, length - 1)
 
     const checkDigit = numbers[length - 1]
     const odd = body.filter((_, i) => i % 2 === 0)
-    const even = body.filter((_, i) => i % 2 !== 0).map(n => n * 3)
+    const even = body.filter((_, i) => i % 2 !== 0).map((n) => n * 3)
 
     const summary = odd.concat(even).reduce((prev, cur) => prev + cur, 0)
     const calculatedCheckDigit = summary % 10 ? 10 - (summary % 10) : 0

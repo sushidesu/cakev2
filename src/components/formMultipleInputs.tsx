@@ -71,7 +71,7 @@ export const FormDescriptions: React.FC<{
             <Form.Label>タイトル</Form.Label>
             <Form.Input
               value={desc.title}
-              onChange={e => {
+              onChange={(e) => {
                 dispatch({
                   type: "setMultipleField",
                   field: "descriptions",
@@ -86,7 +86,7 @@ export const FormDescriptions: React.FC<{
             <Form.Label>本文</Form.Label>
             <Form.Textarea
               value={desc.body}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({
                   type: "setMultipleField",
                   field: "descriptions",
@@ -139,7 +139,7 @@ export const FormDetails: React.FC<{
           {index === 0 && <Form.Label>タイトル</Form.Label>}
           <Form.Input
             value={detail.title}
-            onChange={e =>
+            onChange={(e) =>
               dispatch({
                 type: "setMultipleField",
                 field: "details",
@@ -154,7 +154,7 @@ export const FormDetails: React.FC<{
           {index === 0 && <Form.Label>内容</Form.Label>}
           <Form.Input
             value={detail.body}
-            onChange={e =>
+            onChange={(e) =>
               dispatch({
                 type: "setMultipleField",
                 field: "details",

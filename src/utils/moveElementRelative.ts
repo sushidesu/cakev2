@@ -24,9 +24,7 @@ const sliceLeft = <T>(array: T[], end: number): T[] => {
 }
 
 const insert = <T>(array: T[], index: number, val: T): T[] => {
-  return sliceLeft(array, index)
-    .concat(val)
-    .concat(sliceRight(array, index))
+  return sliceLeft(array, index).concat(val).concat(sliceRight(array, index))
 }
 
 const sliceRight = <T>(array: T[], start: number): T[] => {

@@ -10,8 +10,8 @@ export type ChromeStorageItem = {
 }
 
 export const getAll = (): Promise<{ [key: string]: any }> =>
-  new Promise(resolve => {
-    chrome.storage.local.get(null, items => {
+  new Promise((resolve) => {
+    chrome.storage.local.get(null, (items) => {
       resolve(items)
     })
   })
@@ -21,8 +21,8 @@ export const clearAll = () => {
 }
 
 export const getChromeStorage = () =>
-  new Promise<ChromeStorageItem>(resolve => {
-    chrome.storage.local.get("cakev2", items => {
+  new Promise<ChromeStorageItem>((resolve) => {
+    chrome.storage.local.get("cakev2", (items) => {
       const result = items["cakev2"]
       if (result === undefined) {
         resolve({
