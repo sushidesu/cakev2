@@ -1,7 +1,7 @@
 import { getChromeStorage } from "./plugins/chromeAPI"
 import { write_to_rakuten } from "./plugins/rakuten"
 import { write_to_makeshop } from "./plugins/makeshop"
-import { CheckboxState } from "./popup"
+import { CheckboxState } from "./components/popup/Checkbox"
 
 const autoWrite = async (checked: CheckboxState) => {
   const items = await getChromeStorage()
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener((message: CheckboxState, _, callback) => {
     .then(() => {
       callback("ok")
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
       callback(err.toString())
     })

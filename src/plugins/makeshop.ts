@@ -1,5 +1,5 @@
 import { IShopItem } from "../shopItem"
-import { CheckboxState } from "../popup"
+import { CheckboxState } from "../components/popup/Checkbox"
 
 export const write_to_makeshop = (
   item: IShopItem,
