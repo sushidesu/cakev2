@@ -2,21 +2,25 @@ import React from "react"
 import styled from "styled-components"
 import { Button } from "react-bulma-components"
 import { Checkbox, CheckboxState } from "./Checkbox"
-import LoadingButton from "../loadingButton"
+import LoadingButton, { Props as ButtonProps } from "../loadingButton"
 import { IShopItem } from "../../shopItem"
 
 export type Props = {
   item: IShopItem
   checkbox: CheckboxState
   check: (name: keyof CheckboxState) => void
-  autoFill: () => Promise<void>
+  submitButtonProps: {
+    status: ButtonProps["status"]
+    disabled: ButtonProps["disabled"]
+    onClick?: () => void
+  }
 }
 
 export function PopupTemplate({
   item,
   checkbox,
   check,
-  autoFill,
+  submitButtonProps,
 }: Props): JSX.Element {
   return (
     <Wrapper>
@@ -67,8 +71,9 @@ export function PopupTemplate({
             label="自動入力"
             color={"primary"}
             size={"small"}
-            asyncfunc={autoFill}
-            disabled={item.id === null}
+            disabled={submitButtonProps.disabled}
+            status={submitButtonProps.status}
+            onClick={submitButtonProps.onClick}
           />
           <Button
             size={"small"}

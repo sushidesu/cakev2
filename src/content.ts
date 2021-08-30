@@ -1,4 +1,3 @@
-import { getChromeStorage } from "./plugins/chromeAPI"
 import { write_to_rakuten } from "./plugins/rakuten"
 import { write_to_makeshop } from "./plugins/makeshop"
 import { CheckboxState } from "./components/popup/Checkbox"

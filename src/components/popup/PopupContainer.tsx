@@ -8,6 +8,7 @@ import {
   AutoFillMessage,
   AutoFillResponse,
 } from "../../infra/interface/auto-fill-message"
+import { sleep } from "../../utils/sleep"
 
 const checkedAll: CheckboxState = {
   all: true,
@@ -42,11 +43,14 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     }
   }
 
+  const [loading, setLoading] = useState(false)
+  const [ok, setOk] = useState(false)
   const chromeMessenger = new ChromeMessenger<
     AutoFillMessage,
     AutoFillResponse
   >()
   const autoFill = async () => {
+    setLoading(true)
     const response = await chromeMessenger.sendMessage({
       fillDescription: checkbox.descriptions,
       fillInfo: checkbox.info,
@@ -54,6 +58,12 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     })
     if (!response.ok) {
       window.alert(`エラー: ${response.message}`)
+      setOk(false)
+      setLoading(false)
+    } else {
+      await sleep(600)
+      setOk(true)
+      setLoading(false)
     }
   }
 
@@ -63,6 +73,7 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     case "error":
       return <div>an error has occured</div>
     case "done":
+      console.log(itemLoading.value)
       return (
         <PopupTemplate
           {...{
@@ -70,6 +81,11 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
             checkbox,
             check,
             autoFill,
+            submitButtonProps: {
+              status: loading ? "loading" : ok ? "loaded" : "default",
+              disabled: itemLoading.value.id === 0,
+              onClick: autoFill,
+            },
           }}
         />
       )
