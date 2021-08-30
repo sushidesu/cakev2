@@ -47,11 +47,14 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     AutoFillResponse
   >()
   const autoFill = async () => {
-    await chromeMessenger.sendMessage({
+    const response = await chromeMessenger.sendMessage({
       fillDescription: checkbox.descriptions,
       fillInfo: checkbox.info,
       fillStock: checkbox.stock,
     })
+    if (!response.ok) {
+      window.alert(`エラー: ${response.message}`)
+    }
   }
 
   switch (itemLoading.status) {
