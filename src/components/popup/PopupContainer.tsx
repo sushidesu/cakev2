@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { PopupTemplate } from "./PopupTemplate"
-import { getChromeStorage } from "../../plugins/chromeAPI"
-import { initialItem } from "../../shopItem"
+import { IShopItem } from "../../shopItem"
 import { CheckboxState } from "./Checkbox"
+import { Loading } from "../../shared/loading"
 
 const checkedAll: CheckboxState = {
   all: true,
@@ -18,18 +18,11 @@ const unCheckedAll: CheckboxState = {
   descriptions: false,
 }
 
-export function PopupContainer(): JSX.Element {
-  const [item, setItem] = useState(initialItem)
-  const fetchItem = async () => {
-    const { cakev2 } = await getChromeStorage()
-    const { nowItemIndex, shopItems } = cakev2
-    setItem(nowItemIndex === null ? initialItem : shopItems[nowItemIndex])
-  }
-  useEffect(() => {
-    // on mounted
-    fetchItem()
-  }, [setItem])
+export type Props = {
+  itemLoading: Loading<IShopItem>
+}
 
+export function PopupContainer({ itemLoading }: Props): JSX.Element {
   const [checkbox, setCheckbox] = useState(checkedAll)
   const check = (name: keyof CheckboxState) => {
     if (name === "all") {
@@ -59,14 +52,23 @@ export function PopupContainer(): JSX.Element {
       )
     })
 
-  return (
-    <PopupTemplate
-      {...{
-        item,
-        checkbox,
-        check,
-        autoFill,
-      }}
-    />
-  )
+  switch (itemLoading.status) {
+    case "loading":
+      return <div>loading...</div>
+    case "error":
+      return <div>an error has occured</div>
+    case "done":
+      return (
+        <PopupTemplate
+          {...{
+            item: itemLoading.value,
+            checkbox,
+            check,
+            autoFill,
+          }}
+        />
+      )
+    default:
+      throw Error("unexpected status recieved.")
+  }
 }
