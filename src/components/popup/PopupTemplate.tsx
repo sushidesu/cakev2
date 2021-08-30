@@ -9,7 +9,7 @@ export type Props = {
   item: IShopItem
   checkbox: CheckboxState
   check: (name: keyof CheckboxState) => void
-  autoFill: <T>() => Promise<T>
+  autoFill: () => Promise<void>
 }
 
 export function PopupTemplate({

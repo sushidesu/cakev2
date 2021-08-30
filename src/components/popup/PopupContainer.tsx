@@ -3,6 +3,11 @@ import { PopupTemplate } from "./PopupTemplate"
 import { IShopItem } from "../../shopItem"
 import { CheckboxState } from "./Checkbox"
 import { Loading } from "../../shared/loading"
+import { ChromeMessenger } from "../../infra/chrome-messenger/chrome-messenger"
+import {
+  AutoFillMessage,
+  AutoFillResponse,
+} from "../../infra/interface/auto-fill-message"
 
 const checkedAll: CheckboxState = {
   all: true,
@@ -37,20 +42,17 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     }
   }
 
-  const autoFill = () =>
-    new Promise<any>((resolve) => {
-      chrome.tabs.query(
-        { active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
-        (result) => {
-          const tab = result[0]
-          if (tab && tab.id) {
-            chrome.tabs.sendMessage(tab.id, checkbox, (response) => {
-              resolve(response)
-            })
-          }
-        }
-      )
+  const chromeMessenger = new ChromeMessenger<
+    AutoFillMessage,
+    AutoFillResponse
+  >()
+  const autoFill = async () => {
+    await chromeMessenger.sendMessage({
+      fillDescription: checkbox.descriptions,
+      fillInfo: checkbox.info,
+      fillStock: checkbox.stock,
     })
+  }
 
   switch (itemLoading.status) {
     case "loading":

@@ -8,7 +8,7 @@ type ButtonStatus = "default" | "loading" | "loaded"
 const Loading: React.FC<
   ButtonProps & {
     label?: string
-    asyncfunc: <T>() => Promise<T>
+    asyncfunc: () => Promise<void>
   }
 > = ({ label, asyncfunc, disabled, color, size }) => {
   const [status, setStatus] = useState<ButtonStatus>("default")
@@ -26,21 +26,23 @@ const Loading: React.FC<
       disabled={disabled}
       color={color}
       size={size}
-      onClick={() => {
+      onClick={async () => {
         setStatus("loading")
-        asyncfunc().then((result) => {
-          if (result === "ok") {
-            lazySetLoaded()
-          } else if (result === undefined) {
-            window.alert(
-              `対応していないページです\n(正しいページの場合は、ページを再読込みしてください。)`
-            )
-            setStatus("default")
-          } else {
-            window.alert(`入力に失敗しました\n${result}`)
-            setStatus("default")
-          }
-        })
+        await asyncfunc()
+        lazySetLoaded()
+        //        asyncfunc().then((result) => {
+        //          if (result === "ok") {
+        //            lazySetLoaded()
+        //          } else if (result === undefined) {
+        //            window.alert(
+        //              `対応していないページです\n(正しいページの場合は、ページを再読込みしてください。)`
+        //            )
+        //            setStatus("default")
+        //          } else {
+        //            window.alert(`入力に失敗しました\n${result}`)
+        //            setStatus("default")
+        //          }
+        //        })
       }}
     >
       {status === "loaded" ? (
