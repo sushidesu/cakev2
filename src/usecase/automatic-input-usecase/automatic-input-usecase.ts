@@ -12,6 +12,7 @@ export class AutomaticInputUsecase {
   constructor(private automaticInputClient: IAutomaticInputClient) {}
 
   exec({ item, info, stock, descriptions }: AutomaticInputUsecaseProps): void {
+    this.automaticInputClient.beforeInput()
     if (info) {
       this.automaticInputClient.inputInfo(item)
     }
