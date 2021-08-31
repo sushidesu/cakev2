@@ -1,5 +1,3 @@
-import { write_to_rakuten } from "./plugins/rakuten"
-import { write_to_makeshop } from "./plugins/makeshop"
 import { CheckboxState } from "./components/popup/Checkbox"
 import { Item } from "./domain/item/item"
 import { GetCurrentItemUsecase } from "./usecase/get-current-item-usecase"
@@ -10,30 +8,33 @@ import {
   AutoFillMessage,
   AutoFillResponse,
 } from "./infra/interface/auto-fill-message"
-import { IShopItem } from "./shopItem" // TODO
+import {
+  AutomaticInputUsecase,
+  AutomaticInputUsecaseProps,
+} from "./usecase/automatic-input-usecase/automatic-input-usecase"
+import { AutomaticInputRakutenClient } from "./infra/automatic-input-client/automatic-input-rakuten-client"
+import { AutomaticInputMakeshopClient } from "./infra/automatic-input-client/automatic-input-makeshop-client"
 
 const autoWrite = async (item: Item, checked: CheckboxState) => {
-  const selected: IShopItem = {
-    // TODO
-    id: 0,
-    name: item.name,
-    price: item.price.toString(),
-    weight: item.weight.toString(),
-    jancode: item.jancode?.toString() ?? "",
-    stockRakuten: item.stockRakuten.toString(),
-    stockMakeshop: item.stockMakeshop.toString(),
-    details: [],
-    descriptions: [],
-    imageURL: "",
+  const props: AutomaticInputUsecaseProps = {
+    item,
+    info: checked.info,
+    stock: checked.stock,
+    descriptions: checked.descriptions,
   }
-
   switch (window.location.host) {
-    case "item.rms.rakuten.co.jp":
-      write_to_rakuten(selected, checked)
+    case "item.rms.rakuten.co.jp": {
+      const rakutenClient = new AutomaticInputRakutenClient()
+      const automaticInput = new AutomaticInputUsecase(rakutenClient)
+      automaticInput.exec(props)
       break
-    case "shop16.makeshop.jp":
-      write_to_makeshop(selected, checked)
+    }
+    case "shop16.makeshop.jp": {
+      const makeshopClient = new AutomaticInputMakeshopClient()
+      const automaticInput = new AutomaticInputUsecase(makeshopClient)
+      automaticInput.exec(props)
       break
+    }
     default:
       throw new Error("対応していないサイトです")
   }
