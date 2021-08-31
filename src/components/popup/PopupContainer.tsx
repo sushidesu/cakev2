@@ -71,7 +71,7 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
     case "loading":
       return <div>loading...</div>
     case "error":
-      return <div>an error has occured</div>
+      return <div>An error has occurred</div>
     case "done":
       console.log(itemLoading.value)
       return (
@@ -90,6 +90,6 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
         />
       )
     default:
-      throw Error("unexpected status recieved.")
+      throw Error("unexpected status received.")
   }
 }
