@@ -34,15 +34,15 @@ export const useFetch = <T>(fetcher: () => Promise<T>): Loading<T> => {
     return {
       status: "loading",
     }
-  } else if (error === undefined && value !== undefined) {
-    return {
-      status: "done",
-      value: value,
-    }
-  } else {
+  } else if (error) {
     return {
       status: "error",
       error: error,
+    }
+  } else {
+    return {
+      status: "done",
+      value: value as T,
     }
   }
 }
