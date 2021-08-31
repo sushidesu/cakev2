@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { PopupTemplate } from "./PopupTemplate"
-import { IShopItem } from "../../shopItem"
+import { Item } from "../../domain/item/item"
 import { CheckboxState } from "./Checkbox"
 import { Loading } from "../../shared/loading"
 import { ChromeMessenger } from "../../infra/chrome-messenger/chrome-messenger"
@@ -25,7 +25,7 @@ const unCheckedAll: CheckboxState = {
 }
 
 export type Props = {
-  itemLoading: Loading<IShopItem>
+  itemLoading: Loading<Item | undefined>
 }
 
 export function PopupContainer({ itemLoading }: Props): JSX.Element {
@@ -77,13 +77,13 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
       return (
         <PopupTemplate
           {...{
-            item: itemLoading.value,
+            itemName: itemLoading.value?.name,
             checkbox,
             check,
             autoFill,
             submitButtonProps: {
               status: loading ? "loading" : ok ? "loaded" : "default",
-              disabled: itemLoading.value.id === 0,
+              disabled: itemLoading.value === undefined,
               onClick: autoFill,
             },
           }}

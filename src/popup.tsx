@@ -3,18 +3,17 @@ import ReactDOM from "react-dom"
 import "react-bulma-components/dist/react-bulma-components.min.css"
 import { PopupContainer } from "./components/popup/PopupContainer"
 import { useFetch } from "./shared/useFetch"
-import { getChromeStorage } from "./plugins/chromeAPI"
-import { initialItem } from "./shopItem"
+import { ChromeStorageClient } from "./infra/chromeStorageClient"
+import { ItemCollectionRepository } from "./infra/itemCollectionRepository"
+import { GetCurrentItemUsecase } from "./usecase/get-current-item-usecase"
 
 function PopupPage(): JSX.Element {
-  const itemLoading = useFetch(async () => {
-    const { cakev2 } = await getChromeStorage()
-    const { nowItemIndex, shopItems } = cakev2
-    if (nowItemIndex === null) {
-      return initialItem
-    } else {
-      return shopItems[nowItemIndex]
-    }
+  const chromeStorageClient = new ChromeStorageClient()
+  const itemCollectionRepo = new ItemCollectionRepository(chromeStorageClient)
+  const getCurrentItem = new GetCurrentItemUsecase(itemCollectionRepo)
+
+  const itemLoading = useFetch(() => {
+    return getCurrentItem.exec()
   })
 
   return <PopupContainer itemLoading={itemLoading} />

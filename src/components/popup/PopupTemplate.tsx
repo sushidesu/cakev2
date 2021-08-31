@@ -3,10 +3,9 @@ import styled from "styled-components"
 import { Button } from "react-bulma-components"
 import { Checkbox, CheckboxState } from "./Checkbox"
 import LoadingButton, { Props as ButtonProps } from "../loadingButton"
-import { IShopItem } from "../../shopItem"
 
 export type Props = {
-  item: IShopItem
+  itemName: string | undefined
   checkbox: CheckboxState
   check: (name: keyof CheckboxState) => void
   submitButtonProps: {
@@ -17,17 +16,18 @@ export type Props = {
 }
 
 export function PopupTemplate({
-  item,
+  itemName,
   checkbox,
   check,
   submitButtonProps,
 }: Props): JSX.Element {
+  const noItemSelected = itemName === undefined
   return (
     <Wrapper>
       <div className="main">
         <div className="part">
           <span className="part-label">選択された商品</span>
-          <span>{item.id !== null ? item.name : "なし"}</span>
+          <span>{itemName ?? "なし"}</span>
         </div>
 
         <div className="part control">
@@ -36,7 +36,7 @@ export function PopupTemplate({
             name="all"
             value={checkbox.all}
             onCheck={check}
-            disabled={item.id === null}
+            disabled={noItemSelected}
           >
             すべて
           </Checkbox>
@@ -44,7 +44,7 @@ export function PopupTemplate({
             name="info"
             value={checkbox.info}
             onCheck={check}
-            disabled={item.id === null}
+            disabled={noItemSelected}
           >
             商品名・価格・JAN
           </Checkbox>
@@ -52,7 +52,7 @@ export function PopupTemplate({
             name="stock"
             value={checkbox.stock}
             onCheck={check}
-            disabled={item.id === null}
+            disabled={noItemSelected}
           >
             在庫数
           </Checkbox>
@@ -60,7 +60,7 @@ export function PopupTemplate({
             name="descriptions"
             value={checkbox.descriptions}
             onCheck={check}
-            disabled={item.id === null}
+            disabled={noItemSelected}
           >
             商品説明
           </Checkbox>
