@@ -1,6 +1,9 @@
 import { IShopItem } from "../shopItem"
 import pretty from "html-prettify"
 
+/**
+ * @deprecated
+ */
 export const rakutenSPDescription = (item: IShopItem): string => {
   // image
   const image_section = item.imageURL

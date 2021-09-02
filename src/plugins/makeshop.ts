@@ -1,6 +1,9 @@
 import { IShopItem } from "../shopItem"
 import { CheckboxState } from "../components/popup/Checkbox"
 
+/**
+ * @deprecated
+ */
 export const write_to_makeshop = (
   item: IShopItem,
   checked: CheckboxState
