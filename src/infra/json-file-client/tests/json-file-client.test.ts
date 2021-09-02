@@ -72,7 +72,7 @@ describe("JSONFileClient", () => {
       const actual = jsonFileClient.getItemsFromJSONFile(json_v3)
       const expected: Item[] = [
         {
-          id: ItemId.reconstruct("test-item"),
+          id: expect.any(ItemId),
           name: "テスト商品",
           price: 5000,
           weight: 10,

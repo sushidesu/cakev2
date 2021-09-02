@@ -14,7 +14,7 @@ export class JSONFileClient implements JsonClientInterface {
   }
 
   /**
-   * idは新規生成します
+   * 既存のデータを上書きしないように、商品IDは必ず新規生成する
    */
   public getItemsFromJSONFile(json: unknown): Item[] {
     console.log("IMPORT JSON", { json })

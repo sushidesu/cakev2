@@ -30,14 +30,14 @@ export class JSONShcemeConverter {
 
   public JSON_V3ToEntity(json: ItemJSON): Item {
     return {
-      id: ItemId.reconstruct(json.id),
+      id: ItemId.create(),
       name: json.name,
       price: json.price,
       weight: json.weight,
       stockRakuten: json.stockRakuten,
       stockMakeshop: json.stockMakeshop,
       jancode: Jancode.reconstruct(json.jancodeString),
-      blocks: json.blocks.map(blockJson => this.JSON_V3ToBlock(blockJson)),
+      blocks: json.blocks.map((blockJson) => this.JSON_V3ToBlock(blockJson)),
     }
   }
 
