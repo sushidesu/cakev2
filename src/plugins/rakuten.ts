@@ -1,5 +1,5 @@
 import { IShopItem } from "../shopItem"
-import { CheckboxState } from "../popup"
+import { CheckboxState } from "../components/popup/Checkbox"
 import { rakutenSPDescription } from "./rakutenSPDescription"
 
 const setValue = (element: HTMLInputElement | null, value: string) => {
