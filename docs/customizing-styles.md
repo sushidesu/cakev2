@@ -1,12 +1,12 @@
 # Customizing Styles
 
-## Makeshop
+## MakeShop
 
 出力される HTML は `item-description-generated-by-cake` というクラス名のついた `div` 要素で囲まれます。直下セレクタなどを使用することで、この拡張機能によって出力された HTML にのみ CSS を適用することができます。
 
 ### Example
 
-以下の箇所に貼り付けてください。
+以下の箇所に貼り付けてください。 (**:warning: 貼り付け時に他のものを上書きしないように注意してください**)
 
 - 独自デザイン(PC) > 共通 head 管理 > ページ設定: 商品詳細
 - 独自デザイン(スマホ) > (適用済みのテンプレート) 編集 > 共通 head 管理 > ページ設定: 商品詳細
@@ -28,6 +28,9 @@
     font-size: 1.3em;
     font-weight: normal;
     border-bottom: 1px dashed #ccc;
+  }
+  .item-description-generated-by-cake > img {
+    width: 100%;
   }
   .item-description-generated-by-cake > table {
     width: 100%;
