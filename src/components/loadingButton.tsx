@@ -26,20 +26,6 @@ function Loading({
       color={color}
       size={size}
       onClick={onClick}
-      //        asyncfunc().then((result) => {
-      //          if (result === "ok") {
-      //            lazySetLoaded()
-      //          } else if (result === undefined) {
-      //            window.alert(
-      //              `対応していないページです\n(正しいページの場合は、ページを再読込みしてください。)`
-      //            )
-      //            setStatus("default")
-      //          } else {
-      //            window.alert(`入力に失敗しました\n${result}`)
-      //            setStatus("default")
-      //          }
-      //        })
-      // }}
     >
       {status === "loaded" ? (
         <span className="icon">

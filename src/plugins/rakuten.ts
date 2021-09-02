@@ -13,6 +13,9 @@ const setValue = (element: HTMLInputElement | null, value: string) => {
   }
 }
 
+/**
+ * @deprecated
+ */
 export const write_to_rakuten = (
   item: IShopItem,
   checked: CheckboxState
