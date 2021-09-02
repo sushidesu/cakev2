@@ -58,7 +58,7 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     item_stock.value = item.stockMakeshop.toString()
   }
 
-  WRAPPER_CLASS_NAME: string = "item-description-generated-by-cake"
+  WRAPPER_CLASS_NAME = "item-description-generated-by-cake"
 
   inputDescriptions(item: Item) {
     console.log("write descriptions")
