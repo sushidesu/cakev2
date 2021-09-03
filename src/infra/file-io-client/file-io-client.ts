@@ -1,8 +1,8 @@
-import { FileIOClientInterface } from "../usecase/interface/file-io-client"
-import { YYYY_MM_DD_HHmmss } from "../plugins/date"
+import { FileIOClientInterface } from "../../usecase/interface/file-io-client"
+import { YYYY_MM_DD_HHmmss } from "../../plugins/date"
 
 export class FileIOClient implements FileIOClientInterface {
-  public async load(file: File): Promise<any> {
+  public async load(file: File): Promise<unknown> {
     const jsonString = await this.readFile(file)
     return JSON.parse(jsonString)
   }
@@ -21,7 +21,7 @@ export class FileIOClient implements FileIOClientInterface {
     })
   }
 
-  public export(json: { [key: string]: any }): void {
+  public export(json: Record<string, unknown>): void {
     const encoded = encodeURIComponent(JSON.stringify(json))
     const url = `data:text/json;charset=utf-8,${encoded}`
 

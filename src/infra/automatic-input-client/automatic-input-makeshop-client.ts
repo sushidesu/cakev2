@@ -12,7 +12,7 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     this.form = frame.contentWindow?.document
   }
 
-  beforeInput() {
+  beforeInput(): void {
     // 「ポイント」 の単位を 「％」 にする
     const point_type = this.form.getElementById(
       "reserve_type"
@@ -23,7 +23,7 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     point.value = "1"
   }
 
-  inputInfo(item: Item) {
+  inputInfo(item: Item): void {
     console.log("write info")
     // 「商品名」
     const item_name = this.form.getElementById("brandname") as HTMLInputElement
@@ -43,7 +43,7 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     item_weight.value = item.weight.toString()
   }
 
-  inputStock(item: Item) {
+  inputStock(item: Item): void {
     console.log("write stock")
     // 「数量」 タイプを 「数量」 に設定
     const count = this.form.querySelectorAll(
@@ -58,9 +58,9 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     item_stock.value = item.stockMakeshop.toString()
   }
 
-  WRAPPER_CLASS_NAME: string = "item-description-generated-by-cake"
+  WRAPPER_CLASS_NAME = "item-description-generated-by-cake"
 
-  inputDescriptions(item: Item) {
+  inputDescriptions(item: Item): void {
     console.log("write descriptions")
 
     const text = `<div class="${this.WRAPPER_CLASS_NAME}">${item.blocks

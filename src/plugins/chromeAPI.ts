@@ -9,7 +9,7 @@ export type ChromeStorageItem = {
   cakev2: GlobalState
 }
 
-export const getAll = (): Promise<{ [key: string]: any }> =>
+export const getAll = (): Promise<Record<string, unknown>> =>
   new Promise((resolve) => {
     chrome.storage.local.get(null, (items) => {
       resolve(items)

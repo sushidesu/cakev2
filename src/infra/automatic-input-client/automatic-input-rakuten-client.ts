@@ -3,7 +3,7 @@ import { Item } from "../../domain/item/item"
 import { IAutomaticInputClient } from "../../usecase/automatic-input-usecase/interface/automatic-input-client"
 
 export class AutomaticInputRakutenClient implements IAutomaticInputClient {
-  beforeInput() {
+  beforeInput(): void {
     // not required
   }
 
@@ -50,7 +50,7 @@ export class AutomaticInputRakutenClient implements IAutomaticInputClient {
     this.setValue(item_stock_hidden, stock)
   }
 
-  WRAPPER_CLASS_NAME: string = "item-description-generated-by-cake"
+  WRAPPER_CLASS_NAME = "item-description-generated-by-cake"
   inputDescriptions(item: Item): void {
     // 「PC用販売説明文」
     const description_pc = document.querySelector<HTMLInputElement>(

@@ -5,7 +5,7 @@ export const KEY_VERSION_3 = "cakev3"
 export interface BlockValue {
   id: string
   type: string
-  value: any
+  value: unknown
 }
 export interface ItemValue {
   id: string

@@ -11,7 +11,7 @@ export interface BlockBase<T, U extends string> {
 }
 
 // main interface
-export interface BlockCollection<Block extends BlockBase<any, any>> {
+export interface BlockCollection<Block extends BlockBase<unknown, string>> {
   blocks: ReadonlyArray<Block>
   addBlock: (props: AddBlockProps<Block>) => void
   removeBlock: (props: RemoveBlockProps) => void
@@ -22,16 +22,18 @@ export interface BlockCollection<Block extends BlockBase<any, any>> {
 }
 
 // helpers
-export type BlockInitializer<Block extends BlockBase<any, any>> = (
+export type BlockInitializer<Block extends BlockBase<unknown, string>> = (
   type: Block["type"]
 ) => Block
 
-export interface UseBlockCollectionProps<Block extends BlockBase<any, any>> {
+export interface UseBlockCollectionProps<
+  Block extends BlockBase<unknown, string>
+> {
   blockInitializer: BlockInitializer<Block>
   initialBlocks?: Block[]
 }
 
-type AddBlockProps<Block extends BlockBase<any, any>> = {
+type AddBlockProps<Block extends BlockBase<unknown, string>> = {
   type: Block["type"]
 }
 type RemoveBlockProps = {
@@ -42,19 +44,19 @@ type MoveBlockProps = {
   type: "relative"
   offset: number
 }
-type HandleBlockSubmit<Block extends BlockBase<any, any>> = (
+type HandleBlockSubmit<Block extends BlockBase<unknown, string>> = (
   func: (blocks: Block[]) => void
 ) => () => void
 
 // update helper
-type UpdateBlockProps<Block extends BlockBase<any, any>> = {
+type UpdateBlockProps<Block extends BlockBase<unknown, string>> = {
   id: BlockId
   mutation: (prev: Block) => Block
 }
 
 // --- implements ---
 // helper
-const findTargetBlockIndex = <Block extends BlockBase<any, any>>(
+const findTargetBlockIndex = <Block extends BlockBase<unknown, string>>(
   id: Block["id"],
   blocks: Block[]
 ): number => {
@@ -66,7 +68,7 @@ const findTargetBlockIndex = <Block extends BlockBase<any, any>>(
 }
 
 // main
-export const useBlockCollection = <Block extends BlockBase<any, any>>({
+export const useBlockCollection = <Block extends BlockBase<unknown, string>>({
   blockInitializer,
   initialBlocks,
 }: UseBlockCollectionProps<Block>): BlockCollection<Block> => {

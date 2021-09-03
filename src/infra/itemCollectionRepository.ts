@@ -13,6 +13,12 @@ import { Item } from "../domain/item/item"
 import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
 import { ChromeStorageClient } from "./chromeStorageClient"
 import { CustomBlock } from "../domain/customBlock/block"
+import {
+  isHeadingBlockValue,
+  isImageBlockValue,
+  isTableBlockValue,
+  isTextBlockValue,
+} from "../domain/customBlock/isCustomBlockValue"
 import { BlockId } from "../domain/block/blockId"
 import { SchemeV2Client } from "./scheme-v2-client/scheme-v2-client"
 
@@ -199,11 +205,35 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
   }
   private static blockResourceToEntity(blockValue: BlockValue): CustomBlock {
     const id = BlockId.reconstruct(blockValue.id)
+    const INVALID_BLOCK_VALUE = "invalid block value"
     switch (blockValue.type) {
       case "heading":
+        if (!isHeadingBlockValue(blockValue.value))
+          throw new Error(INVALID_BLOCK_VALUE)
+        return {
+          id,
+          type: blockValue.type,
+          value: blockValue.value,
+        }
       case "text":
+        if (!isTextBlockValue(blockValue.value))
+          throw new Error(INVALID_BLOCK_VALUE)
+        return {
+          id,
+          type: blockValue.type,
+          value: blockValue.value,
+        }
       case "image":
+        if (!isImageBlockValue(blockValue.value))
+          throw new Error(INVALID_BLOCK_VALUE)
+        return {
+          id,
+          type: blockValue.type,
+          value: blockValue.value,
+        }
       case "table":
+        if (!isTableBlockValue(blockValue.value))
+          throw new Error(INVALID_BLOCK_VALUE)
         return {
           id,
           type: blockValue.type,
