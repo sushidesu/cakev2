@@ -7,12 +7,10 @@ import { TextBlockEditor } from "./TextBlockEditor"
 import { ImageBlockEditor } from "./ImageBlockEditor"
 import { TableBlockEditor } from "./TableBlockEditor"
 
-export type UpdateBlockFunction<Block extends BlockBase<any, any>> = (props: {
-  id: BlockId
-  mutation: (prev: Block) => Block
-}) => void
+export type UpdateBlockFunction<Block extends BlockBase<unknown, string>> =
+  (props: { id: BlockId; mutation: (prev: Block) => Block }) => void
 
-export type BlockEditorProps<Block extends BlockBase<any, any>> = {
+export type BlockEditorProps<Block extends BlockBase<unknown, string>> = {
   block: Block
   update: UpdateBlockFunction<CustomBlock>
   remove: () => void
@@ -20,7 +18,7 @@ export type BlockEditorProps<Block extends BlockBase<any, any>> = {
   moveDown: () => void
 }
 
-export type Props<Block extends BlockBase<any, any>> = {
+export type Props<Block extends BlockBase<unknown, string>> = {
   block: Block
   remove: () => void
   moveUp: () => void
