@@ -1,10 +1,6 @@
 import { getAll } from "./plugins/chromeAPI"
 import { ItemCollectionRepository } from "./infra/itemCollectionRepository"
 import { ChromeStorageClient } from "./infra/chromeStorageClient"
-// for development
-// eslint-disable-next-line
-const hotreload = require("crx-hotreload")
-// ------------
 
 async function main() {
   const client = new ChromeStorageClient()
