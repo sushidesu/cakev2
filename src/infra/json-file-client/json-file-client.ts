@@ -3,6 +3,7 @@ import { JsonClientInterface } from "../../usecase/interface/json-client-interfa
 import { JSONScheme, JSONScheme_V2 } from "./interface/scheme"
 import { JSONShcemeConverter } from "./json-scheme-converter"
 import { SchemeV2Client } from "../scheme-v2-client/scheme-v2-client"
+import { isNotNullish } from "../../utils/isNotNullish"
 
 const hasOwn = Object.prototype.hasOwnProperty
 export class JSONFileClient implements JsonClientInterface {
@@ -46,18 +47,15 @@ export class JSONFileClient implements JsonClientInterface {
     return items
   }
 
-  private isNotNullish(object: unknown): object is Record<string, unknown> {
-    return object != null
-  }
   private isCakeV3(object: unknown): object is JSONScheme {
-    if (!this.isNotNullish(object)) {
+    if (!isNotNullish(object)) {
       return false
     }
 
     return hasOwn.call(object, "version") && hasOwn.call(object, "items")
   }
   private isCakeV2(object: unknown): object is JSONScheme_V2 {
-    if (!this.isNotNullish(object)) {
+    if (!isNotNullish(object)) {
       return false
     }
 
