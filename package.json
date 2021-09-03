@@ -15,7 +15,10 @@
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "build:compare": "NODE_ENV=production OUT_DIR=$OUT_DIR webpack --config webpack.comparison.js",
     "prepare": "husky install",
-    "precommit": "echo hello"
+    "pre-commit-from-husky": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": ["eslint --max-warnings=0 --cache --fix", "prettier --write"]
   },
   "devDependencies": {
     "@types/chrome": "0.0.154",
@@ -37,6 +40,7 @@
     "html-webpack-plugin": "5.3.2",
     "husky": "7.0.2",
     "jest": "27.0.6",
+    "lint-staged": "^11.1.2",
     "mini-css-extract-plugin": "2.1.0",
     "prettier": "2.3.2",
     "ts-jest": "27.0.3",
