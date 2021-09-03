@@ -14,7 +14,8 @@
     "test": "jest",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "build:compare": "NODE_ENV=production OUT_DIR=$OUT_DIR webpack --config webpack.comparison.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "precommit": "echo hello"
   },
   "devDependencies": {
     "@types/chrome": "0.0.154",
@@ -38,7 +39,6 @@
     "jest": "27.0.6",
     "mini-css-extract-plugin": "2.1.0",
     "prettier": "2.3.2",
-    "pretty-quick": "3.1.1",
     "ts-jest": "27.0.3",
     "ts-loader": "9.2.5",
     "typescript": "4.3.5",
