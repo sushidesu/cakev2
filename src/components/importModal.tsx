@@ -5,7 +5,7 @@ import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-u
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
 import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
-import { FileIOClient } from "../infra/file-io-client"
+import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { useAlertContext } from "../contexts/alert/alertContext"
 
 export type Props = {

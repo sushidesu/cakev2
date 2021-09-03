@@ -1,5 +1,5 @@
-import { FileIOClientInterface } from "../usecase/interface/file-io-client"
-import { YYYY_MM_DD_HHmmss } from "../plugins/date"
+import { FileIOClientInterface } from "../../usecase/interface/file-io-client"
+import { YYYY_MM_DD_HHmmss } from "../../plugins/date"
 
 export class FileIOClient implements FileIOClientInterface {
   public async load(file: File): Promise<unknown> {
