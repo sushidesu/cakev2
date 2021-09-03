@@ -1,4 +1,4 @@
 export interface FileIOClientInterface {
-  export(value: any): void
-  load(file: File): Promise<any>
+  export(value: Record<string, unknown>): void
+  load(file: File): Promise<unknown>
 }
