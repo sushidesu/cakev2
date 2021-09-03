@@ -4,7 +4,7 @@ export type Loading<T> =
     }
   | {
       status: "error"
-      error: any
+      error: unknown
     }
   | {
       status: "done"

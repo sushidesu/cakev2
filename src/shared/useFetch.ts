@@ -3,7 +3,7 @@ import { Loading } from "./loading"
 
 export const useFetch = <T>(fetcher: () => Promise<T>): Loading<T> => {
   const [value, setValue] = useState<T>()
-  const [error, setError] = useState()
+  const [error, setError] = useState<unknown>()
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
