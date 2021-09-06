@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Container, Columns } from "react-bulma-components"
+import clsx from "clsx"
 import Header from "../header"
 import ItemList, { Props as ItemListProps } from "../itemList"
 import ItemEditor, { Props as ItemEditorProps } from "../itemEditor"
@@ -101,12 +101,12 @@ export function OptionsTemplate({
   return (
     <Wrapper>
       <Header itemList={itemList} resetItemCollection={resetItemCollection} />
-      <Container>
-        <Columns className={"is-mobile"}>
-          <Columns.Column size={3} className={"sidemenu"}>
+      <div className={"container"}>
+        <div className={clsx("columns", "is-mobile")}>
+          <div className={clsx("column", "is-3", "sidemenu")}>
             <ItemList {...itemListProps} />
-          </Columns.Column>
-          <Columns.Column>
+          </div>
+          <div className={clsx("column")}>
             <Spacer>
               <ItemEditor {...itemEditorProps} />
             </Spacer>
@@ -142,9 +142,9 @@ export function OptionsTemplate({
                 </Button>
               </div>
             </StickyButtonsWrapper>
-          </Columns.Column>
-        </Columns>
-      </Container>
+          </div>
+        </div>
+      </div>
     </Wrapper>
   )
 }
