@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import { Modal, Form, Button, Icon } from "react-bulma-components"
+import { Modal, Form, Icon } from "react-bulma-components"
 import { ImportItemsAppendUsecase } from "../usecase/import-items-append-usecase"
 import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-usecase"
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
@@ -7,6 +7,7 @@ import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { useAlertContext } from "../contexts/alert/alertContext"
+import { Button } from "./atom/Button"
 
 export type Props = {
   show: boolean
