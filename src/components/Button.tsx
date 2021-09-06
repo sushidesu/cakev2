@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ForwardRefRenderFunction } from "react"
 import clsx from "clsx"
 
 type Color =
@@ -24,16 +24,17 @@ export type Props = {
   onClick?: JSX.IntrinsicElements["button"]["onClick"]
 }
 
-export function Button({
-  visible = true,
-  color,
-  outlined = false,
-  ...rest
-}: Props): JSX.Element | null {
+const _Button: ForwardRefRenderFunction<HTMLButtonElement, Props> = (
+  { visible = true, color, outlined = false, ...rest },
+  ref
+): JSX.Element | null => {
   return visible ? (
     <button
+      ref={ref}
       className={clsx("button", `is-${color}`, outlined && "is-outlined")}
       {...rest}
     />
   ) : null
 }
+
+export const Button = React.forwardRef(_Button)
