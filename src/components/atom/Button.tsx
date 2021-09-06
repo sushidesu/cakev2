@@ -15,9 +15,12 @@ type Color =
   | "warning"
   | "danger"
 
+type Size = "small" | "normal" | "medium" | "large"
+
 export type Props = {
   visible?: boolean | undefined
   color?: Color | undefined
+  size?: Size | undefined
   outlined?: boolean | undefined
   // primitive props
   children?: React.ReactNode
@@ -26,13 +29,18 @@ export type Props = {
 }
 
 const _Button: ForwardRefRenderFunction<HTMLButtonElement, Props> = (
-  { visible = true, color, outlined = false, ...rest },
+  { visible = true, color, size = "normal", outlined = false, ...rest },
   ref
 ): JSX.Element | null => {
   return visible ? (
     <button
       ref={ref}
-      className={clsx("button", `is-${color}`, outlined && "is-outlined")}
+      className={clsx(
+        "button",
+        `is-${color}`,
+        `is-${size}`,
+        outlined && "is-outlined"
+      )}
       {...rest}
     />
   ) : null

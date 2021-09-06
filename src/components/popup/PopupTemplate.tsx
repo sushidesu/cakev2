@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Button } from "react-bulma-components"
 import { Checkbox, CheckboxState } from "./Checkbox"
 import LoadingButton, { Props as ButtonProps } from "../loadingButton"
+import { Button } from "../atom/Button"
 
 export type Props = {
   itemName: string | undefined
@@ -77,7 +77,7 @@ export function PopupTemplate({
           />
           <Button
             size={"small"}
-            text={true}
+            color="text"
             onClick={() => {
               chrome.runtime.openOptionsPage()
             }}
