@@ -5,6 +5,7 @@ import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { Button } from "./atom/Button"
+import { Checkbox } from "./atom/CheckBox"
 
 export type Props = {
   show: boolean
@@ -70,18 +71,22 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
         <Modal.Card.Body>
           <Form.Field>
             <Form.Control>
-              <Form.Checkbox onChange={handleClickCheckAll} checked={checkAll}>
+              <Checkbox
+                name="all"
+                onClick={handleClickCheckAll}
+                checked={checkAll}
+              >
                 すべて
-              </Form.Checkbox>
+              </Checkbox>
             </Form.Control>
             {itemList.map((item, index) => (
               <Form.Control key={item.id.value}>
-                <Form.Checkbox
-                  onChange={handleClickItemCheckbox(index)}
+                <Checkbox
+                  onClick={handleClickItemCheckbox(index)}
                   checked={selectedItemList[index]}
                 >
-                  {`  ${item.name}`}
-                </Form.Checkbox>
+                  {`${item.name}`}
+                </Checkbox>
               </Form.Control>
             ))}
           </Form.Field>
