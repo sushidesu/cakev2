@@ -22,6 +22,8 @@ export type Props = {
   color?: Color | undefined
   size?: Size | undefined
   outlined?: boolean | undefined
+  loading?: boolean | undefined
+  fullWidth?: boolean | undefined
   // primitive props
   children?: React.ReactNode
   disabled?: JSX.IntrinsicElements["button"]["disabled"]
@@ -29,7 +31,16 @@ export type Props = {
 }
 
 const _Button: ForwardRefRenderFunction<HTMLButtonElement, Props> = (
-  { visible = true, color, size = "normal", outlined = false, ...rest },
+  {
+    visible = true,
+    color,
+    size = "normal",
+    outlined = false,
+    loading = false,
+    fullWidth = false,
+    children,
+    ...rest
+  },
   ref
 ): JSX.Element | null => {
   return visible ? (
@@ -39,10 +50,14 @@ const _Button: ForwardRefRenderFunction<HTMLButtonElement, Props> = (
         "button",
         `is-${color}`,
         `is-${size}`,
-        outlined && "is-outlined"
+        outlined && "is-outlined",
+        loading && "is-loading",
+        fullWidth && "is-fullwidth"
       )}
       {...rest}
-    />
+    >
+      {children}
+    </button>
   ) : null
 }
 

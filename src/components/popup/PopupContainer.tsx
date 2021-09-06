@@ -82,7 +82,7 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
             check,
             autoFill,
             submitButtonProps: {
-              status: loading ? "loading" : ok ? "loaded" : "default",
+              loadingStatus: loading ? "loading" : ok ? "loaded" : "default",
               disabled: itemLoading.value === undefined,
               onClick: autoFill,
             },

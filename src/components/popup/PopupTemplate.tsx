@@ -1,16 +1,16 @@
 import React from "react"
 import styled from "styled-components"
 import { Checkbox, CheckboxState } from "./Checkbox"
-import LoadingButton, { Props as ButtonProps } from "../loadingButton"
 import { Button } from "../atom/Button"
+import { LoadingButton } from "../molecule/loadingButton"
 
 export type Props = {
   itemName: string | undefined
   checkbox: CheckboxState
   check: (name: keyof CheckboxState) => void
   submitButtonProps: {
-    status: ButtonProps["status"]
-    disabled: ButtonProps["disabled"]
+    loadingStatus: "default" | "loading" | "loaded"
+    disabled: boolean
     onClick?: () => void
   }
 }
@@ -68,13 +68,14 @@ export function PopupTemplate({
 
         <div className="buttons">
           <LoadingButton
-            label="自動入力"
             color={"primary"}
             size={"small"}
             disabled={submitButtonProps.disabled}
-            status={submitButtonProps.status}
+            loadingStatus={submitButtonProps.loadingStatus}
             onClick={submitButtonProps.onClick}
-          />
+          >
+            自動入力
+          </LoadingButton>
           <Button
             size={"small"}
             color="text"
