@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import clsx from "clsx"
-import { FormInput } from "./formSingleInputs"
+import { InputFieldForItemInfo as FormInput } from "./molecule/InputFieldForItemInfo"
 import { InputError } from "../utils/inputError"
 import { Columns } from "./atom/Columns"
 import { Column } from "./atom/Column"
