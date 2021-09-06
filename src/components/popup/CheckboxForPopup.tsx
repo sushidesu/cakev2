@@ -1,5 +1,5 @@
 import React from "react"
-import { Form } from "react-bulma-components"
+import { Checkbox } from "../atom/CheckBox"
 
 export type Props = {
   name: keyof CheckboxState
@@ -24,14 +24,14 @@ export function CheckboxForPopup({
   children,
 }: Props): JSX.Element {
   return (
-    <Form.Checkbox
+    <Checkbox
       checked={value}
-      onChange={() => {
+      onClick={() => {
         onCheck(name)
       }}
       disabled={disabled}
     >
       {children}
-    </Form.Checkbox>
+    </Checkbox>
   )
 }
