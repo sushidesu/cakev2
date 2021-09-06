@@ -8,6 +8,8 @@ import { Button } from "../atom/Button"
 import { CustomBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 import { Item } from "../../domain/item/item"
+import { Columns } from "../atom/Columns"
+import { Column } from "../atom/Column"
 
 export type Props = {
   itemList: Item[]
@@ -98,15 +100,16 @@ export function OptionsTemplate({
     addImageBlockButton,
     addTableBlockButton,
   } = blockEditorControllerProps
+  // FIXME: use Column component in L109
   return (
     <Wrapper>
       <Header itemList={itemList} resetItemCollection={resetItemCollection} />
       <div className={"container"}>
-        <div className={clsx("columns", "is-mobile")}>
+        <Columns mobile multiline>
           <div className={clsx("column", "is-3", "sidemenu")}>
             <ItemList {...itemListProps} />
           </div>
-          <div className={clsx("column")}>
+          <Column>
             <Spacer>
               <ItemEditor {...itemEditorProps} />
             </Spacer>
@@ -142,8 +145,8 @@ export function OptionsTemplate({
                 </Button>
               </div>
             </StickyButtonsWrapper>
-          </div>
-        </div>
+          </Column>
+        </Columns>
       </div>
     </Wrapper>
   )

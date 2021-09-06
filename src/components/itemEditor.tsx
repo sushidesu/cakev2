@@ -1,8 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { Container, Columns } from "react-bulma-components"
+import clsx from "clsx"
 import { FormInput } from "./formSingleInputs"
 import { InputError } from "../utils/inputError"
+import { Columns } from "./atom/Columns"
+import { Column } from "./atom/Column"
 
 const FormWrapper = styled.div`
   margin: 0 5px;
@@ -32,10 +34,10 @@ function ItemEditor({
   handleChange,
 }: Props): JSX.Element {
   return (
-    <Container>
+    <div className={clsx("container")}>
       <FormWrapper>
         <Columns>
-          <Columns.Column>
+          <Column>
             <FormInput
               label={"商品名"}
               field={"name"}
@@ -43,13 +45,13 @@ function ItemEditor({
               message={formError.name.message}
               onChange={handleChange("name")}
             />
-          </Columns.Column>
+          </Column>
         </Columns>
 
         <Columns>
-          <Columns.Column size={"half"}>
-            <Columns className={"is-mobile"}>
-              <Columns.Column size={"half"}>
+          <Column half>
+            <Columns mobile>
+              <Column half>
                 <FormInput
                   label={"値段(税抜き)"}
                   field={"price"}
@@ -58,8 +60,8 @@ function ItemEditor({
                   onChange={handleChange("price")}
                   type={"number"}
                 />
-              </Columns.Column>
-              <Columns.Column size={"half"}>
+              </Column>
+              <Column half>
                 <FormInput
                   label={"重さ(g)"}
                   field={"weight"}
@@ -68,13 +70,13 @@ function ItemEditor({
                   onChange={handleChange("weight")}
                   type={"number"}
                 />
-              </Columns.Column>
+              </Column>
             </Columns>
-          </Columns.Column>
+          </Column>
 
-          <Columns.Column size={"half"}>
-            <Columns className={"is-mobile"}>
-              <Columns.Column size={"half"}>
+          <Column half>
+            <Columns mobile>
+              <Column half>
                 <FormInput
                   label={"在庫数(楽天)"}
                   field={"stockRakuten"}
@@ -83,8 +85,8 @@ function ItemEditor({
                   onChange={handleChange("stockRakuten")}
                   type={"number"}
                 />
-              </Columns.Column>
-              <Columns.Column size={"half"}>
+              </Column>
+              <Column half>
                 <FormInput
                   label={"(Makeshop)"}
                   field={"stockMakeshop"}
@@ -93,13 +95,13 @@ function ItemEditor({
                   onChange={handleChange("stockMakeshop")}
                   type={"number"}
                 />
-              </Columns.Column>
+              </Column>
             </Columns>
-          </Columns.Column>
+          </Column>
         </Columns>
 
         <Columns>
-          <Columns.Column size={"half"}>
+          <Column half>
             <FormInput
               label={"JANコード"}
               field={"jancode"}
@@ -107,11 +109,11 @@ function ItemEditor({
               message={formError.jancode.message}
               onChange={handleChange("jancode")}
             />
-          </Columns.Column>
-          <Columns.Column size={"half"} />
+          </Column>
+          <Column half />
         </Columns>
       </FormWrapper>
-    </Container>
+    </div>
   )
 }
 
