@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Checkbox, CheckboxState } from "./Checkbox"
+import { CheckboxForPopup, CheckboxState } from "./CheckboxForPopup"
 import { Button } from "../atom/Button"
 import { LoadingButton } from "../molecule/loadingButton"
 
@@ -32,38 +32,38 @@ export function PopupTemplate({
 
         <div className="part control">
           <span className="part-label">入力する項目</span>
-          <Checkbox
+          <CheckboxForPopup
             name="all"
             value={checkbox.all}
             onCheck={check}
             disabled={noItemSelected}
           >
             すべて
-          </Checkbox>
-          <Checkbox
+          </CheckboxForPopup>
+          <CheckboxForPopup
             name="info"
             value={checkbox.info}
             onCheck={check}
             disabled={noItemSelected}
           >
             商品名・価格・JAN
-          </Checkbox>
-          <Checkbox
+          </CheckboxForPopup>
+          <CheckboxForPopup
             name="stock"
             value={checkbox.stock}
             onCheck={check}
             disabled={noItemSelected}
           >
             在庫数
-          </Checkbox>
-          <Checkbox
+          </CheckboxForPopup>
+          <CheckboxForPopup
             name="descriptions"
             value={checkbox.descriptions}
             onCheck={check}
             disabled={noItemSelected}
           >
             商品説明
-          </Checkbox>
+          </CheckboxForPopup>
         </div>
 
         <div className="buttons">

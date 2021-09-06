@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { PopupTemplate } from "./PopupTemplate"
 import { Item } from "../../domain/item/item"
-import { CheckboxState } from "./Checkbox"
+import { CheckboxState } from "./CheckboxForPopup"
 import { Loading } from "../../shared/loading"
 import { ChromeMessenger } from "../../infra/chrome-messenger/chrome-messenger"
 import {

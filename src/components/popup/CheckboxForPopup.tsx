@@ -16,7 +16,7 @@ export type CheckboxState = {
   descriptions: boolean
 }
 
-export function Checkbox({
+export function CheckboxForPopup({
   name,
   value,
   onCheck,

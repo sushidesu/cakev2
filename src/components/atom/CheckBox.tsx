@@ -22,7 +22,7 @@ const _CheckBox: ForwardRefRenderFunction<HTMLInputElement, Props> = (
         checked={checked}
         disabled={disabled}
       />
-      <span style={{ marginLeft: "0.5em" }}>{children}</span>
+      <span style={{ marginLeft: "0.4em" }}>{children}</span>
     </label>
   )
 }
