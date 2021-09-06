@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Menu, Button } from "react-bulma-components"
+import { Menu } from "react-bulma-components"
+import { Button } from "./atom/Button"
 
 const Wrapper = styled.div`
   position: sticky;

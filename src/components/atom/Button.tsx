@@ -21,6 +21,7 @@ export type Props = {
   outlined?: boolean | undefined
   // primitive props
   children?: React.ReactNode
+  disabled?: JSX.IntrinsicElements["button"]["disabled"]
   onClick?: JSX.IntrinsicElements["button"]["onClick"]
 }
 
