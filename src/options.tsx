@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import "react-bulma-components/dist/react-bulma-components.min.css"
+import "bulma/css/bulma.css"
 import { OptionsContainer } from "./components/options/OptionsContainer"
 import { AlertContextProvider } from "./contexts/alert/alertContext"
 
