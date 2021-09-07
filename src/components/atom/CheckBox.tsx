@@ -1,27 +1,13 @@
 import React, { ForwardRefRenderFunction } from "react"
 
-export type Props = {
-  name?: string | undefined
-  onClick?: JSX.IntrinsicElements["input"]["onClick"]
-  checked?: boolean | undefined
-  disabled?: boolean | undefined
-  children?: React.ReactNode
-}
-
+export type Props = Omit<JSX.IntrinsicElements["input"], "type">
 const _CheckBox: ForwardRefRenderFunction<HTMLInputElement, Props> = (
-  { children, name, checked, disabled = false, onClick },
+  { children, ...rest },
   ref
 ) => {
   return (
     <label className="checkbox">
-      <input
-        ref={ref}
-        name={name}
-        type="checkbox"
-        onClick={onClick}
-        checked={checked}
-        disabled={disabled}
-      />
+      <input ref={ref} type={"checkbox"} {...rest} />
       <span style={{ marginLeft: "0.4em" }}>{children}</span>
     </label>
   )

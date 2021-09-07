@@ -26,7 +26,7 @@ export function CheckboxForPopup({
   return (
     <Checkbox
       checked={value}
-      onClick={() => {
+      onChange={() => {
         onCheck(name)
       }}
       disabled={disabled}
