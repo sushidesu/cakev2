@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
-import { Modal, Form } from "react-bulma-components"
+import clsx from "clsx"
 import { Item } from "../domain/item/item"
 import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { Button } from "./atom/Button"
 import { Checkbox } from "./atom/CheckBox"
+import { Modal } from "./Modal"
 
 export type Props = {
   show: boolean
@@ -63,41 +64,43 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
   }, [itemList])
 
   return (
-    <Modal onClose={closeModal} show={show} closeOnBlur={true}>
-      <Modal.Card>
-        <Modal.Card.Head onClose={closeModal}>
-          <Modal.Card.Title>商品エクスポート</Modal.Card.Title>
-        </Modal.Card.Head>
-        <Modal.Card.Body>
-          <Form.Field>
-            <Form.Control>
-              <Checkbox
-                name="all"
-                onClick={handleClickCheckAll}
-                checked={checkAll}
-              >
-                すべて
-              </Checkbox>
-            </Form.Control>
-            {itemList.map((item, index) => (
-              <Form.Control key={item.id.value}>
-                <Checkbox
-                  onClick={handleClickItemCheckbox(index)}
-                  checked={selectedItemList[index]}
-                >
-                  {`${item.name}`}
-                </Checkbox>
-              </Form.Control>
-            ))}
-          </Form.Field>
-        </Modal.Card.Body>
-        <Modal.Card.Foot>
+    <Modal
+      title={"商品エクスポート"}
+      onClickClose={closeModal}
+      onClickBackground={closeModal}
+      show={show}
+      footer={
+        <div>
           <Button onClick={handleClickExport} color="info">
             エクスポート
           </Button>
           <Button onClick={closeModal}>キャンセル</Button>
-        </Modal.Card.Foot>
-      </Modal.Card>
+        </div>
+      }
+    >
+      <div>
+        <div className={clsx("field")}>
+          <div className={clsx("control")}>
+            <Checkbox
+              name="all"
+              onClick={handleClickCheckAll}
+              checked={checkAll}
+            >
+              すべて
+            </Checkbox>
+          </div>
+          {itemList.map((item, index) => (
+            <div className={clsx("control")} key={item.id.value}>
+              <Checkbox
+                onClick={handleClickItemCheckbox(index)}
+                checked={selectedItemList[index]}
+              >
+                {`${item.name}`}
+              </Checkbox>
+            </div>
+          ))}
+        </div>
+      </div>
     </Modal>
   )
 }

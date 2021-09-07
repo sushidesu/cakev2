@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react"
-import { Modal, Form, Icon } from "react-bulma-components"
+import clsx from "clsx"
+import { Form, Icon } from "react-bulma-components"
 import { ImportItemsAppendUsecase } from "../usecase/import-items-append-usecase"
 import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-usecase"
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
@@ -8,6 +9,7 @@ import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { useAlertContext } from "../contexts/alert/alertContext"
 import { Button } from "./atom/Button"
+import { Modal } from "./Modal"
 
 export type Props = {
   show: boolean
@@ -90,59 +92,61 @@ const ImportModal = ({
   }
 
   return (
-    <Modal onClose={() => setShow(false)} show={show} closeOnBlur={true}>
-      <Modal.Card>
-        <Modal.Card.Head onClose={() => setShow(false)}>
-          <Modal.Card.Title>商品リストインポート</Modal.Card.Title>
-        </Modal.Card.Head>
-        <Modal.Card.Body>
-          <Form.Field>
-            <div className="file has-name is-fullwidth">
-              <label className="file-label">
-                <input
-                  onChange={fileSelect}
-                  ref={fileinput}
-                  className="file-input"
-                  type="file"
-                  accept=".json"
-                  name="resume"
-                />
-                <span className="file-cta">
-                  <span className="file-icon">
-                    <Icon icon="upload" />
-                  </span>
-                  <span className="file-label">ファイルを選択</span>
-                </span>
-                <span className="file-name">{filename}</span>
-              </label>
-            </div>
-          </Form.Field>
-          <Form.Field>
-            <Form.Radio
-              checked={!overwrite}
-              onChange={() => setOverwrite(false)}
-              name="importOption"
-            >
-              既存の商品リストに追加
-            </Form.Radio>
-          </Form.Field>
-          <Form.Field>
-            <Form.Radio
-              checked={overwrite}
-              onChange={() => setOverwrite(true)}
-              name="importOption"
-            >
-              既存の商品リストを上書き
-            </Form.Radio>
-          </Form.Field>
-        </Modal.Card.Body>
-        <Modal.Card.Foot>
-          <Button onClick={() => _import()} color="info">
+    <Modal
+      show={show}
+      title={"商品リストインポート"}
+      onClickClose={() => setShow(false)}
+      onClickBackground={() => setShow(false)}
+      footer={
+        <div>
+          <Button onClick={_import} color="info">
             インポート
           </Button>
           <Button onClick={close}>キャンセル</Button>
-        </Modal.Card.Foot>
-      </Modal.Card>
+        </div>
+      }
+    >
+      <div>
+        <div className={clsx("field")}>
+          <div className="file has-name is-fullwidth">
+            <label className="file-label">
+              <input
+                onChange={fileSelect}
+                ref={fileinput}
+                className="file-input"
+                type="file"
+                accept=".json"
+                name="resume"
+              />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <Icon icon="upload" />
+                </span>
+                <span className="file-label">ファイルを選択</span>
+              </span>
+              <span className="file-name">{filename}</span>
+            </label>
+          </div>
+        </div>
+        <div className={clsx("field")}>
+          <Form.Radio
+            checked={!overwrite}
+            onChange={() => setOverwrite(false)}
+            name="importOption"
+          >
+            既存の商品リストに追加
+          </Form.Radio>
+        </div>
+        <div className={clsx("field")}>
+          <Form.Radio
+            checked={overwrite}
+            onChange={() => setOverwrite(true)}
+            name="importOption"
+          >
+            既存の商品リストを上書き
+          </Form.Radio>
+        </div>
+      </div>
     </Modal>
   )
 }
