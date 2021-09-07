@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react"
 import clsx from "clsx"
-import { Form, Icon } from "react-bulma-components"
+import { Form } from "react-bulma-components"
 import { ImportItemsAppendUsecase } from "../usecase/import-items-append-usecase"
 import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-usecase"
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
@@ -10,6 +10,7 @@ import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { useAlertContext } from "../contexts/alert/alertContext"
 import { Button } from "./atom/Button"
 import { Modal } from "./Modal"
+import { FileInput } from "./atom/FileInput"
 
 export type Props = {
   show: boolean
@@ -35,7 +36,6 @@ const ImportModal = ({
   }
 
   const close = () => {
-    setFilename("")
     setShow(false)
   }
 
@@ -95,8 +95,8 @@ const ImportModal = ({
     <Modal
       show={show}
       title={"商品リストインポート"}
-      onClickClose={() => setShow(false)}
-      onClickBackground={() => setShow(false)}
+      onClickClose={close}
+      onClickBackground={close}
       footer={
         <div>
           <Button onClick={_import} color="info">
@@ -108,25 +108,11 @@ const ImportModal = ({
     >
       <div>
         <div className={clsx("field")}>
-          <div className="file has-name is-fullwidth">
-            <label className="file-label">
-              <input
-                onChange={fileSelect}
-                ref={fileinput}
-                className="file-input"
-                type="file"
-                accept=".json"
-                name="resume"
-              />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <Icon icon="upload" />
-                </span>
-                <span className="file-label">ファイルを選択</span>
-              </span>
-              <span className="file-name">{filename}</span>
-            </label>
-          </div>
+          <FileInput
+            ref={fileinput}
+            filename={filename}
+            onChange={fileSelect}
+          />
         </div>
         <div className={clsx("field")}>
           <Form.Radio
