@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react"
 import clsx from "clsx"
-import { Form } from "react-bulma-components"
 import { ImportItemsAppendUsecase } from "../usecase/import-items-append-usecase"
 import { ImportItemsOverwriteUsecase } from "../usecase/import-items-overwrite-usecase"
 import { ItemCollectionRepository } from "../infra/itemCollectionRepository"
@@ -8,9 +7,10 @@ import { ChromeStorageClient } from "../infra/chromeStorageClient"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { useAlertContext } from "../contexts/alert/alertContext"
-import { Button } from "./atom/Button"
 import { Modal } from "./Modal"
+import { Button } from "./atom/Button"
 import { FileInput } from "./atom/FileInput"
+import { Radio } from "./atom/Radio"
 
 export type Props = {
   show: boolean
@@ -115,22 +115,22 @@ const ImportModal = ({
           />
         </div>
         <div className={clsx("field")}>
-          <Form.Radio
+          <Radio
             checked={!overwrite}
             onChange={() => setOverwrite(false)}
             name="importOption"
           >
             既存の商品リストに追加
-          </Form.Radio>
+          </Radio>
         </div>
         <div className={clsx("field")}>
-          <Form.Radio
+          <Radio
             checked={overwrite}
             onChange={() => setOverwrite(true)}
             name="importOption"
           >
             既存の商品リストを上書き
-          </Form.Radio>
+          </Radio>
         </div>
       </div>
     </Modal>
