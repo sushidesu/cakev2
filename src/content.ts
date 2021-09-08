@@ -1,4 +1,4 @@
-import { CheckboxState } from "./components/popup/Checkbox"
+import { CheckboxState } from "./components/popup/CheckboxForPopup"
 import { Item } from "./domain/item/item"
 import { GetCurrentItemUsecase } from "./usecase/get-current-item-usecase"
 import { ItemCollectionRepository } from "./infra/itemCollectionRepository"

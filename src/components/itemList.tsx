@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Menu, Button } from "react-bulma-components"
+import { Button } from "./atom/Button"
+import clsx from "clsx"
 
 const Wrapper = styled.div`
   position: sticky;
@@ -44,19 +45,16 @@ function ItemList({
           新しい商品を追加
         </Button>
       </ButtonWrapper>
-      <Menu>
-        <Menu.List title="Item List">
+      <aside className="menu">
+        <p className="menu-label">Item List</p>
+        <ul className="menu-list">
           {items.map((item) => (
-            <Menu.List.Item
-              key={item.id}
-              active={item.selected}
-              onClick={item.onClick}
-            >
-              {item.name}
-            </Menu.List.Item>
+            <li key={item.id} onClick={item.onClick}>
+              <a className={clsx(item.selected && "is-active")}>{item.name}</a>
+            </li>
           ))}
-        </Menu.List>
-      </Menu>
+        </ul>
+      </aside>
     </Wrapper>
   )
 }

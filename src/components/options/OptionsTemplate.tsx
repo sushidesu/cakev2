@@ -1,13 +1,15 @@
 import React from "react"
 import styled from "styled-components"
-import { Container, Columns } from "react-bulma-components"
+import clsx from "clsx"
 import Header from "../header"
 import ItemList, { Props as ItemListProps } from "../itemList"
 import ItemEditor, { Props as ItemEditorProps } from "../itemEditor"
-import { Button } from "../Button"
+import { Button } from "../atom/Button"
 import { CustomBlock } from "../../domain/customBlock/block"
 import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 import { Item } from "../../domain/item/item"
+import { Columns } from "../atom/Columns"
+import { Column } from "../atom/Column"
 
 export type Props = {
   itemList: Item[]
@@ -98,15 +100,16 @@ export function OptionsTemplate({
     addImageBlockButton,
     addTableBlockButton,
   } = blockEditorControllerProps
+  // FIXME: use Column component in L109
   return (
     <Wrapper>
       <Header itemList={itemList} resetItemCollection={resetItemCollection} />
-      <Container>
-        <Columns className={"is-mobile"}>
-          <Columns.Column size={3} className={"sidemenu"}>
+      <div className={"container"}>
+        <Columns mobile multiline>
+          <div className={clsx("column", "is-3", "sidemenu")}>
             <ItemList {...itemListProps} />
-          </Columns.Column>
-          <Columns.Column>
+          </div>
+          <Column>
             <Spacer>
               <ItemEditor {...itemEditorProps} />
             </Spacer>
@@ -142,9 +145,9 @@ export function OptionsTemplate({
                 </Button>
               </div>
             </StickyButtonsWrapper>
-          </Columns.Column>
+          </Column>
         </Columns>
-      </Container>
+      </div>
     </Wrapper>
   )
 }

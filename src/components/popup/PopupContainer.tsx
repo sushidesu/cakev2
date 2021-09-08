@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { PopupTemplate } from "./PopupTemplate"
 import { Item } from "../../domain/item/item"
-import { CheckboxState } from "./Checkbox"
+import { CheckboxState } from "./CheckboxForPopup"
 import { Loading } from "../../shared/loading"
 import { ChromeMessenger } from "../../infra/chrome-messenger/chrome-messenger"
 import {
@@ -82,7 +82,7 @@ export function PopupContainer({ itemLoading }: Props): JSX.Element {
             check,
             autoFill,
             submitButtonProps: {
-              status: loading ? "loading" : ok ? "loaded" : "default",
+              loadingStatus: loading ? "loading" : ok ? "loaded" : "default",
               disabled: itemLoading.value === undefined,
               onClick: autoFill,
             },

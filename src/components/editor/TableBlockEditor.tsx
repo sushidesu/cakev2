@@ -4,7 +4,7 @@ import { TableBlock, TableRow } from "../../domain/customBlock/block"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 import { TableRowEditor } from "./TableRowEditor"
-import { Button } from "../Button"
+import { Button } from "../atom/Button"
 
 export function TableBlockEditor({
   block,
@@ -14,7 +14,7 @@ export function TableBlockEditor({
   const addRow = () => {
     update({
       id: block.id,
-      mutation: prev => {
+      mutation: (prev) => {
         if (prev.type === "table") {
           return {
             ...prev,
@@ -33,7 +33,7 @@ export function TableBlockEditor({
   const removeRow = () => {
     update({
       id: block.id,
-      mutation: prev => {
+      mutation: (prev) => {
         if (prev.type === "table") {
           return {
             ...prev,
@@ -51,29 +51,28 @@ export function TableBlockEditor({
   }
   const rowUpdater: (
     index: number
-  ) => (
-    mutation: (prev: TableRow) => TableRow
-  ) => void = index => rowMutation => {
-    update({
-      id: block.id,
-      mutation: prev => {
-        if (prev.type === "table") {
-          const newRows = [...prev.value.rows]
-          newRows[index] = rowMutation(newRows[index])
-          return {
-            ...prev,
-            type: "table",
-            value: {
-              ...prev.value,
-              rows: newRows,
-            },
+  ) => (mutation: (prev: TableRow) => TableRow) => void =
+    (index) => (rowMutation) => {
+      update({
+        id: block.id,
+        mutation: (prev) => {
+          if (prev.type === "table") {
+            const newRows = [...prev.value.rows]
+            newRows[index] = rowMutation(newRows[index])
+            return {
+              ...prev,
+              type: "table",
+              value: {
+                ...prev.value,
+                rows: newRows,
+              },
+            }
+          } else {
+            return prev
           }
-        } else {
-          return prev
-        }
-      },
-    })
-  }
+        },
+      })
+    }
   return (
     <BlockEditorWrapper label="テーブル" {...rest}>
       <table className="table is-fullwidth">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Navbar, Container } from "react-bulma-components"
+import clsx from "clsx"
 import Logo from "../images/sweets_cheesecake.png"
 import ImportModal, { Props as ImportModalProps } from "./importModal"
 import ExportModal from "./exportModal"
@@ -23,31 +23,39 @@ function Header({ itemList, resetItemCollection }: Props): JSX.Element {
 
   return (
     <>
-      <Navbar className={"has-shadow"}>
-        <Container>
-          <Navbar.Brand>
+      <nav className={clsx("navbar", "has-shadow")}>
+        <div className={clsx("container")}>
+          <div className={clsx("navbar-brand")}>
             <div className="navbar-item" style={{ userSelect: "none" }}>
               <img src={Logo} />
               <span style={{ marginLeft: "6px", fontSize: "1.1em" }}>Cake</span>
             </div>
-          </Navbar.Brand>
-          <Navbar.Menu>
-            <Navbar.Container position="end">
-              <Navbar.Item dropdown hoverable>
-                <Navbar.Link>設定</Navbar.Link>
-                <Navbar.Dropdown>
-                  <Navbar.Item onClick={() => setShow(true)}>
+          </div>
+          <div className={clsx("navbar-menu")}>
+            <div className={clsx("navbar-end")}>
+              <div
+                className={clsx("navbar-item", "has-dropdown", "is-hoverable")}
+              >
+                <span className={clsx("navbar-link")}>設定</span>
+                <div className={clsx("navbar-dropdown")}>
+                  <a
+                    className={clsx("navbar-item")}
+                    onClick={() => setShow(true)}
+                  >
                     インポート
-                  </Navbar.Item>
-                  <Navbar.Item onClick={() => setShowExport(true)}>
+                  </a>
+                  <a
+                    className={clsx("navbar-item")}
+                    onClick={() => setShowExport(true)}
+                  >
                     エクスポート
-                  </Navbar.Item>
-                </Navbar.Dropdown>
-              </Navbar.Item>
-            </Navbar.Container>
-          </Navbar.Menu>
-        </Container>
-      </Navbar>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
 
       <ImportModal
         show={show}

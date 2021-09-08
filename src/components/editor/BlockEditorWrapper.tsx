@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Button } from "../Button"
+import { Button } from "../atom/Button"
 import { CloseButton } from "../CloseButton"
 import { Icon } from "../atom/Icon"
 
