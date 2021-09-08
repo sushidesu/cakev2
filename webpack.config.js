@@ -69,7 +69,7 @@ module.exports = {
         },
         {
           from: "public/icons/*",
-          to: "images/[name].[ext]",
+          to: "images/[name][ext]",
         },
       ],
     }),
