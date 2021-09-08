@@ -11,6 +11,9 @@
   "background": {
     "service_worker": "background.bundle.js"
   },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "content_scripts": [{
     "matches": ["https://item.rms.rakuten.co.jp/rms-item/*", "https://shop16.makeshop.jp/*"],
     "js": ["content.bundle.js"]
