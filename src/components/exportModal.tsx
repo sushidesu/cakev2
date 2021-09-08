@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import clsx from "clsx"
 import { Item } from "../domain/item/item"
-import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
+import { ExportItemsUsecase } from "../usecase/export-items-usecase"
 import { JSONFileClient } from "../infra/json-file-client/json-file-client"
 import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { Button } from "./atom/Button"
