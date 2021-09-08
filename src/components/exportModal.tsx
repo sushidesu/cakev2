@@ -59,10 +59,7 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
 
   // item list との同期
   useEffect(() => {
-    console.log(itemList)
-    const list = itemList.map(() => true)
-    setSelectedItemList(list)
-    // setSelectedItemList(itemList.map(() => true))
+    setSelectedItemList(itemList.map(() => true))
     setCheckAll(true)
   }, [itemList])
 
@@ -92,22 +89,19 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
               すべて
             </Checkbox>
           </div>
-          {itemList.map((item, index) => (
-            <div className={clsx("control")} key={item.id.value}>
-              <input
-                type="checkbox"
-                checked={selectedItemList[index]}
-                onChange={handleClickItemCheckbox(index)}
-              />
-              {/* 
-              <Checkbox
-                onChange={handleClickItemCheckbox(index)}
-                checked={selectedItemList[index]}
-              >
-                {`${item.name}`}
-              </Checkbox> */}
-            </div>
-          ))}
+          {selectedItemList.map((checked, index) => {
+            const item = itemList[index]
+            return (
+              <div className={clsx("control")} key={item.id.value}>
+                <Checkbox
+                  onChange={handleClickItemCheckbox(index)}
+                  checked={checked}
+                >
+                  {`${item.name}`}
+                </Checkbox>
+              </div>
+            )
+          })}
         </div>
       </div>
     </Modal>
