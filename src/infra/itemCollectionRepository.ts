@@ -33,13 +33,21 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     const storage_v2 = await this.chromeStorageClient.storageV2LocalGet()
     if (storage_v3) {
       // migrateの必要なし
-      console.log("cakev3 is already exist")
+      console.log("cakev3 already exists")
       return
-    }
-    if (storage_v2) {
-      console.log("execute migrate")
-      const new_storage_v3 = this.converter.convertStorageV2ToV3(storage_v2)
-      await this.chromeStorageClient.storageV3LocalSet(new_storage_v3)
+    } else {
+      console.log("cakev3 doesn't exist yet")
+      if (storage_v2) {
+        console.log("execute migrate with cakev2")
+        const new_storage_v3 = this.converter.convertStorageV2ToV3(storage_v2)
+        await this.chromeStorageClient.storageV3LocalSet(new_storage_v3)
+      } else {
+        console.log("init with empty data")
+        await this.chromeStorageClient.storageV3LocalSet({
+          items: {},
+          selectedItemId: null,
+        })
+      }
     }
   }
 
