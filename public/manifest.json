@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Cake",
   "description": "商品情報をワンクリックで登録できます。",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "action": {
     "default_title": "Run Cake",
     "default_popup": "popup.html"
