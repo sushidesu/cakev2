@@ -4,6 +4,7 @@ const base = require("./webpack.config.js")
 
 module.exports = merge(base, {
   mode: "development",
+  devtool: "inline-source-map",
   entry: {
     popup: path.resolve(__dirname, "src/popup.tsx"),
     background: path.resolve(__dirname, "src/background.ts"),
