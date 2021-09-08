@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import clsx from "clsx"
 import { Item } from "../domain/item/item"
 import { ExportItemsUsecase } from "../usecase/export-tems-usecase"
@@ -7,6 +7,7 @@ import { FileIOClient } from "../infra/file-io-client/file-io-client"
 import { Button } from "./atom/Button"
 import { Checkbox } from "./atom/CheckBox"
 import { Modal } from "./Modal"
+import { useCheckbox } from "../hooks/useCheckbox"
 
 export type Props = {
   show: boolean
@@ -21,46 +22,39 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
 
   const handleClickExport = () => {
     let items: Item[]
-    if (checkAll) {
+    if (checkedAll) {
       items = itemList
     } else {
-      items = itemList.filter((_, index) => selectedItemList[index])
+      items = itemList.filter((item) => {
+        const targetCheckbox = checkboxes.find(
+          (checkbox) => checkbox.id === item.id.value
+        )
+        return targetCheckbox?.checked
+      })
     }
     exportItemsUsecase.exec(items)
   }
 
-  const [checkAll, setCheckAll] = useState<boolean>(true)
-  const [selectedItemList, setSelectedItemList] = useState<boolean[]>([])
+  const {
+    init,
+    checkboxes,
+    handleClickCheckbox,
+    checkedAll,
+    handleClickCheckAll,
+  } = useCheckbox(
+    itemList.map((item) => ({
+      id: item.id.value,
+      label: item.name,
+    }))
+  )
 
-  const setAll = (check: boolean) => {
-    setSelectedItemList(itemList.map(() => check))
-  }
-
-  const handleClickCheckAll = () => {
-    setCheckAll((prev) => {
-      setAll(!prev)
-      return !prev
-    })
-  }
-
-  const handleClickItemCheckbox = (index: number) => () => {
-    setSelectedItemList((prev) => {
-      const next = prev.map((checked, i) => {
-        if (i === index) {
-          return !checked
-        } else {
-          return checked
-        }
-      })
-      setCheckAll(next.every((checked) => checked))
-      return next
-    })
-  }
-
-  // item list との同期
   useEffect(() => {
-    setSelectedItemList(itemList.map(() => true))
-    setCheckAll(true)
+    init(
+      itemList.map((item) => ({
+        id: item.id.value,
+        label: item.name,
+      }))
+    )
   }, [itemList])
 
   return (
@@ -84,20 +78,19 @@ const ExportModal = ({ show, closeModal, itemList }: Props): JSX.Element => {
             <Checkbox
               name="all"
               onChange={handleClickCheckAll}
-              checked={checkAll}
+              checked={checkedAll}
             >
               すべて
             </Checkbox>
           </div>
-          {selectedItemList.map((checked, index) => {
-            const item = itemList[index]
+          {checkboxes.map((checkbox) => {
             return (
-              <div className={clsx("control")} key={item.id.value}>
+              <div className={clsx("control")} key={checkbox.id}>
                 <Checkbox
-                  onChange={handleClickItemCheckbox(index)}
-                  checked={checked}
+                  onChange={handleClickCheckbox(checkbox.id)}
+                  checked={checkbox.checked}
                 >
-                  {`${item.name}`}
+                  {`${checkbox.label}`}
                 </Checkbox>
               </div>
             )
