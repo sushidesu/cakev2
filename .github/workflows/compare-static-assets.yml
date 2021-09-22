@@ -19,7 +19,7 @@ jobs:
       # 比較対象を確認
       - name: Dump github context
         env:
-          GITHUB_CONTEXT: ${{ toJSON(github.event.pull_request) }}
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
       # プルリクエストのブランチでビルド
       - name: Checkout current branch
