@@ -17,8 +17,10 @@ jobs:
         with:
           node-version: "14"
       # 比較対象を確認
-      - name: Log
-        run: echo ${{ toJSON(github.event.pull_request) }}
+      - name: Dump github context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github.event.pull_request) }}
+        run: echo "$GITHUB_CONTEXT"
       # プルリクエストのブランチでビルド
       - name: Checkout current branch
         uses: actions/checkout@v2
