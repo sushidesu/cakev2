@@ -11,6 +11,7 @@ import { Modal } from "./Modal"
 import { Button } from "./atom/Button"
 import { FileInput } from "./atom/FileInput"
 import { Radio } from "./atom/Radio"
+import { getErrorMessage } from "../utils/getErrorMessage"
 
 export type Props = {
   show: boolean
@@ -87,7 +88,8 @@ const ImportModal = ({
       const message = overwrite ? "上書きしました。" : "追加しました。"
       showAlert({ type: "success", message })
     } catch (err) {
-      showAlert({ type: "error", message: err.message })
+      const message = getErrorMessage(err)
+      showAlert({ type: "error", message })
     }
   }
 
