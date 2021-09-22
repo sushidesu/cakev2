@@ -14,6 +14,7 @@ import {
 } from "./usecase/automatic-input-usecase/automatic-input-usecase"
 import { AutomaticInputRakutenClient } from "./infra/automatic-input-client/automatic-input-rakuten-client"
 import { AutomaticInputMakeshopClient } from "./infra/automatic-input-client/automatic-input-makeshop-client"
+import { getErrorMessage } from "./utils/getErrorMessage"
 
 const autoWrite = async (item: Item, checked: CheckboxState) => {
   const props: AutomaticInputUsecaseProps = {
@@ -69,9 +70,10 @@ chromeMessenger.addListener(async (message) => {
     }
   } catch (err) {
     console.log(err)
+    const message = getErrorMessage(err)
     return {
       ok: false,
-      message: err.toString(),
+      message,
     }
   }
 })
