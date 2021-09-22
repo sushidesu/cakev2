@@ -16,6 +16,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "14"
+      # 比較対象を確認
+      - name: Log
+        run: echo ${{ toJSON(github.event.pull_request) }}
       # プルリクエストのブランチでビルド
       - name: Checkout current branch
         uses: actions/checkout@v2
