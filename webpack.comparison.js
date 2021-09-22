@@ -1,5 +1,5 @@
 // ref: https://zenn.dev/ryo_kawamata/articles/improve-dependabot-pr
-const merge = require("webpack-merge")
+const { merge } = require("webpack-merge")
 const base = require("./webpack.config.js")
 
 module.exports = merge(base, {
