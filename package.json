@@ -69,5 +69,8 @@
     "react-is": "^17.0.0",
     "styled-components": "^5.0.0",
     "uuid": "^8.3.2"
+  },
+  "volta": {
+    "node": "16.13.1"
   }
 }
