@@ -86,7 +86,7 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
       button_pc_source_edit.getAttribute("aria-pressed")
     if (
       enable_source_edit_mode === null ||
-      enable_source_edit_mode !== "false"
+      enable_source_edit_mode !== "true"
     ) {
       // 初期状態では `aria-pressed` 属性はつかない
       button_pc_source_edit.click()
