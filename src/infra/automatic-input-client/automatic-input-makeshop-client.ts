@@ -74,16 +74,40 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     description_sp.value = text
 
     // 「PC用商品説明文」
-    const description_pc =
-      (this.form.querySelector(
-        "#cke_1_contents > textarea"
-      ) as HTMLTextAreaElement) ||
-      (() => {
-        this.form.getElementById("cke_23")?.click()
-        return this.form.querySelector(
-          "#cke_1_contents > textarea"
-        ) as HTMLTextAreaElement
-      })()
+    // NOTE: ソース編集モードが有効の場合のみ、textareaが表示されるの
+    // NOTE: 現在「ソース」ボタンのidは `cke_26` となっているが、以前は `cke_23` だった？
+    const button_pc_source_edit = this.form.getElementById("cke_26")
+    if (button_pc_source_edit === null) {
+      throw new Error(`element "#cke_26" is not found.`)
+    }
+    // ソース編集モードを有効にする
+    // 既にソース編集モードが有効の場合は「ソース」ボタンを押さない
+    const enable_source_edit_mode =
+      button_pc_source_edit.getAttribute("aria-pressed")
+    if (
+      enable_source_edit_mode === null ||
+      enable_source_edit_mode !== "false"
+    ) {
+      // 初期状態では `aria-pressed` 属性はつかない
+      button_pc_source_edit.click()
+    }
+
+    const description_pc = this.form.querySelector("#cke_1_contents > textarea")
+    if (!description_pc) {
+      throw new Error(`"#cke_1_contents > textarea" is not found.`)
+    }
+    const FormContextTextAreaElement =
+      description_pc.ownerDocument.defaultView?.HTMLTextAreaElement
+    if (
+      !(
+        FormContextTextAreaElement &&
+        description_pc instanceof FormContextTextAreaElement
+      )
+    ) {
+      throw new Error(
+        `"#cke_1_contents > textarea" is not instance of HTMLTextAreaElement. It's "${description_pc.constructor.name}".`
+      )
+    }
     description_pc.value = text
   }
 
