@@ -772,10 +772,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/chrome@0.0.174":
-  version "0.0.174"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.174.tgz#ee1679f3a4fc57bb2c3b76957845a68afb7d478c"
-  integrity sha512-x5kjvNdwDtOnT+vbnksj69pDl0u9P/WH9LbQWJawLqGgkBRO3AN/xzTxTPgLpp3IqCbuwfp7bRCHqkkaZguzWw==
+"@types/chrome@0.0.175":
+  version "0.0.175"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.175.tgz#bbd13020cf8903d37598393552ca5b8c6d9451c7"
+  integrity sha512-nJy7MadK9Y4sTu4Eouv+JscyEpsEWyvSN8hNphWSgzGBV2M4prxbvPoYQHPudcTy+OecT7iiPgfYq8bsmMzzcw==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
@@ -938,10 +938,10 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
-"@types/uuid@8.3.3":
-  version "8.3.3"
-  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.3.tgz#c6a60686d953dbd1b1d45e66f4ecdbd5d471b4d0"
-  integrity sha512-0LbEEx1zxrYB3pgpd1M5lEhLcXjKJnYghvhTRgaBeUivLHMDM1TzF3IJ6hXU2+8uA4Xz+5BA63mtZo5DjVT8iA==
+"@types/uuid@8.3.4":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
 
 "@types/yargs-parser@*":
   version "20.2.1"
