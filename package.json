@@ -58,7 +58,7 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "bulma": "^0.9.0",
     "clsx": "^1.1.1",
-    "date-format": "^3.0.0",
+    "date-format": "^4.0.0",
     "dayjs": "^1.10.6",
     "html-prettify": "^1.0.3",
     "option-t": "^30.0.0",
