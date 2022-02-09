@@ -5,6 +5,7 @@ import { OptionsTemplate, Props } from "./OptionsTemplate"
 import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
 import { ChromeStorageClient } from "../../infra/chromeStorageClient"
 import { useCustomBlock } from "../../domain/customBlock/useCustomBlock"
+import { useBlockHandlers } from "../../hooks/util/useBlockHandlers"
 
 export function OptionsContainer(): JSX.Element {
   const chromeStorageClient = new ChromeStorageClient()
@@ -89,6 +90,7 @@ export function OptionsContainer(): JSX.Element {
 
   /////////////// block (main) ///////////////
   const mainBlock = useCustomBlock()
+  const mainBlockHandlers = useBlockHandlers(mainBlock)
 
   useEffect(() => {
     if (target) {
@@ -96,10 +98,11 @@ export function OptionsContainer(): JSX.Element {
     } else {
       mainBlock.initBlocks([])
     }
-  }, [target])
+  }, [target, mainBlock.initBlocks])
 
   /////////////// block (sub) ///////////////
   const subBlock = useCustomBlock()
+  const subBlockHandlers = useBlockHandlers(subBlock)
 
   useEffect(() => {
     if (target) {
@@ -107,7 +110,7 @@ export function OptionsContainer(): JSX.Element {
     } else {
       subBlock.initBlocks([])
     }
-  }, [target])
+  }, [target, subBlock.initBlocks])
 
   return (
     <OptionsTemplate
@@ -151,74 +154,34 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleRemoveItem,
         },
       }}
-      mainBlocks={mainBlock.blocks.map((block) => ({
-        block: block,
-        update: mainBlock.updateBlock,
-        remove: () => {
-          mainBlock.removeBlock({ id: block.id })
-        },
-        moveUp: () => {
-          mainBlock.moveBlock({ id: block.id, type: "relative", offset: -1 })
-        },
-        moveDown: () => {
-          mainBlock.moveBlock({ id: block.id, type: "relative", offset: 1 })
-        },
-      }))}
+      mainBlocks={mainBlockHandlers.blocks}
       mainBlockEditorControllerProps={{
         addHeadingBlockButton: {
-          onClick: () => {
-            mainBlock.addBlock({ type: "heading" })
-          },
+          onClick: mainBlockHandlers.onAddHeadingClick,
         },
         addTextBlockButton: {
-          onClick: () => {
-            mainBlock.addBlock({ type: "text" })
-          },
+          onClick: mainBlockHandlers.onAddTextClick,
         },
         addImageBlockButton: {
-          onClick: () => {
-            mainBlock.addBlock({ type: "image" })
-          },
+          onClick: mainBlockHandlers.onAddImageClick,
         },
         addTableBlockButton: {
-          onClick: () => {
-            mainBlock.addBlock({ type: "table" })
-          },
+          onClick: mainBlockHandlers.onAddTableClick,
         },
       }}
-      subBlocks={subBlock.blocks.map((block) => ({
-        block: block,
-        update: subBlock.updateBlock,
-        remove: () => {
-          subBlock.removeBlock({ id: block.id })
-        },
-        moveUp: () => {
-          subBlock.moveBlock({ id: block.id, type: "relative", offset: -1 })
-        },
-        moveDown: () => {
-          subBlock.moveBlock({ id: block.id, type: "relative", offset: 1 })
-        },
-      }))}
+      subBlocks={subBlockHandlers.blocks}
       subBlockEditorControllerProps={{
         addHeadingBlockButton: {
-          onClick: () => {
-            subBlock.addBlock({ type: "heading" })
-          },
+          onClick: subBlockHandlers.onAddHeadingClick,
         },
         addTextBlockButton: {
-          onClick: () => {
-            subBlock.addBlock({ type: "text" })
-          },
+          onClick: subBlockHandlers.onAddTextClick,
         },
         addImageBlockButton: {
-          onClick: () => {
-            subBlock.addBlock({ type: "image" })
-          },
+          onClick: subBlockHandlers.onAddImageClick,
         },
         addTableBlockButton: {
-          onClick: () => {
-            subBlock.addBlock({ type: "table" })
-          },
+          onClick: subBlockHandlers.onAddTableClick,
         },
       }}
     />
