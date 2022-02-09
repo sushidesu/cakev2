@@ -87,7 +87,7 @@ export function OptionsContainer(): JSX.Element {
     remove()
   }
 
-  /////////////// block ///////////////
+  /////////////// block (main) ///////////////
   const mainBlock = useCustomBlock()
 
   useEffect(() => {
@@ -95,6 +95,17 @@ export function OptionsContainer(): JSX.Element {
       mainBlock.initBlocks(target.blocks)
     } else {
       mainBlock.initBlocks([])
+    }
+  }, [target])
+
+  /////////////// block (sub) ///////////////
+  const subBlock = useCustomBlock()
+
+  useEffect(() => {
+    if (target) {
+      subBlock.initBlocks(target.blocks)
+    } else {
+      subBlock.initBlocks([])
     }
   }, [target])
 
@@ -172,6 +183,41 @@ export function OptionsContainer(): JSX.Element {
         addTableBlockButton: {
           onClick: () => {
             mainBlock.addBlock({ type: "table" })
+          },
+        },
+      }}
+      subBlocks={subBlock.blocks.map((block) => ({
+        block: block,
+        update: subBlock.updateBlock,
+        remove: () => {
+          subBlock.removeBlock({ id: block.id })
+        },
+        moveUp: () => {
+          subBlock.moveBlock({ id: block.id, type: "relative", offset: -1 })
+        },
+        moveDown: () => {
+          subBlock.moveBlock({ id: block.id, type: "relative", offset: 1 })
+        },
+      }))}
+      subBlockEditorControllerProps={{
+        addHeadingBlockButton: {
+          onClick: () => {
+            subBlock.addBlock({ type: "heading" })
+          },
+        },
+        addTextBlockButton: {
+          onClick: () => {
+            subBlock.addBlock({ type: "text" })
+          },
+        },
+        addImageBlockButton: {
+          onClick: () => {
+            subBlock.addBlock({ type: "image" })
+          },
+        },
+        addTableBlockButton: {
+          onClick: () => {
+            subBlock.addBlock({ type: "table" })
           },
         },
       }}

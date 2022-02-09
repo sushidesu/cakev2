@@ -22,8 +22,17 @@ export type Props = {
   }
   itemListProps: ItemListProps
   itemEditorProps: ItemEditorProps
+  // main blocks
   mainBlocks: BlockEditorProps<CustomBlock>[]
   mainBlockEditorControllerProps: {
+    addHeadingBlockButton: ButtonControlProps
+    addTextBlockButton: ButtonControlProps
+    addImageBlockButton: ButtonControlProps
+    addTableBlockButton: ButtonControlProps
+  }
+  // sub blocks
+  subBlocks: BlockEditorProps<CustomBlock>[]
+  subBlockEditorControllerProps: {
     addHeadingBlockButton: ButtonControlProps
     addTextBlockButton: ButtonControlProps
     addImageBlockButton: ButtonControlProps
@@ -92,6 +101,8 @@ export function OptionsTemplate({
   controllerProps,
   mainBlocks,
   mainBlockEditorControllerProps,
+  subBlocks,
+  subBlockEditorControllerProps,
 }: Props): JSX.Element {
   const { createButton, saveButton, copyButton, deleteButton } = controllerProps
   const {
@@ -125,6 +136,30 @@ export function OptionsTemplate({
                 <Button {...addTextBlockButton}>文章を追加</Button>
                 <Button {...addImageBlockButton}>画像を追加</Button>
                 <Button {...addTableBlockButton}>テーブルを追加</Button>
+              </BlockEditorController>
+            </Spacer>
+            <hr />
+            <Spacer>
+              <div>
+                {subBlocks.map((block) => (
+                  <BlockEditor key={block.block.id.value} {...block} />
+                ))}
+              </div>
+              <BlockEditorController>
+                <Button
+                  {...subBlockEditorControllerProps.addHeadingBlockButton}
+                >
+                  タイトルを追加
+                </Button>
+                <Button {...subBlockEditorControllerProps.addTextBlockButton}>
+                  文章を追加
+                </Button>
+                <Button {...subBlockEditorControllerProps.addImageBlockButton}>
+                  画像を追加
+                </Button>
+                <Button {...subBlockEditorControllerProps.addTableBlockButton}>
+                  テーブルを追加
+                </Button>
               </BlockEditorController>
             </Spacer>
             <StickyButtonsWrapper>
