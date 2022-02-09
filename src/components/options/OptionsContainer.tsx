@@ -68,14 +68,14 @@ export function OptionsContainer(): JSX.Element {
   const handleCreateItem = () => {
     create({
       itemInfo: itemInfoFormValue,
-      blocks: blocks,
+      blocks: mainBlock.blocks,
     })
   }
 
   const handleSaveItem = () => {
     update({
       itemInfo: itemInfoFormValue,
-      blocks: blocks,
+      blocks: mainBlock.blocks,
     })
   }
 
@@ -88,14 +88,13 @@ export function OptionsContainer(): JSX.Element {
   }
 
   /////////////// block ///////////////
-  const { blocks, addBlock, updateBlock, moveBlock, removeBlock, initBlocks } =
-    useCustomBlock()
+  const mainBlock = useCustomBlock()
 
   useEffect(() => {
     if (target) {
-      initBlocks(target.blocks)
+      mainBlock.initBlocks(target.blocks)
     } else {
-      initBlocks([])
+      mainBlock.initBlocks([])
     }
   }, [target])
 
@@ -141,38 +140,38 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleRemoveItem,
         },
       }}
-      mainBlocks={blocks.map((block) => ({
+      mainBlocks={mainBlock.blocks.map((block) => ({
         block: block,
-        update: updateBlock,
+        update: mainBlock.updateBlock,
         remove: () => {
-          removeBlock({ id: block.id })
+          mainBlock.removeBlock({ id: block.id })
         },
         moveUp: () => {
-          moveBlock({ id: block.id, type: "relative", offset: -1 })
+          mainBlock.moveBlock({ id: block.id, type: "relative", offset: -1 })
         },
         moveDown: () => {
-          moveBlock({ id: block.id, type: "relative", offset: 1 })
+          mainBlock.moveBlock({ id: block.id, type: "relative", offset: 1 })
         },
       }))}
       mainBlockEditorControllerProps={{
         addHeadingBlockButton: {
           onClick: () => {
-            addBlock({ type: "heading" })
+            mainBlock.addBlock({ type: "heading" })
           },
         },
         addTextBlockButton: {
           onClick: () => {
-            addBlock({ type: "text" })
+            mainBlock.addBlock({ type: "text" })
           },
         },
         addImageBlockButton: {
           onClick: () => {
-            addBlock({ type: "image" })
+            mainBlock.addBlock({ type: "image" })
           },
         },
         addTableBlockButton: {
           onClick: () => {
-            addBlock({ type: "table" })
+            mainBlock.addBlock({ type: "table" })
           },
         },
       }}
