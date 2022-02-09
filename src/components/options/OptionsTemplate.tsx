@@ -22,8 +22,8 @@ export type Props = {
   }
   itemListProps: ItemListProps
   itemEditorProps: ItemEditorProps
-  blocks: BlockEditorProps<CustomBlock>[]
-  blockEditorControllerProps: {
+  mainBlocks: BlockEditorProps<CustomBlock>[]
+  mainBlockEditorControllerProps: {
     addHeadingBlockButton: ButtonControlProps
     addTextBlockButton: ButtonControlProps
     addImageBlockButton: ButtonControlProps
@@ -90,8 +90,8 @@ export function OptionsTemplate({
   itemListProps,
   itemEditorProps,
   controllerProps,
-  blocks,
-  blockEditorControllerProps,
+  mainBlocks,
+  mainBlockEditorControllerProps,
 }: Props): JSX.Element {
   const { createButton, saveButton, copyButton, deleteButton } = controllerProps
   const {
@@ -99,7 +99,7 @@ export function OptionsTemplate({
     addTextBlockButton,
     addImageBlockButton,
     addTableBlockButton,
-  } = blockEditorControllerProps
+  } = mainBlockEditorControllerProps
   // FIXME: use Column component in L109
   return (
     <Wrapper>
@@ -116,7 +116,7 @@ export function OptionsTemplate({
             <hr />
             <Spacer>
               <div>
-                {blocks.map((block) => (
+                {mainBlocks.map((block) => (
                   <BlockEditor key={block.block.id.value} {...block} />
                 ))}
               </div>

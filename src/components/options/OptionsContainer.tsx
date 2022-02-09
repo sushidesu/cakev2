@@ -141,7 +141,7 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleRemoveItem,
         },
       }}
-      blocks={blocks.map((block) => ({
+      mainBlocks={blocks.map((block) => ({
         block: block,
         update: updateBlock,
         remove: () => {
@@ -154,7 +154,7 @@ export function OptionsContainer(): JSX.Element {
           moveBlock({ id: block.id, type: "relative", offset: 1 })
         },
       }))}
-      blockEditorControllerProps={{
+      mainBlockEditorControllerProps={{
         addHeadingBlockButton: {
           onClick: () => {
             addBlock({ type: "heading" })
