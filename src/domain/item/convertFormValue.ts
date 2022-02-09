@@ -19,6 +19,7 @@ export const convertFormValue = ({
   | "stockMakeshop"
   | "jancode"
   | "blocks"
+  | "subBlocks"
 > => ({
   name: itemInfo.name,
   price: stringToNumber(itemInfo.price),
@@ -28,4 +29,5 @@ export const convertFormValue = ({
   jancode:
     itemInfo.jancode !== "" ? Jancode.create(itemInfo.jancode) : undefined,
   blocks,
+  subBlocks: [], // TODO
 })

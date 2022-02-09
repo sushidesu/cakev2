@@ -14,6 +14,7 @@ export interface Item {
   stockMakeshop: number
   jancode: Jancode | undefined
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
 export type CreateItemProps = {
