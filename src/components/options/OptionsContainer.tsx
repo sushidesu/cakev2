@@ -106,9 +106,7 @@ export function OptionsContainer(): JSX.Element {
 
   useEffect(() => {
     if (target) {
-      // target.subBlocksでinitializeする
-      // subBlock.initBlocks(target.blocks)
-      subBlock.initBlocks([])
+      subBlock.initBlocks(target.subBlocks)
     } else {
       subBlock.initBlocks([])
     }
