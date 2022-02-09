@@ -21,11 +21,13 @@ export interface ItemCollection {
 export type ItemCreateProps = {
   itemInfo: ItemInfoFormValue
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
 export type ItemUpdateProps = {
   itemInfo: ItemInfoFormValue
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
 export const useItemCollection = (
@@ -36,7 +38,7 @@ export const useItemCollection = (
 
   const target = useMemo<Item | undefined>(() => {
     if (!selectedItemId) return undefined
-    return items.find(item => item.id.equals(selectedItemId))
+    return items.find((item) => item.id.equals(selectedItemId))
   }, [selectedItemId, items])
 
   useEffect(() => {
@@ -82,8 +84,8 @@ export const useItemCollection = (
   }, [storage, _unmounted])
 
   const create = useCallback(
-    async ({ itemInfo, blocks }: ItemCreateProps) => {
-      const item = createItem({ itemInfo, blocks })
+    async ({ itemInfo, blocks, subBlocks }: ItemCreateProps) => {
+      const item = createItem({ itemInfo, blocks, subBlocks })
       const id = item.id
 
       await storage.createItem({
@@ -92,24 +94,25 @@ export const useItemCollection = (
       await storage.selectItem({
         id,
       }),
-        setItems(prev => [...prev, item])
+        setItems((prev) => [...prev, item])
       setSelectedItemId(id)
     },
     [storage]
   )
 
   const update = useCallback(
-    async ({ itemInfo, blocks }: ItemUpdateProps) => {
+    async ({ itemInfo, blocks, subBlocks }: ItemUpdateProps) => {
       if (!target) return
 
       const item = updateItem({
         target,
         itemInfo,
         blocks,
+        subBlocks,
       })
       await storage.saveItem({ id: item.id, item })
-      setItems(prev =>
-        prev.map(cur => {
+      setItems((prev) =>
+        prev.map((cur) => {
           if (cur.id.equals(item.id)) {
             return item
           } else {
@@ -126,7 +129,7 @@ export const useItemCollection = (
       console.log("remove", selectedItemId)
       await storage.removeItem({ id: selectedItemId })
       await storage.unSelectItem()
-      setItems(prev => prev.filter(item => !item.id.equals(selectedItemId)))
+      setItems((prev) => prev.filter((item) => !item.id.equals(selectedItemId)))
       setSelectedItemId(null)
     }
   }, [storage, selectedItemId])
@@ -135,14 +138,14 @@ export const useItemCollection = (
     if (!selectedItemId) return
 
     console.log("duplicate", selectedItemId)
-    const target = items.find(item => item.id.equals(selectedItemId))
+    const target = items.find((item) => item.id.equals(selectedItemId))
     if (!target) throw Error(`${selectedItemId.value} not found`)
 
     const createNameOfCopyItem = new CreateNameOfCopyItem(items)
     const duplicated = copyItem({ target, createNameOfCopyItem })
 
     await storage.createItem({ item: duplicated })
-    setItems(prev => [...prev, duplicated])
+    setItems((prev) => [...prev, duplicated])
   }, [storage, selectedItemId, items])
 
   const startCreate = useCallback(async () => {

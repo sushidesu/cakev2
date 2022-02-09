@@ -80,6 +80,7 @@ describe("JSONFileClient", () => {
           stockMakeshop: 6,
           jancode: Jancode.reconstruct("1234567890123"),
           blocks: [],
+          subBlocks: [],
         },
       ]
       expect(expected).toStrictEqual(actual)
@@ -115,6 +116,7 @@ describe("JSONFileClient", () => {
           stockMakeshop: 1,
           jancode: Jancode.reconstruct("4560294809704"),
           blocks: [],
+          subBlocks: [],
         },
       ]
       expect(actual).toStrictEqual(expected)
@@ -138,6 +140,7 @@ describe("JSONFileClient", () => {
           stockMakeshop: 6,
           jancode: Jancode.reconstruct("1234567890123"),
           blocks: [],
+          subBlocks: [],
         },
       ]
       const actual = jsonFileClient.exportItemsAsJSONFile(items)

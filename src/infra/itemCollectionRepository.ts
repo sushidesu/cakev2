@@ -202,6 +202,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: value.stockMakeshop,
       jancode: Jancode.reconstruct(value.jancodeString),
       blocks: value.blocks.map(this.blockResourceToEntity),
+      subBlocks: [],
     }
   }
   private static blockEntityToResource(blockEntity: CustomBlock): BlockValue {

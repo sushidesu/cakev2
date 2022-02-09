@@ -44,6 +44,7 @@ export class JSONShcemeConverter {
       stockMakeshop: json.stockMakeshop,
       jancode: Jancode.reconstruct(json.jancodeString),
       blocks: json.blocks.map((blockJson) => this.JSON_V3ToBlock(blockJson)),
+      subBlocks: [], // TODO:
     }
   }
 

@@ -70,6 +70,7 @@ export function OptionsContainer(): JSX.Element {
     create({
       itemInfo: itemInfoFormValue,
       blocks: mainBlock.blocks,
+      subBlocks: subBlock.blocks,
     })
   }
 
@@ -77,6 +78,7 @@ export function OptionsContainer(): JSX.Element {
     update({
       itemInfo: itemInfoFormValue,
       blocks: mainBlock.blocks,
+      subBlocks: subBlock.blocks,
     })
   }
 
