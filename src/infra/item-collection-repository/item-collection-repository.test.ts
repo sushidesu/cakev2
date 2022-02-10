@@ -3,6 +3,9 @@ import { ChromeStorageClient } from "../chrome-storage-client/chrome-storage-cli
 import { ItemCollectionRepository } from "./item-collection-repository"
 import { Storage_v2 } from "../scheme-v2-client/interface/scheme"
 import { ItemValue, Storage_v3 } from "../scheme"
+import { Item } from "../../domain/item/item"
+import { ItemId } from "../../domain/item/itemId"
+import { BlockId } from "../../domain/block/blockId"
 
 describe(`ItemCollectionRepository`, () => {
   // mock
@@ -140,6 +143,79 @@ describe(`ItemCollectionRepository`, () => {
       expect(chromeStorageClientMocked.storageV3LocalSet).toBeCalledWith(
         expectedProp
       )
+    })
+  })
+
+  describe(`getAllItems()`, () => {
+    it(`blocks,subBlocksが正しく変換される`, async () => {
+      // 変換前
+      chromeStorageClientMocked.storageV3LocalGet.mockResolvedValue({
+        selectedItemId: "",
+        items: {
+          ["test-item-01"]: {
+            id: "test-item-01",
+            name: "test-item",
+            price: 0,
+            weight: 0,
+            order: 0,
+            jancodeString: "",
+            stockRakuten: 0,
+            stockMakeshop: 0,
+            blocks: [
+              {
+                id: "block-01",
+                type: "text",
+                value: {
+                  content: "hello",
+                },
+              },
+            ],
+            subBlocks: [
+              {
+                id: "sub-01",
+                type: "heading",
+                value: {
+                  content: "HELLO!",
+                },
+              },
+            ],
+          },
+        },
+      })
+      // 変換後のitem
+      const expected: Item[] = [
+        {
+          id: ItemId.reconstruct("test-item-01"),
+          name: "test-item",
+          price: 0,
+          weight: 0,
+          jancode: undefined,
+          stockRakuten: 0,
+          stockMakeshop: 0,
+          blocks: [
+            {
+              id: BlockId.reconstruct("block-01"),
+              type: "text",
+              value: {
+                content: "hello",
+              },
+            },
+          ],
+          subBlocks: [
+            {
+              id: BlockId.reconstruct("sub-01"),
+              type: "heading",
+              value: {
+                content: "HELLO!",
+              },
+            },
+          ],
+        },
+      ]
+
+      // act
+      const actual = await itemCollectionRepository.getAllItems()
+      expect(actual).toStrictEqual(expected)
     })
   })
 })
