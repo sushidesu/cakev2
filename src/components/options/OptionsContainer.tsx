@@ -3,7 +3,7 @@ import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
 import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
-import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { ChromeStorageClient } from "../../infra/chrome-storage-client/chrome-storage-client"
 import { useCustomBlock } from "../../domain/customBlock/useCustomBlock"
 import { useBlockHandlers } from "../../hooks/util/useBlockHandlers"
 

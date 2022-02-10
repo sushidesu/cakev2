@@ -11,7 +11,7 @@ import { ItemId } from "../domain/item/itemId"
 import { Jancode } from "../domain/jancode"
 import { Item } from "../domain/item/item"
 import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
-import { ChromeStorageClient } from "./chromeStorageClient"
+import { ChromeStorageClient } from "./chrome-storage-client/chrome-storage-client"
 import { CustomBlock } from "../domain/customBlock/block"
 import {
   isHeadingBlockValue,

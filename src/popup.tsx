@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import "bulma/css/bulma.css"
 import { PopupContainer } from "./components/popup/PopupContainer"
 import { useFetch } from "./shared/useFetch"
-import { ChromeStorageClient } from "./infra/chromeStorageClient"
+import { ChromeStorageClient } from "./infra/chrome-storage-client/chrome-storage-client"
 import { ItemCollectionRepository } from "./infra/itemCollectionRepository"
 import { GetCurrentItemUsecase } from "./usecase/get-current-item-usecase"
 
