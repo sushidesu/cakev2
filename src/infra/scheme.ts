@@ -16,6 +16,7 @@ export interface ItemValue {
   stockMakeshop: number
   jancodeString: string
   blocks: BlockValue[]
+  subBlocks: BlockValue[]
   order: number
 }
 
