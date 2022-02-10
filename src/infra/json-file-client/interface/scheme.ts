@@ -1,5 +1,5 @@
 import { Storage_v2 } from "../../scheme-v2-client/interface/scheme"
-import { ItemValue, BlockValue } from "../../scheme"
+import { BlockValue } from "../../scheme"
 
 export type JSONScheme = {
   version: number
@@ -8,7 +8,18 @@ export type JSONScheme = {
   }
 }
 
-export type ItemJSON = ItemValue
+export type ItemJSON = {
+  id: string
+  name: string
+  price: number
+  weight: number
+  stockRakuten: number
+  stockMakeshop: number
+  jancodeString: string
+  blocks: BlockValue[]
+  subBlocks?: BlockValue[]
+  order: number
+}
 export type BlockJSON = BlockValue
 
 export type JSONScheme_V2 = {
