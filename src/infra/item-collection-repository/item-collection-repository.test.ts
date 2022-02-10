@@ -2,6 +2,7 @@ import { mock } from "jest-mock-extended"
 import { ChromeStorageClient } from "../chrome-storage-client/chrome-storage-client"
 import { ItemCollectionRepository } from "./item-collection-repository"
 import { Storage_v2 } from "../scheme-v2-client/interface/scheme"
+import { Storage_v3 } from "../scheme"
 
 describe(`ItemCollectionRepository`, () => {
   // mock
@@ -58,6 +59,23 @@ describe(`ItemCollectionRepository`, () => {
 
       // setされている
       expect(chromeStorageClientMocked.storageV3LocalSet).toBeCalled()
+    })
+
+    it(`storage_v3, storage_v2ともにない場合、空のデータをsetする`, async () => {
+      // V3が無い
+      chromeStorageClientMocked.storageV3LocalGet.mockResolvedValue(undefined)
+      // V2も無い
+      chromeStorageClientMocked.storageV2LocalGet.mockResolvedValue(undefined)
+
+      // act
+      await itemCollectionRepository.migrate()
+
+      // 空のデータがsetされる
+      const empty: Storage_v3 = {
+        selectedItemId: null,
+        items: {},
+      }
+      expect(chromeStorageClientMocked.storageV3LocalSet).toBeCalledWith(empty)
     })
   })
 })
