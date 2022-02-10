@@ -189,6 +189,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks.map(this.blockEntityToResource),
+      subBlocks: entity.subBlocks.map(this.blockEntityToResource),
       order,
     }
   }
