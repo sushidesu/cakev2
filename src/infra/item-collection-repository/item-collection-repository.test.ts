@@ -2,7 +2,7 @@ import { mock } from "jest-mock-extended"
 import { ChromeStorageClient } from "../chrome-storage-client/chrome-storage-client"
 import { ItemCollectionRepository } from "./item-collection-repository"
 import { Storage_v2 } from "../scheme-v2-client/interface/scheme"
-import { Storage_v3 } from "../scheme"
+import { ItemValue, Storage_v3 } from "../scheme"
 
 describe(`ItemCollectionRepository`, () => {
   // mock
@@ -77,5 +77,66 @@ describe(`ItemCollectionRepository`, () => {
       }
       expect(chromeStorageClientMocked.storageV3LocalSet).toBeCalledWith(empty)
     })
+  })
+
+  it(`サブ商品説明文が無いitemに、空のサブ商品説明文を追加する`, async () => {
+    const validItem: ItemValue = {
+      id: "valid-item-01",
+      name: "valid-item-01",
+      blocks: [],
+      subBlocks: [
+        {
+          id: "block01",
+          type: "test",
+          value: "test-block",
+        },
+      ],
+      jancodeString: "",
+      order: 0,
+      price: 0,
+      weight: 0,
+      stockRakuten: 0,
+      stockMakeshop: 0,
+    }
+    const invalidItem = {
+      id: "invalid-item-01",
+      name: "invalid-item-01",
+      blocks: [],
+      // subBlocks: [] subBlockが無い!
+      jancodeString: "",
+      order: 0,
+      price: 0,
+      weight: 0,
+      stockRakuten: 0,
+      stockMakeshop: 0,
+    } as unknown as ItemValue
+
+    // subBlocksプロパティを持たないitemが存在する
+    const v3: Storage_v3 = {
+      selectedItemId: null,
+      items: {
+        ["valid-item-01"]: validItem,
+        ["invalid-item-01"]: invalidItem,
+      },
+    }
+    chromeStorageClientMocked.storageV3LocalGet.mockResolvedValue(v3)
+
+    // act
+    await itemCollectionRepository.migrate()
+
+    // 不正なitemのみ、subBlockが空で初期化される
+    const expectedProp: Storage_v3 = {
+      selectedItemId: null,
+      items: {
+        ["valid-item-01"]: validItem,
+        ["invalid-item-01"]: {
+          ...invalidItem,
+          subBlocks: [],
+        },
+      },
+    }
+    expect(chromeStorageClientMocked.storageV3LocalSet).toBeCalledWith(
+      expectedProp
+    )
   })
 })
