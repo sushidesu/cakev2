@@ -1,5 +1,5 @@
 import { getAll } from "./plugins/chromeAPI"
-import { ItemCollectionRepository } from "./infra/itemCollectionRepository"
+import { ItemCollectionRepository } from "./infra/item-collection-repository/item-collection-repository"
 import { ChromeStorageClient } from "./infra/chrome-storage-client/chrome-storage-client"
 
 async function main() {

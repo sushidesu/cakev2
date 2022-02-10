@@ -6,21 +6,21 @@ import {
   RemoveItemProps,
   SelectItemProps,
   SaveItemsProps,
-} from "../domain/item/interface/itemCollectionRepository"
-import { ItemId } from "../domain/item/itemId"
-import { Jancode } from "../domain/jancode"
-import { Item } from "../domain/item/item"
-import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
-import { ChromeStorageClient } from "./chrome-storage-client/chrome-storage-client"
-import { CustomBlock } from "../domain/customBlock/block"
+} from "../../domain/item/interface/itemCollectionRepository"
+import { ItemId } from "../../domain/item/itemId"
+import { Jancode } from "../../domain/jancode"
+import { Item } from "../../domain/item/item"
+import { ItemValue, BlockValue, Storage_v3 } from "../scheme"
+import { ChromeStorageClient } from "../chrome-storage-client/chrome-storage-client"
+import { CustomBlock } from "../../domain/customBlock/block"
 import {
   isHeadingBlockValue,
   isImageBlockValue,
   isTableBlockValue,
   isTextBlockValue,
-} from "../domain/customBlock/isCustomBlockValue"
-import { BlockId } from "../domain/block/blockId"
-import { SchemeV2Client } from "./scheme-v2-client/scheme-v2-client"
+} from "../../domain/customBlock/isCustomBlockValue"
+import { BlockId } from "../../domain/block/blockId"
+import { SchemeV2Client } from "../scheme-v2-client/scheme-v2-client"
 
 export class ItemCollectionRepository implements IItemCollectionRepository {
   private converter: SchemeV2Client
