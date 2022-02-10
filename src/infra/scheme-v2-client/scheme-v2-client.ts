@@ -84,6 +84,7 @@ export class SchemeV2Client {
       stockMakeshop: stringToNumber(item.stockMakeshop),
       jancodeString: item.jancode,
       blocks,
+      subBlocks: [],
       order: index,
     }
   }
