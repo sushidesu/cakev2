@@ -3,6 +3,7 @@ import { Item } from "../../../domain/item/item"
 import { ItemId } from "../../../domain/item/itemId"
 import { Jancode } from "../../../domain/jancode"
 import { JSONScheme } from "../interface/scheme"
+import { BlockId } from "../../../domain/block/blockId"
 
 describe("JSONFileClient", () => {
   let jsonFileClient: JSONFileClient
@@ -85,6 +86,96 @@ describe("JSONFileClient", () => {
       ]
       expect(expected).toStrictEqual(actual)
     })
+
+    it(`subBlocksが存在しない場合、空のsubBlocksで初期化する`, () => {
+      const json_v3_empty_sub_blocks = {
+        version: 3,
+        items: {
+          "test-item": {
+            id: "test-item",
+            name: "テスト商品",
+            price: 0,
+            weight: 0,
+            stockRakuten: 0,
+            stockMakeshop: 0,
+            jancodeString: "",
+            blocks: [],
+            // subBlocks: [] 存在しない！
+          },
+        },
+      }
+      const actual = jsonFileClient.getItemsFromJSONFile(
+        json_v3_empty_sub_blocks
+      )
+      const expected: Item[] = [
+        {
+          id: expect.any(ItemId),
+          name: "テスト商品",
+          price: 0,
+          weight: 0,
+          stockRakuten: 0,
+          stockMakeshop: 0,
+          jancode: undefined,
+          blocks: [],
+          subBlocks: [],
+        },
+      ]
+      expect(actual).toStrictEqual(expected)
+    })
+
+    it(`subBlocksが存在する場合、変換したものを返す`, () => {
+      // subBlockに値があるjson
+      const json_v3_with_sub_blocks = {
+        version: 3,
+        items: {
+          "test-item": {
+            id: "test-item",
+            name: "テスト商品",
+            price: 0,
+            weight: 0,
+            stockRakuten: 0,
+            stockMakeshop: 0,
+            jancodeString: "",
+            blocks: [],
+            subBlocks: [
+              { id: "block-01", type: "text", value: { content: "1111" } },
+              { id: "block-02", type: "heading", value: { content: "2222" } },
+            ],
+          },
+        },
+      }
+      // act
+      const actual = jsonFileClient.getItemsFromJSONFile(
+        json_v3_with_sub_blocks
+      )
+
+      const expected: Item[] = [
+        {
+          id: expect.any(ItemId),
+          name: "テスト商品",
+          price: 0,
+          weight: 0,
+          stockRakuten: 0,
+          stockMakeshop: 0,
+          jancode: undefined,
+          blocks: [],
+          subBlocks: [
+            {
+              id: BlockId.reconstruct("block-01"),
+              type: "text",
+              value: { content: "1111" },
+            },
+            {
+              id: BlockId.reconstruct("block-02"),
+              type: "heading",
+              value: { content: "1111" },
+            },
+          ],
+        },
+      ]
+      expect(actual).toStrictEqual(expected)
+    })
+
     it("cakev2のデータを渡すとitemに変換する", () => {
       const json_v2 = {
         cakev2: {
