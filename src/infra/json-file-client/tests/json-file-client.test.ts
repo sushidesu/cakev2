@@ -156,6 +156,7 @@ describe("JSONFileClient", () => {
             stockMakeshop: 6,
             jancodeString: "1234567890123",
             blocks: [],
+            subBlocks: [],
             order: 0,
           },
         },
