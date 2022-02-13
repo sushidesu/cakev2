@@ -133,5 +133,31 @@ describe(`JSONSchemeConverter`, () => {
       }
       expect(actual).toStrictEqual(expected)
     })
+    it(`空のsubBlockは[]で初期化する`, () => {
+      const json: ItemJSON = {
+        id: "item-01",
+        name: "テスト商品",
+        price: 0,
+        weight: 0,
+        stockRakuten: 0,
+        stockMakeshop: 0,
+        order: 0,
+        jancodeString: "",
+        blocks: [],
+      }
+      const expected: Item = {
+        id: expect.any(ItemId),
+        name: "テスト商品",
+        price: 0,
+        weight: 0,
+        stockRakuten: 0,
+        stockMakeshop: 0,
+        jancode: undefined,
+        blocks: [],
+        subBlocks: [],
+      }
+      const actual = converter.JSON_V3ToEntity(json)
+      expect(actual).toStrictEqual(expected)
+    })
   })
 })
