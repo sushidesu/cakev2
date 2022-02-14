@@ -91,6 +91,44 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
   }
 
   /**
+   * 「PC追加商品説明文」「スマホ用商品説明文2」を入力する
+   */
+  inputSubDescriptions(item: Item): void {
+    const text = `<div class="${this.WRAPPER_CLASS_NAME}">${item.subBlocks
+      .map(this.blockToHtml)
+      .join("\n\n")}</div>`
+
+    // 「PC追加商品説明文」のソース編集モードを有効化
+    this.enableSourceEditMode("PC_SUB")
+
+    // 「PC用商品説明文」
+    const SUB_PC_TEXTAREA_QUERY = "#cke_2_contents > textarea"
+    const sub_description_pc = this.form.querySelector(SUB_PC_TEXTAREA_QUERY)
+
+    if (!sub_description_pc) {
+      throw new Error(`"${SUB_PC_TEXTAREA_QUERY}" is not found.`)
+    }
+    if (!this.isTextAreaElementInElementContext(sub_description_pc)) {
+      throw new Error(
+        `"${SUB_PC_TEXTAREA_QUERY}" is not instance of HTMLTextAreaElement`
+      )
+    }
+    sub_description_pc.value = text
+
+    // 「スマートフォン用商品説明文2」
+    const SUB_SP_ID = "smartphone_content1"
+    const sub_description_sp = this.form.getElementById(SUB_SP_ID)
+
+    if (!sub_description_sp) {
+      throw new Error(`"${SUB_SP_ID}" is not found`)
+    }
+    if (!this.isTextAreaElementInElementContext(sub_description_sp)) {
+      throw new Error(`"${SUB_SP_ID}" is not instance of HTMLTextAreaElement`)
+    }
+    sub_description_sp.value = text
+  }
+
+  /**
    * ソース編集モードを有効化する
    */
   private enableSourceEditMode(target: "PC_MAIN" | "PC_SUB") {
