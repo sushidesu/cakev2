@@ -7,9 +7,11 @@ import { stringToNumber } from "../../utils/stringToNumber"
 export const convertFormValue = ({
   itemInfo,
   blocks,
+  subBlocks,
 }: {
   itemInfo: ItemInfoFormValue
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }): Pick<
   Item,
   | "name"
@@ -19,6 +21,7 @@ export const convertFormValue = ({
   | "stockMakeshop"
   | "jancode"
   | "blocks"
+  | "subBlocks"
 > => ({
   name: itemInfo.name,
   price: stringToNumber(itemInfo.price),
@@ -28,4 +31,5 @@ export const convertFormValue = ({
   jancode:
     itemInfo.jancode !== "" ? Jancode.create(itemInfo.jancode) : undefined,
   blocks,
+  subBlocks,
 })

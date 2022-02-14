@@ -10,6 +10,7 @@ import { BlockEditorProps, BlockEditor } from "../editor/BlockEditor"
 import { Item } from "../../domain/item/item"
 import { Columns } from "../atom/Columns"
 import { Column } from "../atom/Column"
+import { Tabs } from "../atom/Tabs"
 
 export type Props = {
   itemList: Item[]
@@ -22,8 +23,17 @@ export type Props = {
   }
   itemListProps: ItemListProps
   itemEditorProps: ItemEditorProps
-  blocks: BlockEditorProps<CustomBlock>[]
-  blockEditorControllerProps: {
+  // main blocks
+  mainBlocks: BlockEditorProps<CustomBlock>[]
+  mainBlockEditorControllerProps: {
+    addHeadingBlockButton: ButtonControlProps
+    addTextBlockButton: ButtonControlProps
+    addImageBlockButton: ButtonControlProps
+    addTableBlockButton: ButtonControlProps
+  }
+  // sub blocks
+  subBlocks: BlockEditorProps<CustomBlock>[]
+  subBlockEditorControllerProps: {
     addHeadingBlockButton: ButtonControlProps
     addTextBlockButton: ButtonControlProps
     addImageBlockButton: ButtonControlProps
@@ -90,8 +100,10 @@ export function OptionsTemplate({
   itemListProps,
   itemEditorProps,
   controllerProps,
-  blocks,
-  blockEditorControllerProps,
+  mainBlocks,
+  mainBlockEditorControllerProps,
+  subBlocks,
+  subBlockEditorControllerProps,
 }: Props): JSX.Element {
   const { createButton, saveButton, copyButton, deleteButton } = controllerProps
   const {
@@ -99,7 +111,7 @@ export function OptionsTemplate({
     addTextBlockButton,
     addImageBlockButton,
     addTableBlockButton,
-  } = blockEditorControllerProps
+  } = mainBlockEditorControllerProps
   // FIXME: use Column component in L109
   return (
     <Wrapper>
@@ -114,19 +126,48 @@ export function OptionsTemplate({
               <ItemEditor {...itemEditorProps} />
             </Spacer>
             <hr />
-            <Spacer>
-              <div>
-                {blocks.map((block) => (
-                  <BlockEditor key={block.block.id.value} {...block} />
-                ))}
-              </div>
-              <BlockEditorController>
-                <Button {...addHeadingBlockButton}>タイトルを追加</Button>
-                <Button {...addTextBlockButton}>文章を追加</Button>
-                <Button {...addImageBlockButton}>画像を追加</Button>
-                <Button {...addTableBlockButton}>テーブルを追加</Button>
-              </BlockEditorController>
-            </Spacer>
+            <Tabs labels={["メイン商品説明文", "サブ商品説明文"]}>
+              <Spacer>
+                <div>
+                  {mainBlocks.map((block) => (
+                    <BlockEditor key={block.block.id.value} {...block} />
+                  ))}
+                </div>
+                <BlockEditorController>
+                  <Button {...addHeadingBlockButton}>タイトルを追加</Button>
+                  <Button {...addTextBlockButton}>文章を追加</Button>
+                  <Button {...addImageBlockButton}>画像を追加</Button>
+                  <Button {...addTableBlockButton}>テーブルを追加</Button>
+                </BlockEditorController>
+              </Spacer>
+              <Spacer>
+                <div>
+                  {subBlocks.map((block) => (
+                    <BlockEditor key={block.block.id.value} {...block} />
+                  ))}
+                </div>
+                <BlockEditorController>
+                  <Button
+                    {...subBlockEditorControllerProps.addHeadingBlockButton}
+                  >
+                    タイトルを追加
+                  </Button>
+                  <Button {...subBlockEditorControllerProps.addTextBlockButton}>
+                    文章を追加
+                  </Button>
+                  <Button
+                    {...subBlockEditorControllerProps.addImageBlockButton}
+                  >
+                    画像を追加
+                  </Button>
+                  <Button
+                    {...subBlockEditorControllerProps.addTableBlockButton}
+                  >
+                    テーブルを追加
+                  </Button>
+                </BlockEditorController>
+              </Spacer>
+            </Tabs>
             <StickyButtonsWrapper>
               <div>
                 <Button {...createButton} color="primary">

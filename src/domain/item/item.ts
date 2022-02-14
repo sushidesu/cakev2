@@ -14,17 +14,23 @@ export interface Item {
   stockMakeshop: number
   jancode: Jancode | undefined
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
 export type CreateItemProps = {
   itemInfo: ItemInfoFormValue
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
-export const createItem = ({ itemInfo, blocks }: CreateItemProps): Item => {
+export const createItem = ({
+  itemInfo,
+  blocks,
+  subBlocks,
+}: CreateItemProps): Item => {
   const id = ItemId.create()
   return {
-    ...convertFormValue({ itemInfo, blocks }),
+    ...convertFormValue({ itemInfo, blocks, subBlocks }),
     id,
   }
 }
@@ -52,15 +58,17 @@ export type UpdateItemProps = {
   target: Item
   itemInfo: ItemInfoFormValue
   blocks: readonly CustomBlock[]
+  subBlocks: readonly CustomBlock[]
 }
 
 export const updateItem = ({
   target,
   itemInfo,
   blocks,
+  subBlocks,
 }: UpdateItemProps): Item => {
   return {
-    ...convertFormValue({ itemInfo, blocks }),
+    ...convertFormValue({ itemInfo, blocks, subBlocks }),
     id: target.id,
   }
 }

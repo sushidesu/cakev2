@@ -6,21 +6,22 @@ import {
   RemoveItemProps,
   SelectItemProps,
   SaveItemsProps,
-} from "../domain/item/interface/itemCollectionRepository"
-import { ItemId } from "../domain/item/itemId"
-import { Jancode } from "../domain/jancode"
-import { Item } from "../domain/item/item"
-import { ItemValue, BlockValue, Storage_v3 } from "./scheme"
-import { ChromeStorageClient } from "./chromeStorageClient"
-import { CustomBlock } from "../domain/customBlock/block"
+} from "../../domain/item/interface/itemCollectionRepository"
+import { ItemId } from "../../domain/item/itemId"
+import { Jancode } from "../../domain/jancode"
+import { Item } from "../../domain/item/item"
+import { ItemValue, BlockValue, Storage_v3 } from "../scheme"
+import { ChromeStorageClient } from "../chrome-storage-client/chrome-storage-client"
+import { CustomBlock } from "../../domain/customBlock/block"
 import {
   isHeadingBlockValue,
   isImageBlockValue,
   isTableBlockValue,
   isTextBlockValue,
-} from "../domain/customBlock/isCustomBlockValue"
-import { BlockId } from "../domain/block/blockId"
-import { SchemeV2Client } from "./scheme-v2-client/scheme-v2-client"
+} from "../../domain/customBlock/isCustomBlockValue"
+import { BlockId } from "../../domain/block/blockId"
+import { SchemeV2Client } from "../scheme-v2-client/scheme-v2-client"
+import { PartiallyPartial } from "../../utils/partially-partial"
 
 export class ItemCollectionRepository implements IItemCollectionRepository {
   private converter: SchemeV2Client
@@ -32,9 +33,17 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
     const storage_v3 = await this.chromeStorageClient.storageV3LocalGet()
     const storage_v2 = await this.chromeStorageClient.storageV2LocalGet()
     if (storage_v3) {
-      // migrateの必要なし
-      console.log("cakev3 already exists")
-      return
+      // subBlocksが無いitemにsubBlocksを追加する
+      const subBlocksInitialized: Storage_v3 = {
+        selectedItemId: storage_v3.selectedItemId,
+        items: Object.fromEntries(
+          Object.entries(storage_v3.items).map(([id, item]) => [
+            id,
+            this.initSubBlocks(item),
+          ])
+        ),
+      }
+      await this.chromeStorageClient.storageV3LocalSet(subBlocksInitialized)
     } else {
       console.log("cakev3 doesn't exist yet")
       if (storage_v2) {
@@ -48,6 +57,26 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
           selectedItemId: null,
         })
       }
+    }
+  }
+
+  /**
+   * subBlocksが無いitemに、subBlocksプロパティを追加する
+   */
+  private initSubBlocks(
+    item: PartiallyPartial<ItemValue, "subBlocks">
+  ): ItemValue {
+    return {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      weight: item.weight,
+      stockRakuten: item.stockRakuten,
+      stockMakeshop: item.stockMakeshop,
+      order: item.order,
+      jancodeString: item.jancodeString,
+      blocks: item.blocks,
+      subBlocks: item.subBlocks ?? [],
     }
   }
 
@@ -189,6 +218,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks.map(this.blockEntityToResource),
+      subBlocks: entity.subBlocks.map(this.blockEntityToResource),
       order,
     }
   }
@@ -202,6 +232,7 @@ export class ItemCollectionRepository implements IItemCollectionRepository {
       stockMakeshop: value.stockMakeshop,
       jancode: Jancode.reconstruct(value.jancodeString),
       blocks: value.blocks.map(this.blockResourceToEntity),
+      subBlocks: value.subBlocks.map(this.blockResourceToEntity),
     }
   }
   private static blockEntityToResource(blockEntity: CustomBlock): BlockValue {

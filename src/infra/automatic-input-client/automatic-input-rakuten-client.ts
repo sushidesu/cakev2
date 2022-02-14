@@ -60,7 +60,10 @@ export class AutomaticInputRakutenClient implements IAutomaticInputClient {
     const description_sp = document.querySelector<HTMLInputElement>(
       "#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2) > div.rms-form-col.rms-col-20 > div > div > div > textarea"
     )
+
+    // スマートフォンは入力欄が一つしか無いため、メイン/サブをまとめて入力する
     const text_sp = item.blocks
+      .concat(item.subBlocks)
       .map((block, index) => this.blockToHTML_SP(block, index))
       .join("\n\n")
     const text_pc = `<div class="${this.WRAPPER_CLASS_NAME}">${item.blocks
@@ -68,6 +71,23 @@ export class AutomaticInputRakutenClient implements IAutomaticInputClient {
       .join("\n\n")}</div>`
     this.setValue(description_pc, text_pc)
     this.setValue(description_sp, text_sp)
+  }
+
+  /**
+   * 「PC用商品説明文」を入力する
+   */
+  inputSubDescriptions(item: Item): void {
+    // 「PC用商品説明文」
+    const SUB_PC_QUERY =
+      "#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(1) > div.rms-form-col.rms-col-20 > div > div > div > textarea"
+    const description_sub_pc =
+      document.querySelector<HTMLInputElement>(SUB_PC_QUERY)
+
+    const text = `<div class="${this.WRAPPER_CLASS_NAME}">${item.subBlocks
+      .map(this.blockToHTML_PC)
+      .join("\n\n")}</div>`
+
+    this.setValue(description_sub_pc, text)
   }
 
   private blockToHTML_PC(block: CustomBlock): string {

@@ -21,6 +21,7 @@ export class AutomaticInputUsecase {
     }
     if (descriptions) {
       this.automaticInputClient.inputDescriptions(item)
+      this.automaticInputClient.inputSubDescriptions(item)
     }
   }
 }

@@ -1,6 +1,6 @@
-import { IChromeStorageClient } from "./interface/chromeStorageClient"
-import { Storage_v3, KEY_VERSION_2, KEY_VERSION_3 } from "./scheme"
-import { Storage_v2 } from "./scheme-v2-client/interface/scheme"
+import { IChromeStorageClient } from "../interface/chromeStorageClient"
+import { Storage_v3, KEY_VERSION_2, KEY_VERSION_3 } from "../scheme"
+import { Storage_v2 } from "../scheme-v2-client/interface/scheme"
 
 export class ChromeStorageClient implements IChromeStorageClient {
   async storageV2LocalGet(): Promise<undefined | Storage_v2> {

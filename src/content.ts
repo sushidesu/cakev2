@@ -1,8 +1,8 @@
 import { CheckboxState } from "./components/popup/CheckboxForPopup"
 import { Item } from "./domain/item/item"
 import { GetCurrentItemUsecase } from "./usecase/get-current-item-usecase"
-import { ItemCollectionRepository } from "./infra/itemCollectionRepository"
-import { ChromeStorageClient } from "./infra/chromeStorageClient"
+import { ItemCollectionRepository } from "./infra/item-collection-repository/item-collection-repository"
+import { ChromeStorageClient } from "./infra/chrome-storage-client/chrome-storage-client"
 import { ChromeMessenger } from "./infra/chrome-messenger/chrome-messenger"
 import {
   AutoFillMessage,

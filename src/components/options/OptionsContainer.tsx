@@ -2,9 +2,10 @@ import React, { useEffect, useCallback } from "react"
 import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
-import { ItemCollectionRepository } from "../../infra/itemCollectionRepository"
-import { ChromeStorageClient } from "../../infra/chromeStorageClient"
+import { ItemCollectionRepository } from "../../infra/item-collection-repository/item-collection-repository"
+import { ChromeStorageClient } from "../../infra/chrome-storage-client/chrome-storage-client"
 import { useCustomBlock } from "../../domain/customBlock/useCustomBlock"
+import { useBlockHandlers } from "../../hooks/util/useBlockHandlers"
 
 export function OptionsContainer(): JSX.Element {
   const chromeStorageClient = new ChromeStorageClient()
@@ -68,14 +69,16 @@ export function OptionsContainer(): JSX.Element {
   const handleCreateItem = () => {
     create({
       itemInfo: itemInfoFormValue,
-      blocks: blocks,
+      blocks: mainBlock.blocks,
+      subBlocks: subBlock.blocks,
     })
   }
 
   const handleSaveItem = () => {
     update({
       itemInfo: itemInfoFormValue,
-      blocks: blocks,
+      blocks: mainBlock.blocks,
+      subBlocks: subBlock.blocks,
     })
   }
 
@@ -87,17 +90,29 @@ export function OptionsContainer(): JSX.Element {
     remove()
   }
 
-  /////////////// block ///////////////
-  const { blocks, addBlock, updateBlock, moveBlock, removeBlock, initBlocks } =
-    useCustomBlock()
+  /////////////// block (main) ///////////////
+  const mainBlock = useCustomBlock()
+  const mainBlockHandlers = useBlockHandlers(mainBlock)
 
   useEffect(() => {
     if (target) {
-      initBlocks(target.blocks)
+      mainBlock.initBlocks(target.blocks)
     } else {
-      initBlocks([])
+      mainBlock.initBlocks([])
     }
-  }, [target])
+  }, [target, mainBlock.initBlocks])
+
+  /////////////// block (sub) ///////////////
+  const subBlock = useCustomBlock()
+  const subBlockHandlers = useBlockHandlers(subBlock)
+
+  useEffect(() => {
+    if (target) {
+      subBlock.initBlocks(target.subBlocks)
+    } else {
+      subBlock.initBlocks([])
+    }
+  }, [target, subBlock.initBlocks])
 
   return (
     <OptionsTemplate
@@ -141,39 +156,34 @@ export function OptionsContainer(): JSX.Element {
           onClick: handleRemoveItem,
         },
       }}
-      blocks={blocks.map((block) => ({
-        block: block,
-        update: updateBlock,
-        remove: () => {
-          removeBlock({ id: block.id })
-        },
-        moveUp: () => {
-          moveBlock({ id: block.id, type: "relative", offset: -1 })
-        },
-        moveDown: () => {
-          moveBlock({ id: block.id, type: "relative", offset: 1 })
-        },
-      }))}
-      blockEditorControllerProps={{
+      mainBlocks={mainBlockHandlers.blocks}
+      mainBlockEditorControllerProps={{
         addHeadingBlockButton: {
-          onClick: () => {
-            addBlock({ type: "heading" })
-          },
+          onClick: mainBlockHandlers.onAddHeadingClick,
         },
         addTextBlockButton: {
-          onClick: () => {
-            addBlock({ type: "text" })
-          },
+          onClick: mainBlockHandlers.onAddTextClick,
         },
         addImageBlockButton: {
-          onClick: () => {
-            addBlock({ type: "image" })
-          },
+          onClick: mainBlockHandlers.onAddImageClick,
         },
         addTableBlockButton: {
-          onClick: () => {
-            addBlock({ type: "table" })
-          },
+          onClick: mainBlockHandlers.onAddTableClick,
+        },
+      }}
+      subBlocks={subBlockHandlers.blocks}
+      subBlockEditorControllerProps={{
+        addHeadingBlockButton: {
+          onClick: subBlockHandlers.onAddHeadingClick,
+        },
+        addTextBlockButton: {
+          onClick: subBlockHandlers.onAddTextClick,
+        },
+        addImageBlockButton: {
+          onClick: subBlockHandlers.onAddImageClick,
+        },
+        addTableBlockButton: {
+          onClick: subBlockHandlers.onAddTableClick,
         },
       }}
     />

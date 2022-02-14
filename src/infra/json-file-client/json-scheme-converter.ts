@@ -22,6 +22,7 @@ export class JSONShcemeConverter {
       stockMakeshop: entity.stockMakeshop,
       jancodeString: entity.jancode?.toString() ?? "",
       blocks: entity.blocks.map(this.blockToJSON),
+      subBlocks: entity.subBlocks.map(this.blockToJSON),
       order: index,
     }
   }
@@ -44,6 +45,9 @@ export class JSONShcemeConverter {
       stockMakeshop: json.stockMakeshop,
       jancode: Jancode.reconstruct(json.jancodeString),
       blocks: json.blocks.map((blockJson) => this.JSON_V3ToBlock(blockJson)),
+      // subBlockがない場合は、空で初期化する
+      subBlocks:
+        json.subBlocks?.map((block) => this.JSON_V3ToBlock(block)) ?? [],
     }
   }
 
