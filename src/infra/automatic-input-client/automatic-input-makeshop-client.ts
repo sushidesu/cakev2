@@ -75,19 +75,14 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
 
     // 「PC用商品説明文」
     this.enableSourceEditMode("PC_MAIN")
+
     // NOTE: ソース編集モードが有効の場合のみ、textareaが表示される
     const description_pc = this.form.querySelector("#cke_1_contents > textarea")
     if (!description_pc) {
       throw new Error(`"#cke_1_contents > textarea" is not found.`)
     }
-    const FormContextTextAreaElement =
-      description_pc.ownerDocument.defaultView?.HTMLTextAreaElement
-    if (
-      !(
-        FormContextTextAreaElement &&
-        description_pc instanceof FormContextTextAreaElement
-      )
-    ) {
+
+    if (!this.isTextAreaElementInElementContext(description_pc)) {
       throw new Error(
         `"#cke_1_contents > textarea" is not instance of HTMLTextAreaElement. It's "${description_pc.constructor.name}".`
       )
@@ -123,6 +118,18 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
       // 初期状態では `aria-pressed` 属性はつかない
       button_pc_source_edit.click()
     }
+  }
+
+  private isTextAreaElementInElementContext(
+    element: Element
+  ): element is HTMLTextAreaElement {
+    const ElementContextTextAreaElement =
+      element.ownerDocument.defaultView?.HTMLTextAreaElement
+    if (!ElementContextTextAreaElement) {
+      return false
+    }
+
+    return element instanceof ElementContextTextAreaElement
   }
 
   private blockToHtml(block: CustomBlock): string {
