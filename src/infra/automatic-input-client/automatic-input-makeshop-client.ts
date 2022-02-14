@@ -74,24 +74,8 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
     description_sp.value = text
 
     // 「PC用商品説明文」
-    // NOTE: ソース編集モードが有効の場合のみ、textareaが表示されるの
-    // NOTE: 現在「ソース」ボタンのidは `cke_26` となっているが、以前は `cke_23` だった？
-    const button_pc_source_edit = this.form.getElementById("cke_26")
-    if (button_pc_source_edit === null) {
-      throw new Error(`element "#cke_26" is not found.`)
-    }
-    // ソース編集モードを有効にする
-    // 既にソース編集モードが有効の場合は「ソース」ボタンを押さない
-    const enable_source_edit_mode =
-      button_pc_source_edit.getAttribute("aria-pressed")
-    if (
-      enable_source_edit_mode === null ||
-      enable_source_edit_mode !== "true"
-    ) {
-      // 初期状態では `aria-pressed` 属性はつかない
-      button_pc_source_edit.click()
-    }
-
+    this.enableSourceEditMode("PC_MAIN")
+    // NOTE: ソース編集モードが有効の場合のみ、textareaが表示される
     const description_pc = this.form.querySelector("#cke_1_contents > textarea")
     if (!description_pc) {
       throw new Error(`"#cke_1_contents > textarea" is not found.`)
@@ -109,6 +93,36 @@ export class AutomaticInputMakeshopClient implements IAutomaticInputClient {
       )
     }
     description_pc.value = text
+  }
+
+  /**
+   * ソース編集モードを有効化する
+   */
+  private enableSourceEditMode(target: "PC_MAIN" | "PC_SUB") {
+    const SOURCE_EDIT_BUTTON_ID = {
+      // NOTE: 現在「ソース」ボタンのidは `cke_26` となっているが、以前は `cke_23` だった？
+      PC_MAIN: "cke_26",
+      PC_SUB: "cke_93",
+    }
+    const button_pc_source_edit = this.form.getElementById(
+      SOURCE_EDIT_BUTTON_ID[target]
+    )
+    if (button_pc_source_edit === null) {
+      throw new Error(
+        `element "#${SOURCE_EDIT_BUTTON_ID[target]}" is not found.`
+      )
+    }
+    // ソース編集モードを有効にする
+    // 既にソース編集モードが有効の場合は「ソース」ボタンを押さない
+    const enable_source_edit_mode =
+      button_pc_source_edit.getAttribute("aria-pressed")
+    if (
+      enable_source_edit_mode === null ||
+      enable_source_edit_mode !== "true"
+    ) {
+      // 初期状態では `aria-pressed` 属性はつかない
+      button_pc_source_edit.click()
+    }
   }
 
   private blockToHtml(block: CustomBlock): string {
