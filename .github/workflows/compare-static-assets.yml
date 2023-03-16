@@ -20,7 +20,7 @@ jobs:
           node-version: "14"
       # プルリクエストのブランチでビルド
       - name: Checkout current branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Install dependencies
@@ -29,7 +29,7 @@ jobs:
         run: export OUT_DIR=/tmp/current; yarn build:compare
       # mainブランチでビルド
       - name: Checkout main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.base.sha }}
       - name: Reinstall dependencies
