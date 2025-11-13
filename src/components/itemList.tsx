@@ -22,9 +22,15 @@ const ButtonWrapper = styled.div`
   margin-bottom: 1rem;
 `
 
+const SearchWrapper = styled.div`
+  margin-bottom: 1rem;
+`
+
 export type Props = {
   onClickCreateButton?: () => void
   createButtonDisabled?: boolean
+  searchQuery?: string
+  onSearchChange?: (query: string) => void
   items: {
     id: string
     name: string
@@ -36,6 +42,8 @@ export type Props = {
 function ItemList({
   onClickCreateButton,
   createButtonDisabled,
+  searchQuery = "",
+  onSearchChange,
   items,
 }: Props): JSX.Element {
   return (
@@ -45,6 +53,19 @@ function ItemList({
           新しい商品を追加
         </Button>
       </ButtonWrapper>
+      <SearchWrapper>
+        <div className="field">
+          <div className="control">
+            <input
+              className="input"
+              type="text"
+              placeholder="商品を検索..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange?.(e.target.value)}
+            />
+          </div>
+        </div>
+      </SearchWrapper>
       <aside className="menu">
         <p className="menu-label">Item List</p>
         <ul className="menu-list">

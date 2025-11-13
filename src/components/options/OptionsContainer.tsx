@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useState, useMemo } from "react"
 import { useItemCollection } from "../../domain/item/useItem"
 import { useItemInfo } from "../../domain/itemInfo/itemInfo"
 import { OptionsTemplate, Props } from "./OptionsTemplate"
@@ -23,6 +23,17 @@ export function OptionsContainer(): JSX.Element {
     duplicate,
     reset,
   } = useItemCollection(itemCollectionRepository)
+
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const filteredItemList = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return itemList
+    }
+    return itemList.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [itemList, searchQuery])
 
   const resetItemCollection = async () => {
     await reset()
@@ -121,7 +132,9 @@ export function OptionsContainer(): JSX.Element {
       itemListProps={{
         onClickCreateButton: startCreate,
         createButtonDisabled: target === undefined,
-        items: itemList.map((item) => ({
+        searchQuery,
+        onSearchChange: setSearchQuery,
+        items: filteredItemList.map((item) => ({
           id: item.id.value,
           name: item.name,
           selected: target ? item.id.equals(target.id) : false,
