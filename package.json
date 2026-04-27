@@ -69,7 +69,7 @@
     "react-hot-toast": "^2.1.1",
     "react-is": "^17.0.0",
     "styled-components": "^5.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^14.0.0"
   },
   "volta": {
     "node": "16.14.2"
